@@ -1,1 +1,37 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"shopping-app-6bfa1","appId":"1:410913432747:android:c006f565cbf8ff693083ee","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"shopping-app-6bfa1","configurations":{"android":"1:410913432747:android:c006f565cbf8ff693083ee","ios":"1:410913432747:ios:5b1d766cb37baff03083ee","web":"1:410913432747:web:51624dcae08048643083ee"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "shopping-app-6bfa1",
+          "appId": "1:410913432747:android:c006f565cbf8ff693083ee",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "shopping-app-6bfa1",
+          "configurations": {
+            "android": "1:410913432747:android:c006f565cbf8ff693083ee",
+            "ios": "1:410913432747:ios:5b1d766cb37baff03083ee",
+            "web": "1:410913432747:web:51624dcae08048643083ee"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

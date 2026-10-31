@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/api/category_api.dart';
+import '../../../data/api/admin_product_api.dart';
 import '../../../data/model/product_model.dart';
+
 import '../widgets/product_card.dart';
 
 class CategoryProductsScreen extends StatefulWidget {
@@ -20,8 +22,12 @@ class CategoryProductsScreen extends StatefulWidget {
 
 class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   final CategoryApi _categoryApi = CategoryApi();
+  final AdminProductApi _adminProductApi = AdminProductApi();
 
-  List<ProductModel> _products = [];
+  late final Stream<List<ProductModel>> _storeProductsStream;
+
+  List<ProductModel> _apiProducts = [];
+
   bool _isLoading = true;
   String? _errorMessage;
 
@@ -30,7 +36,14 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   @override
   void initState() {
     super.initState();
+
+    _storeProductsStream = _adminProductApi.watchProducts();
+
     _loadProducts();
+  }
+
+  String _normalizeCategory(String value) {
+    return value.trim().toLowerCase().replaceAll(RegExp(r'[\s_]+'), '-');
   }
 
   Future<void> _loadProducts() async {
@@ -47,17 +60,41 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
       if (!mounted) return;
 
       setState(() {
-        _products = products;
+        _apiProducts = products;
         _isLoading = false;
       });
     } catch (e) {
       if (!mounted) return;
 
       setState(() {
+        _apiProducts = [];
         _errorMessage = e.toString();
         _isLoading = false;
       });
     }
+  }
+
+  List<ProductModel> _mergeProducts(List<ProductModel> storeProducts) {
+    final selectedCategory = _normalizeCategory(widget.categorySlug);
+
+    final matchingStoreProducts = storeProducts.where((product) {
+      return _normalizeCategory(product.category) == selectedCategory;
+    }).toList();
+
+    final combined = <ProductModel>[];
+    final identifiers = <String>{};
+
+    for (final product in [..._apiProducts, ...matchingStoreProducts]) {
+      final identifier = product.firestoreId != null
+          ? 'store_${product.firestoreId}'
+          : 'api_${product.id}';
+
+      if (identifiers.add(identifier)) {
+        combined.add(product);
+      }
+    }
+
+    return combined;
   }
 
   @override
@@ -73,18 +110,35 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
         ),
         centerTitle: true,
       ),
-      body: _buildBody(theme, colors),
+      body: StreamBuilder<List<ProductModel>>(
+        stream: _storeProductsStream,
+        builder: (context, snapshot) {
+          return _buildBody(
+            theme,
+            colors,
+            snapshot.data ?? [],
+            snapshot.hasError,
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildBody(ThemeData theme, ColorScheme colors) {
+  Widget _buildBody(
+    ThemeData theme,
+    ColorScheme colors,
+    List<ProductModel> storeProducts,
+    bool hasStreamError,
+  ) {
     if (_isLoading) {
       return const Center(
         child: CircularProgressIndicator(color: primaryColor),
       );
     }
 
-    if (_errorMessage != null) {
+    final products = _mergeProducts(storeProducts);
+
+    if (products.isEmpty && _errorMessage != null) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -115,7 +169,16 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
       );
     }
 
-    if (_products.isEmpty) {
+    if (products.isEmpty && hasStreamError) {
+      return Center(
+        child: Text(
+          'Failed to load store products.',
+          style: TextStyle(color: colors.onSurfaceVariant),
+        ),
+      );
+    }
+
+    if (products.isEmpty) {
       return const Center(child: Text('No products found in this category'));
     }
 
@@ -138,7 +201,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                     ),
                   ),
                   Text(
-                    '${_products.length} Items',
+                    '${products.length} Items',
                     style: TextStyle(color: colors.onSurfaceVariant),
                   ),
                 ],
@@ -149,8 +212,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
             padding: const EdgeInsets.all(20),
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate((context, index) {
-                return ProductCard(product: _products[index]);
-              }, childCount: _products.length),
+                return ProductCard(product: products[index]);
+              }, childCount: products.length),
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 250,
                 mainAxisSpacing: 15,

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/routes/app_routes.dart';
 import '../../../../core/theme/theme_controller.dart';
 import 'orders_screen.dart';
 import 'edit_profile_screen.dart';
@@ -92,6 +93,9 @@ class ProfileScreen extends StatelessWidget {
               );
             },
           ),
+
+          // Admin Dashboard - visible only to administrators.
+          const AdminDashboardMenuItem(),
 
           const SizedBox(height: 24),
 
@@ -393,11 +397,15 @@ class ProfileScreen extends StatelessWidget {
           content: const Text('Are you sure you want to logout?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(dialogContext, false),
+              onPressed: () {
+                Navigator.pop(dialogContext, false);
+              },
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(dialogContext, true),
+              onPressed: () {
+                Navigator.pop(dialogContext, true);
+              },
               child: const Text('Logout', style: TextStyle(color: Colors.red)),
             ),
           ],
@@ -412,12 +420,116 @@ class ProfileScreen extends StatelessWidget {
 
       if (!context.mounted) return;
 
-      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoutes.login,
+        (route) => false,
+      );
     } catch (e) {
       if (!context.mounted) return;
 
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Logout failed: $e')));
     }
+  }
+}
+
+// Admin Dashboard menu item.
+
+class AdminDashboardMenuItem extends StatefulWidget {
+  const AdminDashboardMenuItem({super.key});
+
+  @override
+  State<AdminDashboardMenuItem> createState() => _AdminDashboardMenuItemState();
+}
+
+class _AdminDashboardMenuItemState extends State<AdminDashboardMenuItem> {
+  static const Color primaryColor = Color(0xFF385CF2);
+
+  late final Future<bool> _adminAccessFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _adminAccessFuture = _checkAdminAccess();
+  }
+
+  Future<bool> _checkAdminAccess() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) return false;
+
+    try {
+      final token = await user.getIdTokenResult(true);
+
+      return token.claims?['admin'] == true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: _adminAccessFuture,
+      builder: (context, snapshot) {
+        if (snapshot.data != true) {
+          return const SizedBox.shrink();
+        }
+
+        final colors = Theme.of(context).colorScheme;
+
+        return Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          child: Material(
+            color: Theme.of(context).cardTheme.color ?? colors.surface,
+            borderRadius: BorderRadius.circular(16),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.admin);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 5,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: Theme.of(context).dividerColor
+                        .withValues(alpha: 0.15),
+                  ),
+                ),
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: primaryColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.admin_panel_settings_outlined,
+                      color: primaryColor,
+                    ),
+                  ),
+                  title: const Text(
+                    'Admin Dashboard',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  subtitle: const Text(
+                    'Manage your store and orders',
+                    style: TextStyle(fontSize: 11),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 15),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

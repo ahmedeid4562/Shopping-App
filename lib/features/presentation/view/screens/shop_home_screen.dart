@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/api/auth_api.dart';
-import '../../../data/api/product_api.dart';
 
 import '../../view_model/home_cubit.dart';
 import '../../view_model/home_state.dart';
@@ -18,7 +17,7 @@ class ShopHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => HomeCubit(ProductApi())..getProducts(),
+      create: (_) => HomeCubit()..getProducts(),
       child: const _ShopHomeView(),
     );
   }
@@ -39,19 +38,6 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
 
   static const Color primaryColor = Color(0xFF385CF2);
 
-  // Clothing and fashion categories.
-  static const Set<String> clothingCategories = {
-    'mens-shirts',
-    'mens-shoes',
-    'mens-watches',
-    'tops',
-    'womens-bags',
-    'womens-dresses',
-    'womens-jewellery',
-    'womens-shoes',
-    'womens-watches',
-  };
-
   @override
   void dispose() {
     _searchController.dispose();
@@ -61,6 +47,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
   Future<void> _logout() async {
     try {
       await AuthApi().signOut();
+
       if (!mounted) return;
 
       Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
@@ -76,6 +63,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -150,27 +138,33 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
           }
 
           if (state is HomeSuccess) {
-            debugPrint('TOTAL PRODUCTS: ${state.products.length}');
+            // Show only products saved by the admin in Firestore.
+            final products = state.products;
 
-            debugPrint(
-              'PRODUCT CATEGORIES: '
-              '${state.products.map((p) => p.category).toSet()}',
-            );
-
-            // Show clothing products only.
-            final products = state.products.where((product) {
-              return clothingCategories.contains(product.category);
-            }).toList();
-
-            debugPrint('CLOTHING PRODUCTS: ${products.length}');
-
+            // Build categories from the available store products.
             final categories = [
               'All',
-              ...products.map((product) => product.category).toSet().toList()
+              ...products
+                  .map((product) => product.category)
+                  .where((category) => category.isNotEmpty)
+                  .toSet()
+                  .toList()
                 ..sort(),
             ];
 
-            // Filter by category and search.
+            // Reset selected category if it no longer exists.
+            if (_selectedCategory != 'All' &&
+                !categories.contains(_selectedCategory)) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) {
+                  setState(() {
+                    _selectedCategory = 'All';
+                  });
+                }
+              });
+            }
+
+            // Filter products by category and search query.
             final filteredProducts = products.where((product) {
               final matchesCategory =
                   _selectedCategory == 'All' ||
@@ -212,7 +206,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                           ),
                           const SizedBox(height: 20),
 
-                          // Search
+                          // Search.
                           TextField(
                             controller: _searchController,
                             onChanged: (value) {
@@ -233,7 +227,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                           ),
                           const SizedBox(height: 25),
 
-                          // Banner
+                          // Banner.
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(22),
@@ -295,7 +289,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                           ),
                           const SizedBox(height: 28),
 
-                          // Categories
+                          // Categories.
                           Text(
                             'Categories',
                             style: theme.textTheme.titleLarge?.copyWith(
@@ -342,7 +336,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                           ),
                           const SizedBox(height: 28),
 
-                          // Featured products title
+                          // Featured products title.
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -366,11 +360,11 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                     ),
                   ),
 
-                  // Products Grid
+                  // Products Grid.
                   if (filteredProducts.isEmpty)
                     const SliverFillRemaining(
                       hasScrollBody: false,
-                      child: Center(child: Text('No clothing products found')),
+                      child: Center(child: Text('No products found')),
                     )
                   else
                     SliverPadding(
