@@ -15,12 +15,10 @@ class CategoryProductsScreen extends StatefulWidget {
   });
 
   @override
-  State<CategoryProductsScreen> createState() =>
-      _CategoryProductsScreenState();
+  State<CategoryProductsScreen> createState() => _CategoryProductsScreenState();
 }
 
-class _CategoryProductsScreenState
-    extends State<CategoryProductsScreen> {
+class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   final CategoryApi _categoryApi = CategoryApi();
 
   List<ProductModel> _products = [];
@@ -71,9 +69,7 @@ class _CategoryProductsScreenState
       appBar: AppBar(
         title: Text(
           widget.categoryName,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -84,9 +80,7 @@ class _CategoryProductsScreenState
   Widget _buildBody(ThemeData theme, ColorScheme colors) {
     if (_isLoading) {
       return const Center(
-        child: CircularProgressIndicator(
-          color: primaryColor,
-        ),
+        child: CircularProgressIndicator(color: primaryColor),
       );
     }
 
@@ -97,26 +91,17 @@ class _CategoryProductsScreenState
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                size: 60,
-                color: Colors.grey,
-              ),
+              const Icon(Icons.error_outline, size: 60, color: Colors.grey),
               const SizedBox(height: 16),
               const Text(
                 'Could not load products',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
                 _errorMessage!,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colors.onSurfaceVariant,
-                ),
+                style: TextStyle(color: colors.onSurfaceVariant),
               ),
               const SizedBox(height: 20),
               ElevatedButton.icon(
@@ -131,9 +116,7 @@ class _CategoryProductsScreenState
     }
 
     if (_products.isEmpty) {
-      return const Center(
-        child: Text('No products found in this category'),
-      );
+      return const Center(child: Text('No products found in this category'));
     }
 
     return RefreshIndicator(
@@ -144,12 +127,7 @@ class _CategoryProductsScreenState
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                20,
-                20,
-                20,
-                10,
-              ),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -161,9 +139,7 @@ class _CategoryProductsScreenState
                   ),
                   Text(
                     '${_products.length} Items',
-                    style: TextStyle(
-                      color: colors.onSurfaceVariant,
-                    ),
+                    style: TextStyle(color: colors.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -172,16 +148,10 @@ class _CategoryProductsScreenState
           SliverPadding(
             padding: const EdgeInsets.all(20),
             sliver: SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return ProductCard(
-                    product: _products[index],
-                  );
-                },
-                childCount: _products.length,
-              ),
-              gridDelegate:
-                  const SliverGridDelegateWithMaxCrossAxisExtent(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                return ProductCard(product: _products[index]);
+              }, childCount: _products.length),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 250,
                 mainAxisSpacing: 15,
                 crossAxisSpacing: 15,

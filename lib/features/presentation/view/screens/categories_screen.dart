@@ -123,18 +123,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                size: 60,
-                color: Colors.grey,
-              ),
+              const Icon(Icons.error_outline, size: 60, color: Colors.grey),
               const SizedBox(height: 16),
               const Text(
                 'Could not load categories',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
@@ -155,9 +148,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
 
     if (_categories.isEmpty) {
-      return const Center(
-        child: Text('No categories available'),
-      );
+      return const Center(child: Text('No categories available'));
     }
 
     return RefreshIndicator(

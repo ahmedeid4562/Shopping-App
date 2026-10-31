@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/theme_controller.dart';
 import 'orders_screen.dart';
 import 'edit_profile_screen.dart';
+import 'my_addresses_screen.dart';
+import 'payment_methods_screen.dart';
+import 'notifications_screen.dart';
+import 'help_support_screen.dart';
+import 'about_app_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -44,9 +49,7 @@ class ProfileScreen extends StatelessWidget {
             onTap: () async {
               await Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const EditProfileScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const EditProfileScreen()),
               );
             },
           ),
@@ -59,9 +62,7 @@ class ProfileScreen extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const OrdersScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const OrdersScreen()),
               );
             },
           ),
@@ -72,7 +73,10 @@ class ProfileScreen extends StatelessWidget {
             title: 'My Addresses',
             subtitle: 'Manage your delivery addresses',
             onTap: () {
-              _showMessage(context, 'My Addresses coming soon');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const MyAddressesScreen()),
+              );
             },
           ),
 
@@ -82,7 +86,10 @@ class ProfileScreen extends StatelessWidget {
             title: 'Payment Methods',
             subtitle: 'Manage your payment options',
             onTap: () {
-              _showMessage(context, 'Payment Methods coming soon');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PaymentMethodsScreen()),
+              );
             },
           ),
 
@@ -128,9 +135,7 @@ class ProfileScreen extends StatelessWidget {
                                 : 'Light appearance is enabled',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
+                              color: Theme.of(context).colorScheme.onSurface
                                   .withValues(alpha: 0.6),
                             ),
                           ),
@@ -154,7 +159,10 @@ class ProfileScreen extends StatelessWidget {
             title: 'Notifications',
             subtitle: 'Manage your notifications',
             onTap: () {
-              _showMessage(context, 'Notifications coming soon');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const NotificationsScreen()),
+              );
             },
           ),
 
@@ -169,7 +177,10 @@ class ProfileScreen extends StatelessWidget {
             title: 'Help & Support',
             subtitle: 'Get help with your account',
             onTap: () {
-              _showMessage(context, 'Help & Support coming soon');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HelpSupportScreen()),
+              );
             },
           ),
 
@@ -179,7 +190,10 @@ class ProfileScreen extends StatelessWidget {
             title: 'About App',
             subtitle: 'Learn more about Shopping App',
             onTap: () {
-              _showMessage(context, 'Shopping App');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AboutAppScreen()),
+              );
             },
           ),
 
@@ -212,9 +226,7 @@ class ProfileScreen extends StatelessWidget {
             child: Text(
               'Shopping App v1.0.0',
               style: TextStyle(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
+                color: Theme.of(context).colorScheme.onSurface
                     .withValues(alpha: 0.5),
                 fontSize: 12,
               ),
@@ -241,10 +253,8 @@ class ProfileScreen extends StatelessWidget {
                 backgroundColor: Colors.white,
                 backgroundImage:
                     FirebaseAuth.instance.currentUser?.photoURL != null
-                        ? NetworkImage(
-                            FirebaseAuth.instance.currentUser!.photoURL!,
-                          )
-                        : null,
+                    ? NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!)
+                    : null,
                 child: FirebaseAuth.instance.currentUser?.photoURL == null
                     ? Text(
                         name.isNotEmpty ? name[0].toUpperCase() : 'U',
@@ -268,10 +278,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 email,
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 13,
-                ),
+                style: const TextStyle(color: Colors.white70, fontSize: 13),
               ),
               const SizedBox(height: 16),
               Container(
@@ -304,10 +311,7 @@ class ProfileScreen extends StatelessWidget {
       padding: const EdgeInsets.only(left: 4),
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -319,31 +323,39 @@ class ProfileScreen extends StatelessWidget {
     required String subtitle,
     required VoidCallback onTap,
   }) {
+    final colors = Theme.of(context).colorScheme;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      decoration: _cardDecoration(context),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 5,
-        ),
-        leading: _buildIcon(context, icon),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
+      child: Material(
+        color: Theme.of(context).cardTheme.color ?? colors.surface,
+        borderRadius: BorderRadius.circular(16),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: Theme.of(context).dividerColor.withValues(alpha: 0.15),
+              ),
+            ),
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: _buildIcon(context, icon),
+              title: Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+              subtitle: Text(subtitle, style: const TextStyle(fontSize: 11)),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 15),
+            ),
           ),
         ),
-        subtitle: Text(
-          subtitle,
-          style: const TextStyle(fontSize: 11),
-        ),
-        trailing: const Icon(
-          Icons.arrow_forward_ios,
-          size: 15,
-        ),
-        onTap: onTap,
       ),
     );
   }
@@ -356,27 +368,19 @@ class ProfileScreen extends StatelessWidget {
         color: const Color(0xFF385CF2).withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Icon(
-        icon,
-        color: const Color(0xFF385CF2),
-      ),
+      child: Icon(icon, color: const Color(0xFF385CF2)),
     );
   }
 
   BoxDecoration _cardDecoration(BuildContext context) {
     return BoxDecoration(
-      color: Theme.of(context).cardTheme.color ??
+      color:
+          Theme.of(context).cardTheme.color ??
           Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(16),
       border: Border.all(
         color: Theme.of(context).dividerColor.withValues(alpha: 0.15),
       ),
-    );
-  }
-
-  void _showMessage(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
     );
   }
 
@@ -394,10 +398,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, true),
-              child: const Text(
-                'Logout',
-                style: TextStyle(color: Colors.red),
-              ),
+              child: const Text('Logout', style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -411,15 +412,12 @@ class ProfileScreen extends StatelessWidget {
 
       if (!context.mounted) return;
 
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/login',
-        (route) => false,
-      );
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
     } catch (e) {
       if (!context.mounted) return;
 
-      _showMessage(context, 'Logout failed: $e');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Logout failed: $e')));
     }
   }
 }

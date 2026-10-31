@@ -7,11 +7,9 @@ class OrderApi {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
 
-  OrderApi({
-    FirebaseFirestore? firestore,
-    FirebaseAuth? auth,
-  })  : _firestore = firestore ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+  OrderApi({FirebaseFirestore? firestore, FirebaseAuth? auth})
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _auth = auth ?? FirebaseAuth.instance;
 
   CollectionReference<Map<String, dynamic>> get _ordersCollection {
     final user = _auth.currentUser;
@@ -20,10 +18,7 @@ class OrderApi {
       throw Exception('Please login first');
     }
 
-    return _firestore
-        .collection('users')
-        .doc(user.uid)
-        .collection('orders');
+    return _firestore.collection('users').doc(user.uid).collection('orders');
   }
 
   Future<String> createOrder({
@@ -59,18 +54,13 @@ class OrderApi {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return {
-          'id': doc.id,
-          ...doc.data(),
-        };
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return {'id': doc.id, ...doc.data()};
+          }).toList();
+        });
   }
 
   Future<void> cancelOrder(String orderId) async {
-    await _ordersCollection.doc(orderId).update({
-      'status': 'Cancelled',
-    });
+    await _ordersCollection.doc(orderId).update({'status': 'Cancelled'});
   }
 }

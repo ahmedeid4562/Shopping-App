@@ -48,9 +48,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final state = cartCubit.state;
 
     if (state is! CartLoaded || state.products.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Your cart is empty')),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Your cart is empty')));
       return;
     }
 
@@ -75,11 +74,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         barrierDismissible: false,
         builder: (dialogContext) {
           return AlertDialog(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.green,
-              size: 55,
-            ),
+            icon: const Icon(Icons.check_circle, color: Colors.green, size: 55),
             title: const Text('Order Placed Successfully!'),
             content: const Text(
               'Your order has been saved successfully.',
@@ -140,10 +135,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 children: [
                   const Text(
                     'Delivery Information',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
 
@@ -173,22 +165,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                   const Text(
                     'Payment Method',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 12),
 
-                  RadioListTile<String>(
-                    value: 'Cash on Delivery',
+                  RadioGroup<String>(
                     groupValue: _paymentMethod,
-                    activeColor: primaryColor,
-                    title: const Text('Cash on Delivery'),
-                    secondary: const Icon(Icons.money),
                     onChanged: (value) {
-                      setState(() => _paymentMethod = value!);
+                      if (value != null) {
+                        setState(() => _paymentMethod = value);
+                      }
                     },
+                    child: RadioListTile<String>(
+                      value: 'Cash on Delivery',
+                      activeColor: primaryColor,
+                      title: const Text('Cash on Delivery'),
+                      secondary: const Icon(Icons.money),
+                    ),
                   ),
 
                   const SizedBox(height: 24),
@@ -236,9 +229,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       ),
                       child: _isLoading
-                          ? const CircularProgressIndicator(
-                              color: Colors.white,
-                            )
+                          ? const CircularProgressIndicator(color: Colors.white)
                           : const Text(
                               'Place Order',
                               style: TextStyle(
@@ -271,9 +262,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {

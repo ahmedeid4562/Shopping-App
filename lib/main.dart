@@ -13,16 +13,9 @@ import 'features/presentation/view_model/cart_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(
-    BlocProvider(
-      create: (_) => CartCubit(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(BlocProvider(create: (_) => CartCubit(), child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {

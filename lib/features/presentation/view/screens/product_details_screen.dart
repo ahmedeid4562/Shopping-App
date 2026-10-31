@@ -8,10 +8,7 @@ import '../../view_model/cart_cubit.dart';
 class ProductDetailsScreen extends StatelessWidget {
   final ProductModel product;
 
-  const ProductDetailsScreen({
-    super.key,
-    required this.product,
-  });
+  const ProductDetailsScreen({super.key, required this.product});
 
   static const Color primaryColor = Color(0xFF385CF2);
 
@@ -47,9 +44,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     imageUrl: product.image,
                     fit: BoxFit.contain,
                     placeholder: (context, url) => const Center(
-                      child: CircularProgressIndicator(
-                        color: primaryColor,
-                      ),
+                      child: CircularProgressIndicator(color: primaryColor),
                     ),
                     errorWidget: (context, url, error) => const Icon(
                       Icons.image_not_supported_outlined,
@@ -84,25 +79,17 @@ class ProductDetailsScreen extends StatelessWidget {
 
               Row(
                 children: [
-                  const Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                    size: 22,
-                  ),
+                  const Icon(Icons.star, color: Colors.amber, size: 22),
                   const SizedBox(width: 5),
                   Text(
                     product.rating.toStringAsFixed(1),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   if (product.ratingCount > 0) ...[
                     const SizedBox(width: 5),
                     Text(
                       '(${product.ratingCount} reviews)',
-                      style: TextStyle(
-                        color: colors.onSurfaceVariant,
-                      ),
+                      style: TextStyle(color: colors.onSurfaceVariant),
                     ),
                   ],
                 ],
@@ -149,23 +136,16 @@ class ProductDetailsScreen extends StatelessWidget {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(
-                          '${product.title} added to cart',
-                        ),
+                        content: Text('${product.title} added to cart'),
                         backgroundColor: Colors.green,
                         duration: const Duration(seconds: 2),
                       ),
                     );
                   },
-                  icon: const Icon(
-                    Icons.shopping_cart_outlined,
-                  ),
+                  icon: const Icon(Icons.shopping_cart_outlined),
                   label: const Text(
                     'Add to Cart',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../data/api/order_api.dart';
 import '../../../data/model/product_model.dart';
@@ -9,18 +10,13 @@ class OrdersScreen extends StatelessWidget {
 
   static const Color primaryColor = Color(0xFF385CF2);
 
-  Future<void> _cancelOrder(
-    BuildContext context,
-    String orderId,
-  ) async {
+  Future<void> _cancelOrder(BuildContext context, String orderId) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
           title: const Text('Cancel Order'),
-          content: const Text(
-            'Are you sure you want to cancel this order?',
-          ),
+          content: const Text('Are you sure you want to cancel this order?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, false),
@@ -38,7 +34,7 @@ class OrdersScreen extends StatelessWidget {
       },
     );
 
-    if (confirm != true) return;
+    if (confirm != true || !context.mounted) return;
 
     try {
       await OrderApi().cancelOrder(orderId);
@@ -63,6 +59,72 @@ class OrdersScreen extends StatelessWidget {
     }
   }
 
+  Future<void> _deleteOrder(BuildContext context, String orderId) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          icon: const Icon(Icons.delete_forever, color: Colors.red, size: 45),
+          title: const Text('Delete Order'),
+          content: const Text(
+            'Are you sure you want to permanently delete this order?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: const Text(
+                'Yes, Delete',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirm != true || !context.mounted) return;
+
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+
+      if (uid == null) {
+        throw Exception('Please login first');
+      }
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('orders')
+          .doc(orderId)
+          .delete();
+
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Order deleted successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to delete order: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -80,9 +142,7 @@ class OrdersScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator(
-                color: primaryColor,
-              ),
+              child: CircularProgressIndicator(color: primaryColor),
             );
           }
 
@@ -133,17 +193,12 @@ class OrdersScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   const Text(
                     'No Orders Yet!',
-                    style: TextStyle(
-                      fontSize: 21,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Your orders will appear here.',
-                    style: TextStyle(
-                      color: colors.onSurfaceVariant,
-                    ),
+                    style: TextStyle(color: colors.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -153,14 +208,11 @@ class OrdersScreen extends StatelessWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(16),
             itemCount: orders.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 16),
+            separatorBuilder: (_, _) => const SizedBox(height: 16),
             itemBuilder: (context, index) {
               final order = orders[index];
 
-              return _buildOrderCard(
-                context,
-                order,
-              );
+              return _buildOrderCard(context, order);
             },
           );
         },
@@ -168,10 +220,7 @@ class OrdersScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderCard(
-    BuildContext context,
-    Map<String, dynamic> order,
-  ) {
+  Widget _buildOrderCard(BuildContext context, Map<String, dynamic> order) {
     final colors = Theme.of(context).colorScheme;
 
     final orderId = order['id']?.toString() ?? '';
@@ -183,9 +232,8 @@ class OrdersScreen extends StatelessWidget {
     final products = productsData
         .whereType<Map>()
         .map(
-          (product) => ProductModel.fromJson(
-            Map<String, dynamic>.from(product),
-          ),
+          (product) =>
+              ProductModel.fromJson(Map<String, dynamic>.from(product)),
         )
         .toList();
 
@@ -196,11 +244,9 @@ class OrdersScreen extends StatelessWidget {
     if (createdAt is Timestamp) {
       final date = createdAt.toDate();
 
-      orderDate =
-          '${date.day}/${date.month}/${date.year}';
+      orderDate = '${date.day}/${date.month}/${date.year}';
     } else if (createdAt is DateTime) {
-      orderDate =
-          '${createdAt.day}/${createdAt.month}/${createdAt.year}';
+      orderDate = '${createdAt.day}/${createdAt.month}/${createdAt.year}';
     }
 
     final isCancelled = status == 'Cancelled';
@@ -210,9 +256,7 @@ class OrdersScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: colors.outlineVariant,
-        ),
+        border: Border.all(color: colors.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,10 +266,7 @@ class OrdersScreen extends StatelessWidget {
             children: [
               const Text(
                 'Order Details',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -241,9 +282,7 @@ class OrdersScreen extends StatelessWidget {
                 child: Text(
                   status,
                   style: TextStyle(
-                    color: isCancelled
-                        ? Colors.red
-                        : Colors.orange.shade800,
+                    color: isCancelled ? Colors.red : Colors.orange.shade800,
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
                   ),
@@ -256,20 +295,14 @@ class OrdersScreen extends StatelessWidget {
 
           Text(
             'Order ID: $orderId',
-            style: TextStyle(
-              color: colors.onSurfaceVariant,
-              fontSize: 12,
-            ),
+            style: TextStyle(color: colors.onSurfaceVariant, fontSize: 12),
           ),
 
           const SizedBox(height: 5),
 
           Text(
             'Date: $orderDate',
-            style: TextStyle(
-              color: colors.onSurfaceVariant,
-              fontSize: 13,
-            ),
+            style: TextStyle(color: colors.onSurfaceVariant, fontSize: 13),
           ),
 
           const Divider(height: 24),
@@ -286,14 +319,12 @@ class OrdersScreen extends StatelessWidget {
                       width: 55,
                       height: 55,
                       fit: BoxFit.contain,
-                      errorBuilder: (_, __, ___) {
+                      errorBuilder: (_, _, _) {
                         return Container(
                           width: 55,
                           height: 55,
                           color: colors.surfaceContainerHighest,
-                          child: const Icon(
-                            Icons.image_not_supported_outlined,
-                          ),
+                          child: const Icon(Icons.image_not_supported_outlined),
                         );
                       },
                     ),
@@ -304,9 +335,7 @@ class OrdersScreen extends StatelessWidget {
                       product.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
                   Text(
@@ -328,10 +357,7 @@ class OrdersScreen extends StatelessWidget {
             children: [
               const Text(
                 'Total Amount',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               Text(
                 '\$${totalPrice.toStringAsFixed(2)}',
@@ -344,29 +370,44 @@ class OrdersScreen extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 18),
 
-          Text(
-            'Payment: ${order['paymentMethod'] ?? 'Not specified'}',
-            style: TextStyle(
-              color: colors.onSurfaceVariant,
-            ),
-          ),
-
-          if (!isCancelled) ...[
-            const SizedBox(height: 14),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () => _cancelOrder(context, orderId),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.red,
-                  side: const BorderSide(color: Colors.red),
+          Row(
+            children: [
+              if (!isCancelled)
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: orderId.isEmpty
+                        ? null
+                        : () => _cancelOrder(context, orderId),
+                    icon: const Icon(Icons.cancel_outlined, size: 18),
+                    label: const Text('Cancel Order'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.orange.shade800,
+                      side: BorderSide(color: Colors.orange.shade800),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
                 ),
-                child: const Text('Cancel Order'),
+
+              if (!isCancelled) const SizedBox(width: 10),
+
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: orderId.isEmpty
+                      ? null
+                      : () => _deleteOrder(context, orderId),
+                  icon: const Icon(Icons.delete_outline, size: 18),
+                  label: const Text('Delete Order'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ],
       ),
     );

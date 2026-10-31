@@ -7,11 +7,9 @@ class FavoriteApi {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
 
-  FavoriteApi({
-    FirebaseFirestore? firestore,
-    FirebaseAuth? auth,
-  })  : _firestore = firestore ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+  FavoriteApi({FirebaseFirestore? firestore, FirebaseAuth? auth})
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _auth = auth ?? FirebaseAuth.instance;
 
   CollectionReference<Map<String, dynamic>> get _favoritesCollection {
     final user = _auth.currentUser;
@@ -20,10 +18,7 @@ class FavoriteApi {
       throw Exception('Please login first');
     }
 
-    return _firestore
-        .collection('users')
-        .doc(user.uid)
-        .collection('favorites');
+    return _firestore.collection('users').doc(user.uid).collection('favorites');
   }
 
   Future<List<ProductModel>> getFavorites() async {
@@ -35,29 +30,21 @@ class FavoriteApi {
   }
 
   Future<bool> isFavorite(int productId) async {
-    final document = await _favoritesCollection
-        .doc(productId.toString())
-        .get();
+    final document = await _favoritesCollection.doc(productId.toString()).get();
 
     return document.exists;
   }
 
   Future<void> addFavorite(ProductModel product) async {
-    await _favoritesCollection
-        .doc(product.id.toString())
-        .set(product.toJson());
+    await _favoritesCollection.doc(product.id.toString()).set(product.toJson());
   }
 
   Future<void> removeFavorite(int productId) async {
-    await _favoritesCollection
-        .doc(productId.toString())
-        .delete();
+    await _favoritesCollection.doc(productId.toString()).delete();
   }
 
   Future<void> toggleFavorite(ProductModel product) async {
-    final document = _favoritesCollection.doc(
-      product.id.toString(),
-    );
+    final document = _favoritesCollection.doc(product.id.toString());
 
     final snapshot = await document.get();
 

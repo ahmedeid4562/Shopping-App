@@ -8,16 +8,15 @@ class CategoryApi {
   final Dio _dio;
 
   CategoryApi({Dio? dio})
-      : _dio = dio ??
-            Dio(
-              BaseOptions(
-                connectTimeout: const Duration(seconds: 30),
-                receiveTimeout: const Duration(seconds: 30),
-                headers: {
-                  'Accept': 'application/json',
-                },
-              ),
-            );
+    : _dio =
+          dio ??
+          Dio(
+            BaseOptions(
+              connectTimeout: const Duration(seconds: 30),
+              receiveTimeout: const Duration(seconds: 30),
+              headers: {'Accept': 'application/json'},
+            ),
+          );
 
   // Get all categories
   Future<List<CategoryModel>> getCategories() async {
@@ -31,25 +30,20 @@ class CategoryApi {
 
         return data
             .map(
-              (category) => CategoryModel.fromJson(
-                category as Map<String, dynamic>,
-              ),
+              (category) =>
+                  CategoryModel.fromJson(category as Map<String, dynamic>),
             )
             .toList();
       }
 
-      throw Exception(
-        'Failed to load categories: ${response.statusCode}',
-      );
+      throw Exception('Failed to load categories: ${response.statusCode}');
     } on DioException catch (e) {
       throw Exception('API Error (${e.type}): ${e.message}');
     }
   }
 
   // Get products by category
-  Future<List<ProductModel>> getProductsByCategory(
-    String category,
-  ) async {
+  Future<List<ProductModel>> getProductsByCategory(String category) async {
     try {
       final response = await _dio.get(
         '${ApiConstants.baseUrl}/products/category/$category',
@@ -60,9 +54,8 @@ class CategoryApi {
 
         return data
             .map(
-              (product) => ProductModel.fromJson(
-                product as Map<String, dynamic>,
-              ),
+              (product) =>
+                  ProductModel.fromJson(product as Map<String, dynamic>),
             )
             .toList();
       }

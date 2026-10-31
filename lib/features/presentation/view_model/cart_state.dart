@@ -23,10 +23,7 @@ class CartLoaded extends CartState {
   const CartLoaded(this.products);
 
   double get totalPrice {
-    return products.fold(
-      0,
-      (total, product) => total + product.price,
-    );
+    return products.fold(0, (total, product) => total + product.price);
   }
 
   @override

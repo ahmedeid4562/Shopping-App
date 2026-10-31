@@ -35,9 +35,7 @@ class CartScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is CartLoading) {
             return const Center(
-              child: CircularProgressIndicator(
-                color: primaryColor,
-              ),
+              child: CircularProgressIndicator(color: primaryColor),
             );
           }
 
@@ -54,9 +52,7 @@ class CartScreen extends StatelessWidget {
           }
 
           return const Center(
-            child: CircularProgressIndicator(
-              color: primaryColor,
-            ),
+            child: CircularProgressIndicator(color: primaryColor),
           );
         },
       ),
@@ -78,10 +74,7 @@ class CartScreen extends StatelessWidget {
             const SizedBox(height: 20),
             const Text(
               'Your Cart Is Empty',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Text(
@@ -95,10 +88,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartContent(
-    BuildContext context,
-    List<ProductModel> products,
-  ) {
+  Widget _buildCartContent(BuildContext context, List<ProductModel> products) {
     final totalPrice = products.fold<double>(
       0,
       (total, product) => total + product.price,
@@ -110,7 +100,7 @@ class CartScreen extends StatelessWidget {
           child: ListView.separated(
             padding: const EdgeInsets.all(16),
             itemCount: products.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 14),
+            separatorBuilder: (_, _) => const SizedBox(height: 14),
             itemBuilder: (context, index) {
               final product = products[index];
               return _buildCartItem(context, product);
@@ -121,9 +111,7 @@ class CartScreen extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(24),
-            ),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.05),
@@ -193,18 +181,13 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(
-    BuildContext context,
-    ProductModel product,
-  ) {
+  Widget _buildCartItem(BuildContext context, ProductModel product) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outlineVariant,
-        ),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       child: Row(
         children: [
@@ -215,16 +198,12 @@ class CartScreen extends StatelessWidget {
               width: 85,
               height: 85,
               fit: BoxFit.contain,
-              placeholder: (_, __) => const SizedBox(
+              placeholder: (_, _) => const SizedBox(
                 width: 85,
                 height: 85,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
-                ),
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
               ),
-              errorWidget: (_, __, ___) => const SizedBox(
+              errorWidget: (_, _, _) => const SizedBox(
                 width: 85,
                 height: 85,
                 child: Icon(Icons.image_not_supported_outlined),
@@ -261,10 +240,7 @@ class CartScreen extends StatelessWidget {
             onPressed: () {
               context.read<CartCubit>().removeFromCart(product.id);
             },
-            icon: const Icon(
-              Icons.delete_outline,
-              color: Colors.red,
-            ),
+            icon: const Icon(Icons.delete_outline, color: Colors.red),
           ),
         ],
       ),

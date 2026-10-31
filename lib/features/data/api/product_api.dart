@@ -7,26 +7,23 @@ class ProductApi {
   final Dio _dio;
 
   ProductApi({Dio? dio})
-      : _dio = dio ??
-            Dio(
-              BaseOptions(
-                connectTimeout: const Duration(seconds: 30),
-                receiveTimeout: const Duration(seconds: 30),
-                sendTimeout: const Duration(seconds: 30),
-                responseType: ResponseType.json,
-                headers: {
-                  'Accept': 'application/json',
-                },
-              ),
-            );
+    : _dio =
+          dio ??
+          Dio(
+            BaseOptions(
+              connectTimeout: const Duration(seconds: 30),
+              receiveTimeout: const Duration(seconds: 30),
+              sendTimeout: const Duration(seconds: 30),
+              responseType: ResponseType.json,
+              headers: {'Accept': 'application/json'},
+            ),
+          );
 
   Future<List<ProductModel>> getProducts() async {
     try {
       final response = await _dio.get(
         '${ApiConstants.baseUrl}${ApiConstants.productsEndpoint}',
-        queryParameters: {
-          'limit': 0,
-        },
+        queryParameters: {'limit': 0},
       );
 
       if (response.statusCode == 200) {
@@ -34,9 +31,8 @@ class ProductApi {
 
         return data
             .map(
-              (product) => ProductModel.fromJson(
-                product as Map<String, dynamic>,
-              ),
+              (product) =>
+                  ProductModel.fromJson(product as Map<String, dynamic>),
             )
             .toList();
       }
@@ -53,9 +49,7 @@ class ProductApi {
         '${ApiConstants.baseUrl}${ApiConstants.productDetailsEndpoint}$id',
       );
 
-      return ProductModel.fromJson(
-        response.data as Map<String, dynamic>,
-      );
+      return ProductModel.fromJson(response.data as Map<String, dynamic>);
     } on DioException catch (e) {
       throw Exception('API Error (${e.type}): ${e.message}');
     }
@@ -66,9 +60,7 @@ class ProductApi {
     try {
       final response = await _dio.get(
         '${ApiConstants.baseUrl}/products/search',
-        queryParameters: {
-          'q': query,
-        },
+        queryParameters: {'q': query},
       );
 
       if (response.statusCode == 200) {
@@ -76,9 +68,8 @@ class ProductApi {
 
         return data
             .map(
-              (product) => ProductModel.fromJson(
-                product as Map<String, dynamic>,
-              ),
+              (product) =>
+                  ProductModel.fromJson(product as Map<String, dynamic>),
             )
             .toList();
       }

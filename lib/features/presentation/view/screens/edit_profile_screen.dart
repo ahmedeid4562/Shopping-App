@@ -63,9 +63,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
         if (!mounted) return;
 
-        _showMessage(
-          'Verification email sent. Please check your inbox.',
-        );
+        _showMessage('Verification email sent. Please check your inbox.');
       } else {
         if (!mounted) return;
 
@@ -87,9 +85,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -173,9 +170,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     return 'Please enter your email';
                   }
 
-                  if (!RegExp(
-                    r'^[^@]+@[^@]+\.[^@]+',
-                  ).hasMatch(value.trim())) {
+                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value.trim())) {
                     return 'Please enter a valid email';
                   }
 
@@ -187,10 +182,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
               Text(
                 'Changing your email requires verification.',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: colors.onSurfaceVariant,
-                ),
+                style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
               ),
 
               const SizedBox(height: 35),

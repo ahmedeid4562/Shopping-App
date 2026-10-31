@@ -38,7 +38,8 @@ class ProductModel {
 
     final images = json['images'];
 
-    final image = json['thumbnail'] ??
+    final image =
+        json['thumbnail'] ??
         json['image'] ??
         (images is List && images.isNotEmpty ? images.first : '');
 
@@ -62,10 +63,7 @@ class ProductModel {
       'description': description,
       'category': category,
       'image': image,
-      'rating': {
-        'rate': rating,
-        'count': ratingCount,
-      },
+      'rating': {'rate': rating, 'count': ratingCount},
     };
   }
 }

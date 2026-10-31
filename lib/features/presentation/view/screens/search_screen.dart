@@ -15,8 +15,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final ProductApi _productApi = ProductApi();
-  final TextEditingController _searchController =
-      TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   Timer? _debounce;
 
@@ -129,8 +128,9 @@ class _SearchScreenState extends State<SearchScreen> {
                       )
                     : null,
                 filled: true,
-                fillColor: colors.surfaceContainerHighest
-                    .withValues(alpha: 0.5),
+                fillColor: colors.surfaceContainerHighest.withValues(
+                  alpha: 0.5,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide.none,
@@ -143,31 +143,21 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(
-                    color: primaryColor,
-                    width: 1.5,
-                  ),
+                  borderSide: const BorderSide(color: primaryColor, width: 1.5),
                 ),
               ),
             ),
           ),
-          Expanded(
-            child: _buildSearchResults(theme, colors),
-          ),
+          Expanded(child: _buildSearchResults(theme, colors)),
         ],
       ),
     );
   }
 
-  Widget _buildSearchResults(
-    ThemeData theme,
-    ColorScheme colors,
-  ) {
+  Widget _buildSearchResults(ThemeData theme, ColorScheme colors) {
     if (_isLoading) {
       return const Center(
-        child: CircularProgressIndicator(
-          color: primaryColor,
-        ),
+        child: CircularProgressIndicator(color: primaryColor),
       );
     }
 
@@ -178,26 +168,17 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                size: 60,
-                color: Colors.grey,
-              ),
+              const Icon(Icons.error_outline, size: 60, color: Colors.grey),
               const SizedBox(height: 16),
               const Text(
                 'Something went wrong',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
                 _errorMessage!,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colors.onSurfaceVariant,
-                ),
+                style: TextStyle(color: colors.onSurfaceVariant),
               ),
               const SizedBox(height: 20),
               ElevatedButton.icon(
@@ -233,9 +214,7 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(height: 8),
             Text(
               'Search by product name',
-              style: TextStyle(
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(color: colors.onSurfaceVariant),
             ),
           ],
         ),
@@ -255,17 +234,12 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(height: 16),
             const Text(
               'No Products Found',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               'Try searching with another name',
-              style: TextStyle(
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(color: colors.onSurfaceVariant),
             ),
           ],
         ),
@@ -275,10 +249,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 8,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -290,9 +261,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               Text(
                 '${_products.length} Items',
-                style: TextStyle(
-                  color: colors.onSurfaceVariant,
-                ),
+                style: TextStyle(color: colors.onSurfaceVariant),
               ),
             ],
           ),
@@ -301,17 +270,14 @@ class _SearchScreenState extends State<SearchScreen> {
           child: GridView.builder(
             padding: const EdgeInsets.all(20),
             itemCount: _products.length,
-            gridDelegate:
-                const SliverGridDelegateWithMaxCrossAxisExtent(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 250,
               mainAxisSpacing: 15,
               crossAxisSpacing: 15,
               mainAxisExtent: 280,
             ),
             itemBuilder: (context, index) {
-              return ProductCard(
-                product: _products[index],
-              );
+              return ProductCard(product: _products[index]);
             },
           ),
         ),

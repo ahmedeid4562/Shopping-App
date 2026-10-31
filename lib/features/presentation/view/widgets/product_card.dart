@@ -8,10 +8,7 @@ import '../screens/product_details_screen.dart';
 class ProductCard extends StatefulWidget {
   final ProductModel product;
 
-  const ProductCard({
-    super.key,
-    required this.product,
-  });
+  const ProductCard({super.key, required this.product});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -65,9 +62,7 @@ class _ProductCardState extends State<ProductCard> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            _isFavorite
-                ? 'Added to favorites'
-                : 'Removed from favorites',
+            _isFavorite ? 'Added to favorites' : 'Removed from favorites',
           ),
           duration: const Duration(seconds: 1),
         ),
@@ -75,9 +70,8 @@ class _ProductCardState extends State<ProductCard> {
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       if (mounted) {
         setState(() => _isUpdating = false);
@@ -96,9 +90,7 @@ class _ProductCardState extends State<ProductCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ProductDetailsScreen(
-              product: widget.product,
-            ),
+            builder: (_) => ProductDetailsScreen(product: widget.product),
           ),
         );
       },
@@ -106,9 +98,7 @@ class _ProductCardState extends State<ProductCard> {
         decoration: BoxDecoration(
           color: colors.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: colors.outline.withValues(alpha: 0.12),
-          ),
+          border: Border.all(color: colors.outline.withValues(alpha: 0.12)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,9 +115,7 @@ class _ProductCardState extends State<ProductCard> {
                         fit: BoxFit.contain,
                         width: double.infinity,
                         placeholder: (_, _) => const Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         ),
                         errorWidget: (_, _, _) => const Icon(
                           Icons.image_not_supported_outlined,

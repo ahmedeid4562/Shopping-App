@@ -32,9 +32,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (_) => user != null
-            ? const MainScreen()
-            : const WelcomeScreen(),
+        builder: (_) =>
+            user != null ? const MainScreen() : const WelcomeScreen(),
       ),
     );
   }
@@ -72,10 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(height: 10),
             const Text(
               'Your style, your choice',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 15,
-              ),
+              style: TextStyle(color: Colors.white70, fontSize: 15),
             ),
             const SizedBox(height: 45),
             const SizedBox(

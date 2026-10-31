@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:shopping_app/features/data/model/product_model.dart';
 
-
 abstract class FavoritesState extends Equatable {
   const FavoritesState();
 

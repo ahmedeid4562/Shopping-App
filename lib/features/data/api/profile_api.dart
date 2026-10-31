@@ -3,8 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class ProfileApi {
   final FirebaseAuth _auth;
 
-  ProfileApi({FirebaseAuth? auth})
-      : _auth = auth ?? FirebaseAuth.instance;
+  ProfileApi({FirebaseAuth? auth}) : _auth = auth ?? FirebaseAuth.instance;
 
   User? get currentUser => _auth.currentUser;
 
