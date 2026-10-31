@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/api/category_api.dart';
+import '../../../data/api/admin_product_api.dart';
 import '../../../data/model/category_model.dart';
+import '../../../data/model/product_model.dart';
+
 import 'category_products_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -13,8 +16,12 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   final CategoryApi _categoryApi = CategoryApi();
+  final AdminProductApi _adminProductApi = AdminProductApi();
+
+  late final Stream<List<ProductModel>> _storeProductsStream;
 
   List<CategoryModel> _categories = [];
+
   bool _isLoading = true;
   String? _errorMessage;
 
@@ -23,6 +30,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   void initState() {
     super.initState();
+
+    _storeProductsStream = _adminProductApi.watchProducts();
+
     _loadCategories();
   }
 
@@ -70,7 +80,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       return Icons.shopping_bag_outlined;
     }
 
-    if (value.contains('jewellery')) {
+    if (value.contains('jewellery') || value.contains('jewelry')) {
       return Icons.diamond_outlined;
     }
 
@@ -78,11 +88,17 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       return Icons.woman_outlined;
     }
 
+    if (value.contains('electronic')) {
+      return Icons.devices_outlined;
+    }
+
     return Icons.category_outlined;
   }
 
   String _formatCategoryName(String name) {
     return name
+        .replaceAll('-', ' ')
+        .replaceAll('_', ' ')
         .split(' ')
         .map(
           (word) => word.isEmpty
@@ -90,6 +106,38 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               : '${word[0].toUpperCase()}${word.substring(1)}',
         )
         .join(' ');
+  }
+
+  String _normalizeCategory(String value) {
+    return value.trim().toLowerCase().replaceAll(RegExp(r'[\s_]+'), '-');
+  }
+
+  List<MapEntry<String, String>> _mergeCategories(
+    List<ProductModel> storeProducts,
+  ) {
+    final categories = <String, String>{};
+
+    for (final category in _categories) {
+      categories[_normalizeCategory(category.slug)] = category.name;
+    }
+
+    for (final product in storeProducts) {
+      final name = product.category.trim();
+
+      if (name.isEmpty) continue;
+
+      final slug = _normalizeCategory(name);
+
+      categories.putIfAbsent(slug, () => _formatCategoryName(name));
+    }
+
+    final result = categories.entries.toList();
+
+    result.sort(
+      (a, b) => a.value.toLowerCase().compareTo(b.value.toLowerCase()),
+    );
+
+    return result;
   }
 
   @override
@@ -105,18 +153,33 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         ),
         centerTitle: true,
       ),
-      body: _buildBody(theme, colors),
+      body: StreamBuilder<List<ProductModel>>(
+        stream: _storeProductsStream,
+        builder: (context, snapshot) {
+          return _buildBody(
+            theme,
+            colors,
+            snapshot.data ?? [],
+            snapshot.hasError,
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildBody(ThemeData theme, ColorScheme colors) {
+  Widget _buildBody(
+    ThemeData theme,
+    ColorScheme colors,
+    List<ProductModel> storeProducts,
+    bool hasStreamError,
+  ) {
     if (_isLoading) {
       return const Center(
         child: CircularProgressIndicator(color: primaryColor),
       );
     }
 
-    if (_errorMessage != null) {
+    if (_errorMessage != null && _categories.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -147,7 +210,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       );
     }
 
-    if (_categories.isEmpty) {
+    final categories = _mergeCategories(storeProducts);
+
+    if (categories.isEmpty) {
       return const Center(child: Text('No categories available'));
     }
 
@@ -156,7 +221,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       color: primaryColor,
       child: GridView.builder(
         padding: const EdgeInsets.all(20),
-        itemCount: _categories.length,
+        itemCount: categories.length,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 220,
           mainAxisSpacing: 16,
@@ -164,7 +229,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           mainAxisExtent: 155,
         ),
         itemBuilder: (context, index) {
-          final category = _categories[index];
+          final category = categories[index];
 
           return InkWell(
             borderRadius: BorderRadius.circular(18),
@@ -173,8 +238,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => CategoryProductsScreen(
-                    categorySlug: category.slug,
-                    categoryName: category.name,
+                    categorySlug: category.key,
+                    categoryName: category.value,
                   ),
                 ),
               );
@@ -199,14 +264,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
-                      _getCategoryIcon(category.slug),
+                      _getCategoryIcon(category.key),
                       color: primaryColor,
                       size: 28,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    _formatCategoryName(category.name),
+                    category.value,
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

@@ -29,26 +29,58 @@ class _ProductCardState extends State<ProductCard> {
     _checkFavorite();
   }
 
-  Future<void> _checkFavorite() async {
-    try {
-      final result = await _favoriteApi.isFavorite(widget.product.id);
+  // Recheck favorite status when the card receives another product.
+  @override
+  void didUpdateWidget(covariant ProductCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-      if (!mounted) return;
+    if (oldWidget.product.id != widget.product.id ||
+        oldWidget.product.firestoreId != widget.product.firestoreId) {
+      setState(() {
+        _isLoading = true;
+        _isFavorite = false;
+      });
+
+      _checkFavorite();
+    }
+  }
+
+  Future<void> _checkFavorite() async {
+    final productId = widget.product.id;
+    final firestoreId = widget.product.firestoreId;
+
+    try {
+      final result = await _favoriteApi.isFavorite(productId);
+
+      if (!mounted ||
+          productId != widget.product.id ||
+          firestoreId != widget.product.firestoreId) {
+        return;
+      }
 
       setState(() {
         _isFavorite = result;
         _isLoading = false;
       });
     } catch (_) {
-      if (!mounted) return;
-      setState(() => _isLoading = false);
+      if (!mounted ||
+          productId != widget.product.id ||
+          firestoreId != widget.product.firestoreId) {
+        return;
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   Future<void> _toggleFavorite() async {
-    if (_isUpdating) return;
+    if (_isUpdating || _isLoading) return;
 
-    setState(() => _isUpdating = true);
+    setState(() {
+      _isUpdating = true;
+    });
 
     try {
       await _favoriteApi.toggleFavorite(widget.product);
@@ -74,7 +106,9 @@ class _ProductCardState extends State<ProductCard> {
           .showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       if (mounted) {
-        setState(() => _isUpdating = false);
+        setState(() {
+          _isUpdating = false;
+        });
       }
     }
   }
@@ -124,6 +158,7 @@ class _ProductCardState extends State<ProductCard> {
                       ),
                     ),
                   ),
+
                   Positioned(
                     top: 8,
                     right: 8,
@@ -134,7 +169,9 @@ class _ProductCardState extends State<ProductCard> {
                         onPressed: _isLoading || _isUpdating
                             ? null
                             : _toggleFavorite,
-                        tooltip: 'Add to favorites',
+                        tooltip: _isFavorite
+                            ? 'Remove from favorites'
+                            : 'Add to favorites',
                         icon: _isUpdating
                             ? const SizedBox(
                                 width: 18,
@@ -158,6 +195,7 @@ class _ProductCardState extends State<ProductCard> {
                 ],
               ),
             ),
+
             Expanded(
               flex: 4,
               child: Padding(
@@ -177,7 +215,9 @@ class _ProductCardState extends State<ProductCard> {
                         fontSize: 11,
                       ),
                     ),
+
                     const SizedBox(height: 5),
+
                     Text(
                       widget.product.title,
                       maxLines: 2,
@@ -186,7 +226,9 @@ class _ProductCardState extends State<ProductCard> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
+
                     const Spacer(),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -201,6 +243,7 @@ class _ProductCardState extends State<ProductCard> {
                             ),
                           ),
                         ),
+
                         Row(
                           children: [
                             const Icon(
