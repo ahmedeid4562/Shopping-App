@@ -10,8 +10,7 @@ class ManageProductsScreen extends StatefulWidget {
   const ManageProductsScreen({super.key});
 
   @override
-  State<ManageProductsScreen> createState() =>
-      _ManageProductsScreenState();
+  State<ManageProductsScreen> createState() => _ManageProductsScreenState();
 }
 
 class _ManageProductsScreenState extends State<ManageProductsScreen> {
@@ -30,9 +29,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
   Future<void> _openProductForm({ProductModel? product}) async {
     final result = await Navigator.push<bool>(
       context,
-      MaterialPageRoute(
-        builder: (_) => AddProductScreen(product: product),
-      ),
+      MaterialPageRoute(builder: (_) => AddProductScreen(product: product)),
     );
 
     if (!mounted || result != true) return;
@@ -53,9 +50,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
 
     if (productId == null || productId.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Cannot delete this product'),
-        ),
+        const SnackBar(content: Text('Cannot delete this product')),
       );
       return;
     }
@@ -65,9 +60,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
       builder: (dialogContext) {
         return AlertDialog(
           title: const Text('Delete Product'),
-          content: Text(
-            'Are you sure you want to delete "${product.title}"?',
-          ),
+          content: Text('Are you sure you want to delete "${product.title}"?'),
           actions: [
             TextButton(
               onPressed: () {
@@ -79,10 +72,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
               onPressed: () {
                 Navigator.pop(dialogContext, true);
               },
-              child: const Text(
-                'Delete',
-                style: TextStyle(color: Colors.red),
-              ),
+              child: const Text('Delete', style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -97,9 +87,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Product deleted successfully'),
-        ),
+        const SnackBar(content: Text('Product deleted successfully')),
       );
     } catch (e) {
       if (!mounted) return;
@@ -150,9 +138,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           final products = snapshot.data ?? [];
@@ -181,9 +167,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
                     Text(
                       'Start adding products to your store.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: colors.onSurfaceVariant,
-                      ),
+                      style: TextStyle(color: colors.onSurfaceVariant),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton.icon(
@@ -209,10 +193,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
                 children: [
                   const Text(
                     'Store Products',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     '${products.length} Products',

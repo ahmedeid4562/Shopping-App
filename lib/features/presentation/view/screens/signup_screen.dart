@@ -38,6 +38,11 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
+    if (!email.contains('@') || !email.contains('.')) {
+      _showMessage('Please enter a valid email address');
+      return;
+    }
+
     if (password.length < 6) {
       _showMessage('Password must be at least 6 characters');
       return;
@@ -51,23 +56,77 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() => _isLoading = true);
 
     try {
-      await _authApi.signUp(name: name, email: email, password: password);
+      await _authApi.signUp(
+        name: name,
+        email: email,
+        password: password,
+      );
 
       if (!mounted) return;
 
-      _showMessage('Account created successfully');
+      _showMessage('Verification email sent! Please check your inbox.');
+
+      await _showVerificationDialog(email);
+
+      if (!mounted) return;
+
       Navigator.pop(context);
     } catch (e) {
       if (!mounted) return;
       _showMessage(e.toString());
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
+  Future<void> _showVerificationDialog(String email) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          icon: const Icon(
+            Icons.mark_email_read_outlined,
+            color: primaryColor,
+            size: 55,
+          ),
+          title: const Text(
+            'Verify Your Email',
+            textAlign: TextAlign.center,
+          ),
+          content: Text(
+            'We sent a verification link to:\n\n$email\n\nPlease open your email and click the verification link before logging in.',
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(dialogContext);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Got it'),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   InputDecoration _inputDecoration({
@@ -91,7 +150,10 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: primaryColor, width: 1.5),
+        borderSide: const BorderSide(
+          color: primaryColor,
+          width: 1.5,
+        ),
       ),
     );
   }
@@ -242,7 +304,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       child: _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
                           : const Text(
                               'Create Account',
                               style: TextStyle(

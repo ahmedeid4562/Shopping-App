@@ -11,8 +11,7 @@ class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
 
   @override
-  State<AdminDashboardScreen> createState() =>
-      _AdminDashboardScreenState();
+  State<AdminDashboardScreen> createState() => _AdminDashboardScreenState();
 }
 
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
@@ -41,10 +40,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }
 
   // Update order status.
-  Future<void> _updateStatus(
-    Map<String, dynamic> order,
-    String status,
-  ) async {
+  Future<void> _updateStatus(Map<String, dynamic> order, String status) async {
     try {
       final userId = order['userId']?.toString();
       final orderId = order['id']?.toString();
@@ -65,9 +61,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Order status updated to $status'),
-        ),
+        SnackBar(content: Text('Order status updated to $status')),
       );
     } catch (e) {
       if (!mounted) return;
@@ -85,9 +79,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   void _openManageProducts() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => const ManageProductsScreen(),
-      ),
+      MaterialPageRoute(builder: (_) => const ManageProductsScreen()),
     );
   }
 
@@ -95,9 +87,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   void _openManageCoupons() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => const ManageCouponsScreen(),
-      ),
+      MaterialPageRoute(builder: (_) => const ManageCouponsScreen()),
     );
   }
 
@@ -107,20 +97,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       appBar: AppBar(
         title: const Text(
           'Admin Dashboard',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: FutureBuilder<bool>(
         future: _adminAccessFuture,
         builder: (context, accessSnapshot) {
-          if (accessSnapshot.connectionState ==
-              ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+          if (accessSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (accessSnapshot.hasError) {
@@ -139,10 +124,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 'Access Denied\n'
                 'Admin privileges are required.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             );
           }
@@ -166,9 +148,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             color: primaryColor.withValues(alpha: 0.08),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
-              side: BorderSide(
-                color: primaryColor.withValues(alpha: 0.2),
-              ),
+              side: BorderSide(color: primaryColor.withValues(alpha: 0.2)),
             ),
             child: ListTile(
               contentPadding: const EdgeInsets.symmetric(
@@ -189,17 +169,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               ),
               title: const Text(
                 'Manage Products',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               subtitle: Text(
                 'Add, edit and delete products',
-                style: TextStyle(
-                  color: colors.onSurfaceVariant,
-                  fontSize: 12,
-                ),
+                style: TextStyle(color: colors.onSurfaceVariant, fontSize: 12),
               ),
               trailing: const Icon(
                 Icons.arrow_forward_ios,
@@ -219,9 +193,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             color: Colors.orange.withValues(alpha: 0.08),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
-              side: BorderSide(
-                color: Colors.orange.withValues(alpha: 0.2),
-              ),
+              side: BorderSide(color: Colors.orange.withValues(alpha: 0.2)),
             ),
             child: ListTile(
               contentPadding: const EdgeInsets.symmetric(
@@ -242,17 +214,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               ),
               title: const Text(
                 'Manage Coupons',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               subtitle: Text(
                 'Create and manage discount codes',
-                style: TextStyle(
-                  color: colors.onSurfaceVariant,
-                  fontSize: 12,
-                ),
+                style: TextStyle(color: colors.onSurfaceVariant, fontSize: 12),
               ),
               trailing: const Icon(
                 Icons.arrow_forward_ios,
@@ -281,11 +247,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 );
               }
 
-              if (snapshot.connectionState ==
-                  ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
               }
 
               final orders = snapshot.data ?? [];
@@ -323,8 +286,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
                     GridView.count(
                       shrinkWrap: true,
-                      physics:
-                          const NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       crossAxisCount: 2,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 12,
@@ -364,8 +326,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     const SizedBox(height: 28),
 
                     Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
                           'All Orders',
@@ -388,9 +349,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
                     if (orders.isEmpty)
                       const Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 45,
-                        ),
+                        padding: EdgeInsets.symmetric(vertical: 45),
                         child: Column(
                           children: [
                             Icon(
@@ -441,32 +400,20 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: colors.outline.withValues(alpha: 0.15),
-        ),
+        border: Border.all(color: colors.outline.withValues(alpha: 0.15)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(
-            icon,
-            color: color,
-            size: 26,
-          ),
+          Icon(icon, color: color, size: 26),
           Text(
             '$value',
-            style: const TextStyle(
-              fontSize: 23,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
           ),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 12,
-              color: colors.onSurfaceVariant,
-            ),
+            style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
           ),
         ],
       ),

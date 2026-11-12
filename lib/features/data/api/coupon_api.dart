@@ -48,7 +48,7 @@ class CouponApi {
   final FirebaseFirestore _firestore;
 
   CouponApi({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   CollectionReference<Map<String, dynamic>> get _couponsCollection {
     return _firestore.collection('coupons');
@@ -78,10 +78,7 @@ class CouponApi {
       throw Exception('Invalid coupon code');
     }
 
-    final coupon = CouponModel.fromFirestore(
-      document.id,
-      document.data()!,
-    );
+    final coupon = CouponModel.fromFirestore(document.id, document.data()!);
 
     if (!coupon.isActive) {
       throw Exception('This coupon is inactive');

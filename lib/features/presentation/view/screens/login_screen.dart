@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../data/api/auth_api.dart';
 
@@ -37,10 +38,126 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (!mounted) return;
 
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/home',
+        (route) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+
+      switch (e.code) {
+        case 'user-not-found':
+          _showMessage('No account found with this email');
+          break;
+
+        case 'wrong-password':
+        case 'invalid-credential':
+          _showMessage('Incorrect email or password');
+          break;
+
+        case 'invalid-email':
+          _showMessage('Invalid email address');
+          break;
+
+        case 'email-not-verified':
+          _showMessage('Please verify your email before logging in');
+          _showVerificationDialog();
+          break;
+
+        case 'network-request-failed':
+          _showMessage('Check your internet connection');
+          break;
+
+        default:
+          _showMessage(e.message ?? 'Login failed');
+      }
     } catch (e) {
       if (!mounted) return;
-      _showMessage(e.toString());
+      _showMessage('Something went wrong');
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _showVerificationDialog() async {
+    await showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          icon: const Icon(
+            Icons.mark_email_unread_outlined,
+            color: primaryColor,
+            size: 55,
+          ),
+          title: const Text(
+            'Email Not Verified',
+            textAlign: TextAlign.center,
+          ),
+          content: const Text(
+            'Please verify your email address before logging in. You can request a new verification email.',
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.pop(dialogContext);
+                await _resendVerificationEmail();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Resend Email'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _resendVerificationEmail() async {
+    if (_emailController.text.trim().isEmpty ||
+        _passwordController.text.isEmpty) {
+      _showMessage('Please enter your email and password first');
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+
+      await _authApi.resendVerificationEmail();
+
+      await _authApi.signOut();
+
+      if (!mounted) return;
+
+      _showMessage('Verification email sent successfully');
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+
+      if (e.code == 'too-many-requests') {
+        _showMessage('Too many attempts. Try again later');
+      } else {
+        _showMessage(e.message ?? 'Could not resend verification email');
+      }
+    } catch (e) {
+      if (!mounted) return;
+      _showMessage('Something went wrong. Please try again');
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -54,10 +171,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (!mounted) return;
 
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/home',
+        (route) => false,
+      );
     } catch (e) {
       if (!mounted) return;
-      _showMessage(e.toString());
+      _showMessage('Google sign in failed: $e');
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -71,24 +192,53 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
+    if (!email.contains('@') || !email.contains('.')) {
+      _showMessage('Please enter a valid email address');
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     try {
       await _authApi.resetPassword(email);
 
       if (!mounted) return;
-      _showMessage('Password reset email sent');
+
+      _showMessage('Password reset link has been sent to your email');
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+
+      switch (e.code) {
+        case 'invalid-email':
+          _showMessage('Invalid email address');
+          break;
+
+        case 'network-request-failed':
+          _showMessage('Check your internet connection');
+          break;
+
+        case 'too-many-requests':
+          _showMessage('Too many attempts. Try again later');
+          break;
+
+        default:
+          _showMessage(e.message ?? 'Password reset failed');
+      }
     } catch (e) {
       if (!mounted) return;
-      _showMessage(e.toString());
+      _showMessage('Something went wrong. Please try again');
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   InputDecoration _inputDecoration({
@@ -112,7 +262,10 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: primaryColor, width: 1.5),
+        borderSide: const BorderSide(
+          color: primaryColor,
+          width: 1.5,
+        ),
       ),
     );
   }
@@ -223,7 +376,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       child: _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
                           : const Text(
                               'Login',
                               style: TextStyle(

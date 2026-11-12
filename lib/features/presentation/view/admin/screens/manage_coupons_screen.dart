@@ -79,7 +79,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
 
                 Navigator.pop(dialogContext);
 
-               ScaffoldMessenger.of(context).showSnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Coupon created successfully'),
                     backgroundColor: Colors.green,

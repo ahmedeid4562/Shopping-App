@@ -18,6 +18,8 @@ class AuthApi {
 
     await credential.user?.updateDisplayName(name);
 
+    await credential.user?.sendEmailVerification();
+
     return credential;
   }
 
@@ -25,10 +27,25 @@ class AuthApi {
     required String email,
     required String password,
   }) async {
-    return await _auth.signInWithEmailAndPassword(
+    final credential = await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
+
+    await credential.user?.reload();
+
+    final user = _auth.currentUser;
+
+    if (user != null && !user.emailVerified) {
+      await _auth.signOut();
+
+      throw FirebaseAuthException(
+        code: 'email-not-verified',
+        message: 'Please verify your email before logging in.',
+      );
+    }
+
+    return credential;
   }
 
   Future<UserCredential?> signInWithGoogle() async {
@@ -51,7 +68,23 @@ class AuthApi {
   }
 
   Future<void> resetPassword(String email) async {
-    await _auth.sendPasswordResetEmail(email: email);
+    await _auth.sendPasswordResetEmail(
+      email: email.trim(),
+    );
+  }
+
+  Future<void> resendVerificationEmail() async {
+    final user = _auth.currentUser;
+
+    if (user != null && !user.emailVerified) {
+      await user.sendEmailVerification();
+    }
+  }
+
+  Future<bool> checkEmailVerified() async {
+    await _auth.currentUser?.reload();
+
+    return _auth.currentUser?.emailVerified ?? false;
   }
 
   User? get currentUser => _auth.currentUser;
