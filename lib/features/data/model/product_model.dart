@@ -4,15 +4,10 @@ class ProductModel {
   final double price;
   final String description;
   final String category;
-
-  // Main image for compatibility with existing screens.
   final String image;
-
   final double rating;
   final int ratingCount;
   final String? firestoreId;
-
-  // Each variant represents a color and its images.
   final List<ProductVariant> variants;
 
   const ProductModel({
@@ -48,12 +43,12 @@ class ProductModel {
     final variants = _parseVariants(json['variants']);
     final images = json['images'];
 
-    final variantImage = variants.isNotEmpty && variants.first.images.isNotEmpty
-        ? variants.first.images.first
-        : '';
+    final variantImage =
+        variants.isNotEmpty && variants.first.images.isNotEmpty
+            ? variants.first.images.first
+            : '';
 
-    final image =
-        json['thumbnail'] ??
+    final image = json['thumbnail'] ??
         json['image'] ??
         (images is List && images.isNotEmpty ? images.first : null) ??
         variantImage;
@@ -78,9 +73,10 @@ class ProductModel {
   ) {
     final variants = _parseVariants(json['variants']);
 
-    final variantImage = variants.isNotEmpty && variants.first.images.isNotEmpty
-        ? variants.first.images.first
-        : '';
+    final variantImage =
+        variants.isNotEmpty && variants.first.images.isNotEmpty
+            ? variants.first.images.first
+            : '';
 
     final storedImage = json['image']?.toString() ?? '';
 
@@ -117,26 +113,34 @@ class ProductModel {
 
     return value
         .whereType<Map>()
-        .map((item) => ProductVariant.fromJson(Map<String, dynamic>.from(item)))
+        .map(
+          (item) => ProductVariant.fromJson(
+            Map<String, dynamic>.from(item),
+          ),
+        )
         .toList();
   }
 
-  // Returns all product images.
-  // Old products without variants still return their single image.
   List<String> get allImages {
-    final variantImages = variants
-        .expand((variant) => variant.images)
-        .where((image) => image.trim().isNotEmpty)
-        .toList();
+    final images = <String>[];
 
-    if (variantImages.isNotEmpty) {
-      return variantImages;
+    if (image.trim().isNotEmpty) {
+      images.add(image.trim());
     }
 
-    return image.trim().isNotEmpty ? [image] : [];
+    for (final variant in variants) {
+      for (final variantImage in variant.images) {
+        final cleanImage = variantImage.trim();
+
+        if (cleanImage.isNotEmpty && !images.contains(cleanImage)) {
+          images.add(cleanImage);
+        }
+      }
+    }
+
+    return images;
   }
 
-  // Whether this product has color variants.
   bool get hasVariants => variants.isNotEmpty;
 
   Map<String, dynamic> toJson() {
@@ -147,7 +151,10 @@ class ProductModel {
       'description': description,
       'category': category,
       'image': image,
-      'rating': {'rate': rating, 'count': ratingCount},
+      'rating': {
+        'rate': rating,
+        'count': ratingCount,
+      },
       'ratingCount': ratingCount,
       'firestoreId': firestoreId,
       'variants': variants.map((variant) => variant.toJson()).toList(),
@@ -171,9 +178,9 @@ class ProductVariant {
 
     final images = rawImages is List
         ? rawImages
-              .map((image) => image.toString())
-              .where((image) => image.trim().isNotEmpty)
-              .toList()
+            .map((image) => image.toString())
+            .where((image) => image.trim().isNotEmpty)
+            .toList()
         : <String>[];
 
     return ProductVariant(
@@ -184,6 +191,10 @@ class ProductVariant {
   }
 
   Map<String, dynamic> toJson() {
-    return {'colorName': colorName, 'colorHex': colorHex, 'images': images};
+    return {
+      'colorName': colorName,
+      'colorHex': colorHex,
+      'images': images,
+    };
   }
 }

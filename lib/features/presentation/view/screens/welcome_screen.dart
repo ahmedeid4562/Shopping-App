@@ -1,54 +1,68 @@
 import 'package:flutter/material.dart';
-
-import '../../../../core/routes/app_routes.dart';
+import 'package:shopping_app/core/constants/app_colors.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
-  static const Color primaryColor = Color(0xFF385CF2);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(28),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
               const Spacer(),
 
-              Container(
-                width: 180,
-                height: 180,
-                decoration: BoxDecoration(
-                  color: primaryColor.withValues(alpha: 0.08),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.shopping_bag_rounded,
-                  size: 100,
-                  color: primaryColor,
-                ),
+              Image.asset(
+                'assets/images/rafiki.png',
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.contain,
               ),
 
-              const SizedBox(height: 45),
+              const SizedBox(height: 25),
 
-              const Text(
-                'Welcome to Shopping App',
+              RichText(
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                text: const TextSpan(
+                  style: TextStyle(
+                    fontSize: 38,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: 'Welcome to\n',
+                      style: TextStyle(
+                        color: Color(0xFF172033),
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'Shop',
+                      style: TextStyle(
+                        color: Color(0xFF172033),
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'In',
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
               ),
 
               const SizedBox(height: 16),
 
-              Text(
-                'Discover the latest trends and find '
-                'everything you love in one place.',
+              const Text(
+                "Discover the latest men's fashion and find your perfect style.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 15,
-                  height: 1.6,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 16,
+                  height: 1.5,
+                  color: Colors.black54,
                 ),
               ),
 
@@ -56,49 +70,59 @@ class WelcomeScreen extends StatelessWidget {
 
               SizedBox(
                 width: double.infinity,
-                height: 55,
+                height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.login);
+                    Navigator.pushNamed(context, '/signup');
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
+                    backgroundColor: AppColors.primaryColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(16),
                     ),
+                    elevation: 0,
                   ),
                   child: const Text(
-                    'Get Started',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    'Sign up',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 16),
 
               SizedBox(
                 width: double.infinity,
-                height: 55,
+                height: 56,
                 child: OutlinedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.signup);
+                    Navigator.pushNamed(context, '/login');
                   },
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: primaryColor,
-                    side: const BorderSide(color: primaryColor),
+                    foregroundColor: AppColors.primaryColor,
+                    side: const BorderSide(
+                      color: AppColors.primaryColor,
+                      width: 1.5,
+                    ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
                   child: const Text(
-                    'Create Account',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 30),
             ],
           ),
         ),

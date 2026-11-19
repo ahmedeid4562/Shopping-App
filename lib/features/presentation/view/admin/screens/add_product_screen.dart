@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../../data/api/admin_product_api.dart';
 import '../../../../data/model/product_model.dart';
@@ -35,6 +36,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   bool get _isEditing => widget.product != null;
 
+  AppLocalizations get l => AppLocalizations.of(context)!;
+
   @override
   void initState() {
     super.initState();
@@ -60,7 +63,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
           );
         }
       } else {
-        // Keep compatibility with old products having one image.
         _variants.add(
           _VariantDraft(
             colorName: 'Default',
@@ -72,7 +74,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
         );
       }
     } else {
-      _variants.add(_VariantDraft(colorName: 'Default', colorHex: '#FFFFFF'));
+      _variants.add(
+        _VariantDraft(
+          colorName: 'Default',
+          colorHex: '#FFFFFF',
+        ),
+      );
     }
   }
 
@@ -90,16 +97,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
     super.dispose();
   }
 
-  // Add another color.
   void _addVariant() {
     if (_isLoading || _isPickingImages) return;
 
     setState(() {
-      _variants.add(_VariantDraft(colorName: '', colorHex: '#FFFFFF'));
+      _variants.add(
+        _VariantDraft(
+          colorName: '',
+          colorHex: '#FFFFFF',
+        ),
+      );
     });
   }
 
-  // Remove a color and its images.
   void _removeVariant(int index) {
     if (_isLoading || _isPickingImages) return;
 
@@ -109,14 +119,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
     });
   }
 
-  // Choose multiple images for a specific color.
   Future<void> _pickImages(int variantIndex) async {
     if (_isPickingImages || _isLoading) return;
 
     setState(() => _isPickingImages = true);
 
     try {
-      final pickedImages = await _imagePicker.pickMultiImage(imageQuality: 85);
+      final pickedImages = await _imagePicker.pickMultiImage(
+        imageQuality: 85,
+      );
 
       if (pickedImages.isEmpty) return;
 
@@ -124,11 +135,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
         pickedImages.map((file) async {
           final bytes = await file.readAsBytes();
 
-          return _VariantImageDraft(file: file, bytes: bytes);
+          return _VariantImageDraft(
+            file: file,
+            bytes: bytes,
+          );
         }),
       );
 
       if (!mounted) return;
+
+      if (variantIndex >= _variants.length) return;
 
       setState(() {
         _variants[variantIndex].images.addAll(newImages);
@@ -136,7 +152,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
     } catch (e) {
       if (!mounted) return;
 
-      _showMessage('Failed to select images: $e', isError: true);
+      _showMessage(
+        l.failedSelectImages,
+        isError: true,
+      );
     } finally {
       if (mounted) {
         setState(() => _isPickingImages = false);
@@ -144,7 +163,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
     }
   }
 
-  // Remove one image.
   void _removeImage(int variantIndex, int imageIndex) {
     if (_isLoading || _isPickingImages) return;
 
@@ -180,7 +198,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
     return RegExp(r'^#?[0-9a-fA-F]{6}$').hasMatch(hex.trim());
   }
 
-  // Upload local images and prepare variants for Firestore.
   Future<List<ProductVariant>> _prepareVariants() async {
     final result = <ProductVariant>[];
 
@@ -191,15 +208,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
       final colorHex = variant.colorHexController.text.trim();
 
       if (colorName.isEmpty) {
-        throw Exception('Please enter the name of color ${i + 1}');
+        throw Exception(l.enterColorName(i + 1));
       }
 
       if (!_isValidHex(colorHex)) {
-        throw Exception('Enter a valid HEX color for $colorName');
+        throw Exception(l.invalidHexColor(colorName));
       }
 
       if (variant.images.isEmpty) {
-        throw Exception('Please add at least one image for $colorName');
+        throw Exception(l.addAtLeastOneImage(colorName));
       }
 
       final imageUrls = <String>[];
@@ -207,13 +224,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
       for (var j = 0; j < variant.images.length; j++) {
         final image = variant.images[j];
 
-        // Keep previously uploaded images.
         if (image.url != null && image.url!.isNotEmpty) {
           imageUrls.add(image.url!);
           continue;
         }
 
-        // Upload newly selected images.
         if (image.bytes != null && image.file != null) {
           final imageUrl = await _productApi.uploadProductImage(
             imageBytes: image.bytes!,
@@ -225,13 +240,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
       }
 
       if (imageUrls.isEmpty) {
-        throw Exception('No valid images found for $colorName');
+        throw Exception(l.noValidImages(colorName));
       }
 
       result.add(
         ProductVariant(
           colorName: colorName,
-          colorHex: colorHex.startsWith('#') ? colorHex : '#$colorHex',
+          colorHex: colorHex.startsWith('#')
+              ? colorHex
+              : '#$colorHex',
           images: imageUrls,
         ),
       );
@@ -240,27 +257,37 @@ class _AddProductScreenState extends State<AddProductScreen> {
     return result;
   }
 
-  // Save product to Firestore.
   Future<void> _saveProduct() async {
     if (!_formKey.currentState!.validate()) return;
 
     if (_variants.isEmpty) {
-      _showMessage('Please add at least one color', isError: true);
+      _showMessage(
+        l.addAtLeastOneColor,
+        isError: true,
+      );
       return;
     }
 
     final colorNames = <String>{};
 
     for (final variant in _variants) {
-      final name = variant.colorNameController.text.trim().toLowerCase();
+      final name = variant.colorNameController.text
+          .trim()
+          .toLowerCase();
 
       if (name.isEmpty) {
-        _showMessage('Please enter all color names', isError: true);
+        _showMessage(
+          l.enterAllColorNames,
+          isError: true,
+        );
         return;
       }
 
       if (!colorNames.add(name)) {
-        _showMessage('Each color must have a unique name', isError: true);
+        _showMessage(
+          l.uniqueColorNames,
+          isError: true,
+        );
         return;
       }
     }
@@ -273,11 +300,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
       final description = _descriptionController.text.trim();
       final category = _categoryController.text.trim();
 
-      // Upload images and prepare product colors.
-      final List<ProductVariant> variants = await _prepareVariants();
+      final List<ProductVariant> variants =
+          await _prepareVariants();
 
       if (variants.isEmpty || variants.first.images.isEmpty) {
-        throw Exception('Please add product images');
+        throw Exception(l.addProductImages);
       }
 
       final String mainImage = variants.first.images.first;
@@ -286,7 +313,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         final productId = widget.product!.firestoreId;
 
         if (productId == null || productId.isEmpty) {
-          throw Exception('Product ID is missing');
+          throw Exception(l.productIdMissing);
         }
 
         await _productApi.updateProduct(
@@ -315,7 +342,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
     } catch (e) {
       if (!mounted) return;
 
-      _showMessage('Failed to save product: $e', isError: true);
+      _showMessage(
+        '${l.failedSaveProduct}: $e',
+        isError: true,
+      );
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -342,13 +372,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
           labelText: label,
           hintText: hint,
           prefixIcon: Icon(icon),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
-        validator:
-            validator ??
+        validator: validator ??
             (value) {
               if (value == null || value.trim().isEmpty) {
-                return 'Please enter $label';
+                return l.pleaseEnterField(label);
               }
 
               return null;
@@ -383,7 +414,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
       );
     }
 
-    return const Icon(Icons.image_outlined, color: Colors.grey);
+    return const Icon(
+      Icons.image_outlined,
+      color: Colors.grey,
+    );
   }
 
   Widget _buildVariantCard(int index) {
@@ -396,14 +430,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
       color: colors.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: colors.outline.withValues(alpha: 0.2)),
+        side: BorderSide(
+          color: colors.outline.withValues(alpha: 0.2),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Variant heading.
             Row(
               children: [
                 CircleAvatar(
@@ -420,7 +455,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'Color Variant ${index + 1}',
+                    l.colorVariant(index + 1),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -431,21 +466,23 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   onPressed: _isLoading || _isPickingImages
                       ? null
                       : () => _removeVariant(index),
-                  tooltip: 'Remove color',
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  tooltip: l.removeColor,
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.red,
+                  ),
                 ),
               ],
             ),
 
             const SizedBox(height: 16),
 
-            // Color name.
             TextFormField(
               controller: variant.colorNameController,
               enabled: !_isLoading && !_isPickingImages,
               decoration: InputDecoration(
-                labelText: 'Color Name',
-                hintText: 'Example: Black, White, Red',
+                labelText: l.colorName,
+                hintText: l.colorNameExample,
                 prefixIcon: const Icon(Icons.palette_outlined),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -455,7 +492,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
             const SizedBox(height: 14),
 
-            // Color HEX.
             Row(
               children: [
                 Expanded(
@@ -466,9 +502,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       setState(() {});
                     },
                     decoration: InputDecoration(
-                      labelText: 'Color HEX',
+                      labelText: l.colorHex,
                       hintText: '#000000',
-                      prefixIcon: const Icon(Icons.color_lens_outlined),
+                      prefixIcon: const Icon(
+                        Icons.color_lens_outlined,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -480,7 +518,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: _colorFromHex(variant.colorHexController.text),
+                    color: _colorFromHex(
+                      variant.colorHexController.text,
+                    ),
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: colors.outline.withValues(alpha: 0.5),
@@ -493,16 +533,18 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
             const SizedBox(height: 22),
 
-            // Images heading.
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Color Images',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                Text(
+                  l.colorImages,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
-                  '${variant.images.length} Images',
+                  l.imagesCount(variant.images.length),
                   style: TextStyle(
                     fontSize: 12,
                     color: colors.onSurfaceVariant,
@@ -513,7 +555,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
             const SizedBox(height: 12),
 
-            // Images grid.
             if (variant.images.isEmpty)
               Container(
                 width: double.infinity,
@@ -522,15 +563,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   color: colors.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Column(
+                child: Column(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.add_photo_alternate_outlined,
                       size: 38,
                       color: Colors.grey,
                     ),
-                    SizedBox(height: 8),
-                    Text('No images added yet'),
+                    const SizedBox(height: 8),
+                    Text(l.noImagesAdded),
                   ],
                 ),
               )
@@ -539,7 +580,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: variant.images.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
@@ -587,7 +629,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
             const SizedBox(height: 14),
 
-            // Add multiple images.
             SizedBox(
               width: double.infinity,
               height: 48,
@@ -595,11 +636,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 onPressed: _isLoading || _isPickingImages
                     ? null
                     : () => _pickImages(index),
-                icon: const Icon(Icons.add_photo_alternate_outlined),
+                icon: const Icon(
+                  Icons.add_photo_alternate_outlined,
+                ),
                 label: Text(
                   _isPickingImages
-                      ? 'Opening Gallery...'
-                      : 'Add Images From Device',
+                      ? l.openingGallery
+                      : l.addImagesFromDevice,
                 ),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: primaryColor,
@@ -621,8 +664,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _isEditing ? 'Edit Product' : 'Add Product',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          _isEditing ? l.editProduct : l.addProduct,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -633,31 +678,37 @@ class _AddProductScreenState extends State<AddProductScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Product Information',
-                style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+              Text(
+                l.productInformation,
+                style: const TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               const SizedBox(height: 20),
 
               _buildTextField(
                 controller: _titleController,
-                label: 'Product Name',
+                label: l.productName,
                 icon: Icons.shopping_bag_outlined,
               ),
 
               _buildTextField(
                 controller: _priceController,
-                label: 'Price',
+                label: l.price,
                 icon: Icons.attach_money,
-                keyboardType: const TextInputType.numberWithOptions(
+                keyboardType:
+                    const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
                 validator: (value) {
-                  final price = double.tryParse(value?.trim() ?? '');
+                  final price = double.tryParse(
+                    value?.trim() ?? '',
+                  );
 
                   if (price == null || price <= 0) {
-                    return 'Enter a valid price greater than zero';
+                    return l.validPrice;
                   }
 
                   return null;
@@ -666,35 +717,34 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
               _buildTextField(
                 controller: _categoryController,
-                label: 'Category',
+                label: l.category,
                 icon: Icons.category_outlined,
-                hint: 'Shoes, Electronics, Clothing...',
+                hint: l.categoryExample,
               ),
 
               _buildTextField(
                 controller: _descriptionController,
-                label: 'Description',
+                label: l.description,
                 icon: Icons.description_outlined,
                 maxLines: 4,
               ),
 
               const SizedBox(height: 12),
 
-              // Product colors and images.
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Product Colors & Images',
-                      style: TextStyle(
+                      l.productColorsImages,
+                      style: const TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Text(
-                    '${_variants.length} Colors',
+                    l.colorsCount(_variants.length),
                     style: const TextStyle(
                       color: primaryColor,
                       fontWeight: FontWeight.bold,
@@ -706,10 +756,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
               const SizedBox(height: 8),
 
               Text(
-                'Add each available color and select multiple '
-                'images for every color.',
+                l.addAvailableColorsDescription,
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurfaceVariant,
                   fontSize: 13,
                 ),
               ),
@@ -721,7 +772,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 (index) => _buildVariantCard(index),
               ),
 
-              // Add another color.
               SizedBox(
                 width: double.infinity,
                 height: 52,
@@ -730,10 +780,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       ? null
                       : _addVariant,
                   icon: const Icon(Icons.add),
-                  label: const Text('Add Another Color'),
+                  label: Text(l.addAnotherColor),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: primaryColor,
-                    side: const BorderSide(color: primaryColor, width: 1.3),
+                    side: const BorderSide(
+                      color: primaryColor,
+                      width: 1.3,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
@@ -743,7 +796,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
               const SizedBox(height: 28),
 
-              // Save product.
               SizedBox(
                 width: double.infinity,
                 height: 55,
@@ -768,7 +820,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           ),
                         )
                       : Text(
-                          _isEditing ? 'Save Changes' : 'Add Product',
+                          _isEditing
+                              ? l.saveChanges
+                              : l.addProduct,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -786,16 +840,18 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 }
 
-// Temporary image data before uploading to Cloudinary.
 class _VariantImageDraft {
   final XFile? file;
   final Uint8List? bytes;
   final String? url;
 
-  _VariantImageDraft({this.file, this.bytes, this.url});
+  _VariantImageDraft({
+    this.file,
+    this.bytes,
+    this.url,
+  });
 }
 
-// Temporary color data while creating or editing a product.
 class _VariantDraft {
   final TextEditingController colorNameController;
   final TextEditingController colorHexController;
@@ -806,9 +862,11 @@ class _VariantDraft {
     required String colorName,
     required String colorHex,
     List<_VariantImageDraft>? images,
-  }) : colorNameController = TextEditingController(text: colorName),
-       colorHexController = TextEditingController(text: colorHex),
-       images = images ?? [];
+  })  : colorNameController =
+            TextEditingController(text: colorName),
+        colorHexController =
+            TextEditingController(text: colorHex),
+        images = images ?? [];
 
   void dispose() {
     colorNameController.dispose();

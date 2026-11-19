@@ -1,0 +1,249 @@
+{
+  "@@locale": "ar",
+  "appTitle": "تطبيق التسوق",
+  "user": "مستخدم",
+  "noEmailAvailable": "لا يوجد بريد إلكتروني",
+  "myProfile": "ملفي الشخصي",
+  "myAccount": "حسابي",
+  "editProfile": "تعديل الملف الشخصي",
+  "updatePersonalInfo": "تحديث معلوماتك الشخصية",
+  "changePassword": "تغيير كلمة المرور",
+  "updateAccountPassword": "تحديث كلمة مرور حسابك",
+  "myOrders": "طلباتي",
+  "viewOrderHistory": "عرض سجل طلباتك",
+  "myAddresses": "عناويني",
+  "manageAddresses": "إدارة عناوين التوصيل",
+  "paymentMethods": "طرق الدفع",
+  "managePaymentOptions": "إدارة خيارات الدفع",
+  "preferences": "التفضيلات",
+  "darkMode": "الوضع الداكن",
+  "darkAppearanceEnabled": "تم تفعيل المظهر الداكن",
+  "lightAppearanceEnabled": "تم تفعيل المظهر الفاتح",
+  "language": "اللغة",
+  "arabic": "العربية",
+  "english": "الإنجليزية",
+  "notifications": "الإشعارات",
+  "manageNotifications": "إدارة الإشعارات",
+  "support": "الدعم",
+  "helpSupport": "المساعدة والدعم",
+  "getHelpAccount": "احصل على المساعدة بشأن حسابك",
+  "aboutApp": "حول التطبيق",
+  "learnAboutApp": "تعرف على المزيد حول تطبيقنا",
+  "logout": "تسجيل الخروج",
+  "shoppingMember": "عضو في تطبيق التسوق",
+  "pleaseLoginAgain": "يرجى تسجيل الدخول مرة أخرى",
+  "accountNoEmailPassword": "حسابك لا يحتوي على بريد إلكتروني وكلمة مرور",
+  "currentPassword": "كلمة المرور الحالية",
+  "newPassword": "كلمة المرور الجديدة",
+  "confirmNewPassword": "تأكيد كلمة المرور الجديدة",
+  "cancel": "إلغاء",
+  "fillAllFields": "يرجى ملء جميع الحقول",
+  "passwordMinLength": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "newPasswordDifferent": "يجب أن تختلف كلمة المرور الجديدة عن الحالية",
+  "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح",
+  "incorrectCurrentPassword": "كلمة المرور الحالية غير صحيحة",
+  "chooseStrongerPassword": "يرجى اختيار كلمة مرور أقوى",
+  "somethingWentWrong": "حدث خطأ ما",
+  "logoutConfirmation": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "logoutFailed": "فشل تسجيل الخروج",
+
+  "adminDashboard": "لوحة تحكم المسؤول",
+  "manageStoreOrders": "إدارة طلبات المتجر",
+  "changeAdminPassword": "تغيير كلمة مرور الأدمن",
+  "failedToChangePassword": "فشل تغيير كلمة المرور",
+  "orderInformationMissing": "بيانات الطلب غير مكتملة",
+  "orderStatusUpdatedTo": "تم تحديث حالة الطلب إلى",
+  "failedToUpdateOrder": "فشل تحديث الطلب",
+  "failedToVerifyAdminAccess": "فشل التحقق من صلاحيات الأدمن",
+  "accessDenied": "تم رفض الوصول",
+  "adminPrivilegesRequired": "يلزم توفر صلاحيات الأدمن",
+
+  "manageProducts": "إدارة المنتجات",
+  "manageProductsSubtitle": "إضافة المنتجات وتعديلها وحذفها",
+  "productAddedSuccessfully": "تمت إضافة المنتج بنجاح",
+  "productUpdatedSuccessfully": "تم تحديث المنتج بنجاح",
+  "cannotDeleteProduct": "لا يمكن حذف هذا المنتج",
+  "deleteProductTitle": "حذف المنتج",
+  "deleteProductConfirmation": "هل أنت متأكد أنك تريد حذف \"{productName}\"؟",
+  "@deleteProductConfirmation": {
+    "placeholders": {
+      "productName": {
+        "type": "String"
+      }
+    }
+  },
+  "productDeletedSuccessfully": "تم حذف المنتج بنجاح",
+  "failedToDeleteProduct": "فشل حذف المنتج",
+  "failedToLoadProducts": "فشل تحميل المنتجات",
+  "noProductsYet": "لا توجد منتجات حتى الآن",
+  "startAddingProducts": "ابدأ بإضافة المنتجات إلى متجرك",
+  "addYourFirstProduct": "أضف أول منتج لك",
+  "storeProducts": "منتجات المتجر",
+  "productsCount": "عدد المنتجات: {count}",
+  "@productsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "manageCoupons": "إدارة الكوبونات",
+  "manageCouponsSubtitle": "إنشاء وإدارة أكواد الخصم",
+  "createCoupon": "إنشاء كوبون",
+  "couponCode": "كود الكوبون",
+  "enterAtLeast3Characters": "أدخل 3 أحرف على الأقل",
+  "discountType": "نوع الخصم",
+  "percentage": "نسبة مئوية (%)",
+  "fixedAmount": "مبلغ ثابت",
+  "discountPercentage": "نسبة الخصم",
+  "discountAmount": "قيمة الخصم",
+  "enterValidDiscount": "أدخل قيمة خصم صحيحة",
+  "maximumPercentageIs100": "الحد الأقصى لنسبة الخصم هو 100%",
+  "minimumOrderAmount": "الحد الأدنى لقيمة الطلب",
+  "enterValidAmount": "أدخل مبلغًا صحيحًا",
+  "chooseExpirationDate": "اختر تاريخ انتهاء الصلاحية",
+  "chooseExpirationDateFirst": "من فضلك اختر تاريخ انتهاء الصلاحية",
+  "create": "إنشاء",
+  "couponCreatedSuccessfully": "تم إنشاء الكوبون بنجاح",
+  "failedToCreateCoupon": "فشل إنشاء الكوبون",
+  "couponDeleted": "تم حذف الكوبون",
+  "failedToDeleteCoupon": "فشل حذف الكوبون",
+  "couponDeactivated": "تم إلغاء تفعيل الكوبون",
+  "couponActivated": "تم تفعيل الكوبون",
+  "failedToUpdateCoupon": "فشل تحديث الكوبون",
+  "failedToLoadCoupons": "فشل تحميل الكوبونات",
+  "noCouponsCreatedYet": "لم يتم إنشاء أي كوبونات حتى الآن",
+  "addCoupon": "إضافة كوبون",
+  "off": "خصم",
+  "minimumOrder": "الحد الأدنى للطلب",
+  "expires": "تاريخ الانتهاء",
+  "status": "الحالة",
+  "active": "نشط",
+  "inactive": "غير نشط",
+  "deactivate": "إلغاء التفعيل",
+  "activate": "تفعيل",
+
+  "failedSelectImages": "فشل في اختيار الصور",
+  "enterColorName": "أدخل اسم اللون رقم {number}",
+  "@enterColorName": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "invalidHexColor": "كود اللون غير صحيح للون {colorName}",
+  "@invalidHexColor": {
+    "placeholders": {
+      "colorName": {
+        "type": "String"
+      }
+    }
+  },
+  "addAtLeastOneImage": "أضف صورة واحدة على الأقل للون {colorName}",
+  "@addAtLeastOneImage": {
+    "placeholders": {
+      "colorName": {
+        "type": "String"
+      }
+    }
+  },
+  "noValidImages": "لا توجد صور صالحة للون {colorName}",
+  "@noValidImages": {
+    "placeholders": {
+      "colorName": {
+        "type": "String"
+      }
+    }
+  },
+  "addAtLeastOneColor": "أضف لونًا واحدًا على الأقل",
+  "enterAllColorNames": "يرجى إدخال أسماء جميع الألوان",
+  "uniqueColorNames": "يجب أن تكون أسماء الألوان مختلفة",
+  "addProductImages": "يرجى إضافة صور للمنتج",
+  "productIdMissing": "معرف المنتج غير موجود",
+  "failedSaveProduct": "فشل حفظ المنتج",
+  "pleaseEnterField": "يرجى إدخال {label}",
+  "@pleaseEnterField": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "colorVariant": "اللون رقم {number}",
+  "@colorVariant": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "removeColor": "حذف اللون",
+  "colorName": "اسم اللون",
+  "colorNameExample": "مثال: أحمر، أسود، أزرق",
+  "colorHex": "كود اللون",
+  "colorImages": "صور اللون",
+  "imagesCount": "عدد الصور: {count}",
+  "@imagesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noImagesAdded": "لم تتم إضافة صور",
+  "openingGallery": "جاري فتح المعرض...",
+  "addImagesFromDevice": "إضافة صور من الجهاز",
+  "editProduct": "تعديل المنتج",
+  "addProduct": "إضافة منتج",
+  "productInformation": "معلومات المنتج",
+  "productName": "اسم المنتج",
+  "price": "السعر",
+  "validPrice": "يرجى إدخال سعر صحيح أكبر من صفر",
+  "category": "التصنيف",
+  "categoryExample": "مثال: ملابس، أحذية، إكسسوارات",
+  "description": "الوصف",
+  "productColorsImages": "ألوان وصور المنتج",
+  "colorsCount": "عدد الألوان: {count}",
+  "@colorsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addAvailableColorsDescription": "أضف الألوان المتاحة للمنتج والصور الخاصة بكل لون",
+  "addAnotherColor": "إضافة لون آخر",
+  "saveChanges": "حفظ التعديلات",
+
+  "editAction": "تعديل",
+  "deleteAction": "حذف",
+
+  "orderLabel": "طلب",
+  "updateOrderStatus": "تحديث حالة الطلب",
+  "unknownCustomer": "عميل غير معروف",
+  "productsLabel": "المنتجات",
+  "unknownProduct": "منتج غير معروف",
+  "totalAmount": "الإجمالي",
+  "pendingStatus": "قيد الانتظار",
+  "processingStatus": "جاري التجهيز",
+  "shippedStatus": "تم الشحن",
+  "deliveredStatus": "تم التوصيل",
+  "cancelledStatus": "تم الإلغاء",
+
+  "failedToLoadOrders": "فشل تحميل الطلبات",
+  "overview": "نظرة عامة",
+  "totalOrders": "إجمالي الطلبات",
+  "allOrders": "جميع الطلبات",
+  "ordersCount": "عدد الطلبات: {count}",
+  "@ordersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noOrdersYet": "لا توجد طلبات حتى الآن"
+}

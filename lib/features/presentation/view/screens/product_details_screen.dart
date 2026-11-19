@@ -5,17 +5,30 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../data/model/product_model.dart';
 import '../../view_model/cart_cubit.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
+class ProductDetailsScreen extends StatefulWidget {
   final ProductModel product;
 
-  const ProductDetailsScreen({super.key, required this.product});
+  const ProductDetailsScreen({
+    super.key,
+    required this.product,
+  });
 
   static const Color primaryColor = Color(0xFF385CF2);
+
+  @override
+  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
+}
+
+class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  int _currentImageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+
+    final product = widget.product;
+    final productImages = product.allImages;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,27 +53,77 @@ class ProductDetailsScreen extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: CachedNetworkImage(
-                    imageUrl: product.image,
-                    fit: BoxFit.contain,
-                    placeholder: (context, url) => const Center(
-                      child: CircularProgressIndicator(color: primaryColor),
-                    ),
-                    errorWidget: (context, url, error) => const Icon(
-                      Icons.image_not_supported_outlined,
-                      size: 60,
-                      color: Colors.grey,
-                    ),
-                  ),
+                  child: productImages.isEmpty
+                      ? const Center(
+                          child: Icon(
+                            Icons.image_not_supported_outlined,
+                            size: 60,
+                            color: Colors.grey,
+                          ),
+                        )
+                      : PageView.builder(
+                          itemCount: productImages.length,
+                          onPageChanged: (index) {
+                            setState(() {
+                              _currentImageIndex = index;
+                            });
+                          },
+                          itemBuilder: (context, index) {
+                            return CachedNetworkImage(
+                              imageUrl: productImages[index],
+                              fit: BoxFit.contain,
+                              placeholder: (context, url) {
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    color: ProductDetailsScreen.primaryColor,
+                                  ),
+                                );
+                              },
+                              errorWidget: (context, url, error) {
+                                return const Icon(
+                                  Icons.image_not_supported_outlined,
+                                  size: 60,
+                                  color: Colors.grey,
+                                );
+                              },
+                            );
+                          },
+                        ),
                 ),
               ),
+
+              if (productImages.length > 1) ...[
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    productImages.length,
+                    (index) {
+                      final isSelected = _currentImageIndex == index;
+
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: isSelected ? 22 : 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? ProductDetailsScreen.primaryColor
+                              : colors.outlineVariant,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
 
               const SizedBox(height: 24),
 
               Text(
                 product.category.toUpperCase(),
                 style: const TextStyle(
-                  color: primaryColor,
+                  color: ProductDetailsScreen.primaryColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 13,
                 ),
@@ -79,17 +142,25 @@ class ProductDetailsScreen extends StatelessWidget {
 
               Row(
                 children: [
-                  const Icon(Icons.star, color: Colors.amber, size: 22),
+                  const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                    size: 22,
+                  ),
                   const SizedBox(width: 5),
                   Text(
                     product.rating.toStringAsFixed(1),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   if (product.ratingCount > 0) ...[
                     const SizedBox(width: 5),
                     Text(
                       '(${product.ratingCount} reviews)',
-                      style: TextStyle(color: colors.onSurfaceVariant),
+                      style: TextStyle(
+                        color: colors.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ],
@@ -100,7 +171,7 @@ class ProductDetailsScreen extends StatelessWidget {
               Text(
                 '\$${product.price.toStringAsFixed(2)}',
                 style: const TextStyle(
-                  color: primaryColor,
+                  color: ProductDetailsScreen.primaryColor,
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
                 ),
@@ -136,19 +207,26 @@ class ProductDetailsScreen extends StatelessWidget {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('${product.title} added to cart'),
+                        content: Text(
+                          '${product.title} added to cart',
+                        ),
                         backgroundColor: Colors.green,
                         duration: const Duration(seconds: 2),
                       ),
                     );
                   },
-                  icon: const Icon(Icons.shopping_cart_outlined),
+                  icon: const Icon(
+                    Icons.shopping_cart_outlined,
+                  ),
                   label: const Text(
                     'Add to Cart',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
+                    backgroundColor: ProductDetailsScreen.primaryColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),

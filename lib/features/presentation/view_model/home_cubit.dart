@@ -7,12 +7,11 @@ import '../../data/model/product_model.dart';
 import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final AdminProductApi _adminProductApi;
-
+  final AdminProductApi _productApi;
   StreamSubscription<List<ProductModel>>? _productsSubscription;
 
-  HomeCubit({AdminProductApi? adminProductApi})
-      : _adminProductApi = adminProductApi ?? AdminProductApi(),
+  HomeCubit({AdminProductApi? productApi})
+      : _productApi = productApi ?? AdminProductApi(),
         super(HomeInitial());
 
   Future<void> getProducts() async {
@@ -20,40 +19,27 @@ class HomeCubit extends Cubit<HomeState> {
 
     await _productsSubscription?.cancel();
 
-    if (isClosed) return;
-
     emit(HomeLoading());
 
-    try {
-      _productsSubscription = _adminProductApi.watchProducts().listen(
-        (products) {
-          if (isClosed) return;
-
-          // Products come only from the Firestore products collection.
-          emit(HomeSuccess(products));
-        },
-        onError: (Object error) {
-          if (isClosed) return;
-
-          emit(HomeError(error.toString()));
-        },
-      );
-    } catch (e) {
-      if (isClosed) return;
-
-      emit(HomeError(e.toString()));
-    }
+    _productsSubscription = _productApi.watchProducts().listen(
+      (products) {
+        if (isClosed) return;
+        emit(HomeSuccess(products));
+      },
+      onError: (error) {
+        if (isClosed) return;
+        emit(HomeError(error.toString()));
+      },
+    );
   }
 
   Future<void> refreshProducts() async {
-    if (isClosed) return;
-
     await getProducts();
   }
 
   @override
   Future<void> close() async {
     await _productsSubscription?.cancel();
-    await super.close();
+    return super.close();
   }
 }

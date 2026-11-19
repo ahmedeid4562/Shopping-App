@@ -73,10 +73,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         _discountAmount = coupon.calculateDiscount(subtotal);
       });
 
-      _showMessage(
-        'Coupon applied successfully!',
-        isError: false,
-      );
+      _showMessage('Coupon applied successfully!', isError: false);
     } catch (e) {
       if (!mounted) return;
 
@@ -150,11 +147,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         barrierDismissible: false,
         builder: (dialogContext) {
           return AlertDialog(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.green,
-              size: 55,
-            ),
+            icon: const Icon(Icons.check_circle, color: Colors.green, size: 55),
             title: const Text('Order Placed Successfully!'),
             content: const Text(
               'Your order has been saved successfully.',
@@ -197,16 +190,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         decoration: BoxDecoration(
           color: Colors.green.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: Colors.green.withValues(alpha: 0.3),
-          ),
+          border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
         ),
         child: Row(
           children: [
-            const Icon(
-              Icons.check_circle,
-              color: Colors.green,
-            ),
+            const Icon(Icons.check_circle, color: Colors.green),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -214,9 +202,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 children: [
                   Text(
                     _appliedCoupon!.code,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const Text(
                     'Coupon applied successfully',
@@ -298,9 +284,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       body: BlocBuilder<CartCubit, CartState>(
         builder: (context, state) {
           if (state is! CartLoaded || state.products.isEmpty) {
-            return const Center(
-              child: Text('Your cart is empty'),
-            );
+            return const Center(child: Text('Your cart is empty'));
           }
 
           final subtotal = state.totalPrice;
@@ -318,10 +302,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 children: [
                   const Text(
                     'Delivery Information',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
 
@@ -351,10 +332,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                   const Text(
                     'Payment Method',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 12),
 
@@ -380,10 +358,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                   const Text(
                     'Promo Code',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 12),
 
@@ -399,10 +374,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                     child: Column(
                       children: [
-                        _buildPriceRow(
-                          'Subtotal',
-                          subtotal,
-                        ),
+                        _buildPriceRow('Subtotal', subtotal),
                         const SizedBox(height: 10),
                         _buildPriceRow(
                           'Discount',
@@ -451,9 +423,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       ),
                       child: _isLoading
-                          ? const CircularProgressIndicator(
-                              color: Colors.white,
-                            )
+                          ? const CircularProgressIndicator(color: Colors.white)
                           : const Text(
                               'Place Order',
                               style: TextStyle(
@@ -472,21 +442,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  Widget _buildPriceRow(
-    String title,
-    double amount, {
-    Color? valueColor,
-  }) {
+  Widget _buildPriceRow(String title, double amount, {Color? valueColor}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title),
         Text(
           '${amount < 0 ? '-' : ''}\$${amount.abs().toStringAsFixed(2)}',
-          style: TextStyle(
-            color: valueColor,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: valueColor, fontWeight: FontWeight.w600),
         ),
       ],
     );
@@ -506,9 +469,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {

@@ -29,7 +29,6 @@ class _ProductCardState extends State<ProductCard> {
     _checkFavorite();
   }
 
-  // Recheck favorite status when the card receives another product.
   @override
   void didUpdateWidget(covariant ProductCard oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -102,8 +101,9 @@ class _ProductCardState extends State<ProductCard> {
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -117,6 +117,9 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+
+    final productImages = widget.product.allImages;
+    final imageUrl = productImages.isNotEmpty ? productImages.first : '';
 
     return InkWell(
       borderRadius: BorderRadius.circular(16),
@@ -132,7 +135,9 @@ class _ProductCardState extends State<ProductCard> {
         decoration: BoxDecoration(
           color: colors.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: colors.outline.withValues(alpha: 0.12)),
+          border: Border.all(
+            color: colors.outline.withValues(alpha: 0.12),
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,21 +149,27 @@ class _ProductCardState extends State<ProductCard> {
                   Padding(
                     padding: const EdgeInsets.all(12),
                     child: Center(
-                      child: CachedNetworkImage(
-                        imageUrl: widget.product.image,
-                        fit: BoxFit.contain,
-                        width: double.infinity,
-                        placeholder: (_, _) => const Center(
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                        errorWidget: (_, _, _) => const Icon(
-                          Icons.image_not_supported_outlined,
-                          size: 40,
-                        ),
-                      ),
+                      child: imageUrl.isEmpty
+                          ? const Icon(
+                              Icons.image_not_supported_outlined,
+                              size: 40,
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: imageUrl,
+                              fit: BoxFit.contain,
+                              width: double.infinity,
+                              placeholder: (_, _) => const Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                              errorWidget: (_, _, _) => const Icon(
+                                Icons.image_not_supported_outlined,
+                                size: 40,
+                              ),
+                            ),
                     ),
                   ),
-
                   Positioned(
                     top: 8,
                     right: 8,
@@ -195,7 +206,6 @@ class _ProductCardState extends State<ProductCard> {
                 ],
               ),
             ),
-
             Expanded(
               flex: 4,
               child: Padding(
@@ -215,9 +225,7 @@ class _ProductCardState extends State<ProductCard> {
                         fontSize: 11,
                       ),
                     ),
-
                     const SizedBox(height: 5),
-
                     Text(
                       widget.product.title,
                       maxLines: 2,
@@ -226,9 +234,7 @@ class _ProductCardState extends State<ProductCard> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-
                     const Spacer(),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -243,7 +249,6 @@ class _ProductCardState extends State<ProductCard> {
                             ),
                           ),
                         ),
-
                         Row(
                           children: [
                             const Icon(

@@ -7,6 +7,10 @@ import '../model/product_model.dart';
 class CartApi {
   static const String _cartKey = 'shopping_cart';
 
+  String _getProductKey(ProductModel product) {
+    return product.firestoreId ?? product.id.toString();
+  }
+
   Future<List<ProductModel>> getCart() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -23,9 +27,19 @@ class CartApi {
 
     final cart = await getCart();
 
+    final productKey = _getProductKey(product);
+
+    final exists = cart.any(
+      (item) => _getProductKey(item) == productKey,
+    );
+
+    if (exists) return;
+
     cart.add(product);
 
-    final cartData = cart.map((item) => jsonEncode(item.toJson())).toList();
+    final cartData = cart
+        .map((item) => jsonEncode(item.toJson()))
+        .toList();
 
     await prefs.setStringList(_cartKey, cartData);
   }
@@ -37,7 +51,25 @@ class CartApi {
 
     cart.removeWhere((product) => product.id == productId);
 
-    final cartData = cart.map((item) => jsonEncode(item.toJson())).toList();
+    final cartData = cart
+        .map((item) => jsonEncode(item.toJson()))
+        .toList();
+
+    await prefs.setStringList(_cartKey, cartData);
+  }
+
+  Future<void> removeFromCartByFirestoreId(String firestoreId) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final cart = await getCart();
+
+    cart.removeWhere(
+      (product) => product.firestoreId == firestoreId,
+    );
+
+    final cartData = cart
+        .map((item) => jsonEncode(item.toJson()))
+        .toList();
 
     await prefs.setStringList(_cartKey, cartData);
   }

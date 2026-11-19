@@ -11,6 +11,7 @@ class ProductApi {
           dio ??
           Dio(
             BaseOptions(
+              baseUrl: ApiConstants.baseUrl,
               connectTimeout: const Duration(seconds: 30),
               receiveTimeout: const Duration(seconds: 30),
               sendTimeout: const Duration(seconds: 30),
@@ -22,12 +23,11 @@ class ProductApi {
   Future<List<ProductModel>> getProducts() async {
     try {
       final response = await _dio.get(
-        '${ApiConstants.baseUrl}${ApiConstants.productsEndpoint}',
-        queryParameters: {'limit': 0},
+        ApiConstants.menClothingEndpoint,
       );
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['products'];
+      if (response.statusCode == 200 && response.data is List) {
+        final List<dynamic> data = response.data as List<dynamic>;
 
         return data
             .map(
@@ -46,37 +46,36 @@ class ProductApi {
   Future<ProductModel> getProductById(int id) async {
     try {
       final response = await _dio.get(
-        '${ApiConstants.baseUrl}${ApiConstants.productDetailsEndpoint}$id',
+        '${ApiConstants.productDetailsEndpoint}$id',
       );
 
-      return ProductModel.fromJson(response.data as Map<String, dynamic>);
+      if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
+        return ProductModel.fromJson(
+          response.data as Map<String, dynamic>,
+        );
+      }
+
+      throw Exception('Failed to load product: ${response.statusCode}');
     } on DioException catch (e) {
       throw Exception('API Error (${e.type}): ${e.message}');
     }
   }
 
-  // Search products by name
   Future<List<ProductModel>> searchProducts(String query) async {
     try {
-      final response = await _dio.get(
-        '${ApiConstants.baseUrl}/products/search',
-        queryParameters: {'q': query},
-      );
+      final products = await getProducts();
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['products'];
-
-        return data
-            .map(
-              (product) =>
-                  ProductModel.fromJson(product as Map<String, dynamic>),
-            )
-            .toList();
+      if (query.trim().isEmpty) {
+        return products;
       }
 
-      throw Exception('Failed to search products: ${response.statusCode}');
-    } on DioException catch (e) {
-      throw Exception('API Error (${e.type}): ${e.message}');
+      return products.where((product) {
+        return product.title
+            .toLowerCase()
+            .contains(query.trim().toLowerCase());
+      }).toList();
+    } catch (e) {
+      throw Exception('Failed to search products: $e');
     }
   }
 }

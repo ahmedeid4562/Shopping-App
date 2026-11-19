@@ -7,11 +7,9 @@ class OrderApi {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
 
-  OrderApi({
-    FirebaseFirestore? firestore,
-    FirebaseAuth? auth,
-  })  : _firestore = firestore ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+  OrderApi({FirebaseFirestore? firestore, FirebaseAuth? auth})
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _auth = auth ?? FirebaseAuth.instance;
 
   CollectionReference<Map<String, dynamic>> get _ordersCollection {
     final user = _auth.currentUser;
@@ -20,10 +18,7 @@ class OrderApi {
       throw Exception('Please login first');
     }
 
-    return _firestore
-        .collection('users')
-        .doc(user.uid)
-        .collection('orders');
+    return _firestore.collection('users').doc(user.uid).collection('orders');
   }
 
   Future<String> createOrder({
@@ -69,10 +64,10 @@ class OrderApi {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return {'id': doc.id, ...doc.data()};
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return {'id': doc.id, ...doc.data()};
+          }).toList();
+        });
   }
 
   Stream<List<Map<String, dynamic>>> watchAllOrders() {
@@ -81,14 +76,14 @@ class OrderApi {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return {
-          ...doc.data(),
-          'id': doc.id,
-          'userId': doc.reference.parent.parent?.id,
-        };
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return {
+              ...doc.data(),
+              'id': doc.id,
+              'userId': doc.reference.parent.parent?.id,
+            };
+          }).toList();
+        });
   }
 
   Future<void> updateOrderStatus({
@@ -105,10 +100,7 @@ class OrderApi {
         .doc(userId)
         .collection('orders')
         .doc(orderId)
-        .update({
-      'status': status,
-      'updatedAt': FieldValue.serverTimestamp(),
-    });
+        .update({'status': status, 'updatedAt': FieldValue.serverTimestamp()});
   }
 
   Future<void> cancelOrder(String orderId) async {
