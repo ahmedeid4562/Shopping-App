@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 class AdminOrderCard extends StatelessWidget {
   final Map<String, dynamic> order;
@@ -38,16 +39,37 @@ class AdminOrderCard extends StatelessWidget {
     }
   }
 
+  String _getLocalizedStatus(String status, AppLocalizations l) {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return l.pendingStatus;
+      case 'processing':
+        return l.processingStatus;
+      case 'shipped':
+        return l.shippedStatus;
+      case 'delivered':
+        return l.deliveredStatus;
+      case 'cancelled':
+        return l.cancelledStatus;
+      default:
+        return status;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l = AppLocalizations.of(context)!;
 
     final status = order['status']?.toString() ?? 'Pending';
+
     final total = order['totalPrice'] is num
         ? (order['totalPrice'] as num).toDouble()
         : 0.0;
 
-    final products = order['products'] is List ? order['products'] as List : [];
+    final products = order['products'] is List
+        ? order['products'] as List
+        : [];
 
     final createdAt = order['createdAt'];
 
@@ -77,7 +99,7 @@ class AdminOrderCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Order #${order['id']}',
+                    '${l.orderLabel} #${order['id']}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
@@ -85,11 +107,14 @@ class AdminOrderCard extends StatelessWidget {
                   ),
                 ),
                 PopupMenuButton<String>(
-                  tooltip: 'Update order status',
+                  tooltip: l.updateOrderStatus,
                   onSelected: onStatusChanged,
                   itemBuilder: (context) {
                     return availableStatuses.map((item) {
-                      return PopupMenuItem(value: item, child: Text(item));
+                      return PopupMenuItem(
+                        value: item,
+                        child: Text(_getLocalizedStatus(item, l)),
+                      );
                     }).toList();
                   },
                   child: Container(
@@ -105,7 +130,7 @@ class AdminOrderCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          status,
+                          _getLocalizedStatus(status, l),
                           style: TextStyle(
                             color: _getStatusColor(status),
                             fontSize: 11,
@@ -128,13 +153,19 @@ class AdminOrderCard extends StatelessWidget {
             const Divider(height: 25),
 
             Text(
-              order['customerName']?.toString() ?? 'Unknown Customer',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              order['customerName']?.toString() ?? l.unknownCustomer,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
 
             const SizedBox(height: 10),
 
-            _infoRow(Icons.phone_outlined, order['phone']?.toString() ?? ''),
+            _infoRow(
+              Icons.phone_outlined,
+              order['phone']?.toString() ?? '',
+            ),
 
             const SizedBox(height: 7),
 
@@ -160,9 +191,12 @@ class AdminOrderCard extends StatelessWidget {
 
             const Divider(height: 25),
 
-            const Text(
-              'Products',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            Text(
+              l.productsLabel,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
             ),
 
             const SizedBox(height: 10),
@@ -178,7 +212,7 @@ class AdminOrderCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        product['title']?.toString() ?? 'Unknown Product',
+                        product['title']?.toString() ?? l.unknownProduct,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontSize: 13),
@@ -201,9 +235,12 @@ class AdminOrderCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Total Amount',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                Text(
+                  l.totalAmount,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
                 ),
                 Text(
                   '\$${total.toStringAsFixed(2)}',
@@ -226,7 +263,12 @@ class AdminOrderCard extends StatelessWidget {
       children: [
         Icon(icon, size: 17, color: Colors.grey),
         const SizedBox(width: 9),
-        Expanded(child: Text(text, style: const TextStyle(fontSize: 12))),
+        Expanded(
+          child: Text(
+            text,
+            style: const TextStyle(fontSize: 12),
+          ),
+        ),
       ],
     );
   }

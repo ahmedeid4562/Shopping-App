@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../../data/model/product_model.dart';
 
@@ -19,6 +20,7 @@ class AdminProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l = AppLocalizations.of(context)!;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 14),
@@ -51,9 +53,7 @@ class AdminProductCard extends StatelessWidget {
                       ),
               ),
             ),
-
             const SizedBox(width: 14),
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,9 +67,7 @@ class AdminProductCard extends StatelessWidget {
                       fontSize: 14,
                     ),
                   ),
-
                   const SizedBox(height: 5),
-
                   Text(
                     product.category,
                     style: TextStyle(
@@ -77,9 +75,7 @@ class AdminProductCard extends StatelessWidget {
                       fontSize: 12,
                     ),
                   ),
-
                   const SizedBox(height: 7),
-
                   Text(
                     '\$${product.price.toStringAsFixed(2)}',
                     style: const TextStyle(
@@ -91,7 +87,6 @@ class AdminProductCard extends StatelessWidget {
                 ],
               ),
             ),
-
             PopupMenuButton<String>(
               onSelected: (value) {
                 if (value == 'edit') {
@@ -101,23 +96,30 @@ class AdminProductCard extends StatelessWidget {
                 }
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'edit',
                   child: Row(
                     children: [
-                      Icon(Icons.edit_outlined, size: 19),
-                      SizedBox(width: 10),
-                      Text('Edit'),
+                      const Icon(Icons.edit_outlined, size: 19),
+                      const SizedBox(width: 10),
+                      Text(l.editAction),
                     ],
                   ),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'delete',
                   child: Row(
                     children: [
-                      Icon(Icons.delete_outline, color: Colors.red, size: 19),
-                      SizedBox(width: 10),
-                      Text('Delete', style: TextStyle(color: Colors.red)),
+                      const Icon(
+                        Icons.delete_outline,
+                        color: Colors.red,
+                        size: 19,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        l.deleteAction,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                     ],
                   ),
                 ),

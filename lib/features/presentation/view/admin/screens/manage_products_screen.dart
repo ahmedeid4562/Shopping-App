@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../../data/api/admin_product_api.dart';
 import '../../../../data/model/product_model.dart';
-
+import 'package:shopping_app/features/presentation/view/admin/screens/add_product_screen.dart';
 import '../widgets/admin_product_card.dart';
-import 'add_product_screen.dart';
 
 class ManageProductsScreen extends StatefulWidget {
   const ManageProductsScreen({super.key});
@@ -20,6 +20,8 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
 
   late final Stream<List<ProductModel>> _productsStream;
 
+  AppLocalizations get l => AppLocalizations.of(context)!;
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +31,9 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
   Future<void> _openProductForm({ProductModel? product}) async {
     final result = await Navigator.push<bool>(
       context,
-      MaterialPageRoute(builder: (_) => AddProductScreen(product: product)),
+      MaterialPageRoute(
+        builder: (_) => AddProductScreen(product: product),
+      ),
     );
 
     if (!mounted || result != true) return;
@@ -38,8 +42,8 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
       SnackBar(
         content: Text(
           product == null
-              ? 'Product added successfully'
-              : 'Product updated successfully',
+              ? l.productAddedSuccessfully
+              : l.productUpdatedSuccessfully,
         ),
       ),
     );
@@ -50,7 +54,9 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
 
     if (productId == null || productId.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cannot delete this product')),
+        SnackBar(
+          content: Text(l.cannotDeleteProduct),
+        ),
       );
       return;
     }
@@ -58,21 +64,28 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
+        final dialogL = AppLocalizations.of(dialogContext)!;
+
         return AlertDialog(
-          title: const Text('Delete Product'),
-          content: Text('Are you sure you want to delete "${product.title}"?'),
+          title: Text(dialogL.deleteProductTitle),
+          content: Text(
+            dialogL.deleteProductConfirmation(product.title),
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(dialogContext, false);
               },
-              child: const Text('Cancel'),
+              child: Text(dialogL.cancel),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(dialogContext, true);
               },
-              child: const Text('Delete', style: TextStyle(color: Colors.red)),
+              child: Text(
+                dialogL.deleteAction,
+                style: const TextStyle(color: Colors.red),
+              ),
             ),
           ],
         );
@@ -87,14 +100,16 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product deleted successfully')),
+        SnackBar(
+          content: Text(l.productDeletedSuccessfully),
+        ),
       );
     } catch (e) {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to delete product: $e'),
+          content: Text('${l.failedToDeleteProduct}: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -107,9 +122,11 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Manage Products',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.manageProducts,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -119,7 +136,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
-        label: const Text('Add Product'),
+        label: Text(l.addProduct),
       ),
 
       body: StreamBuilder<List<ProductModel>>(
@@ -130,7 +147,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Text(
-                  'Failed to load products:\n${snapshot.error}',
+                  '${l.failedToLoadProducts}:\n${snapshot.error}',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -138,7 +155,9 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
 
           final products = snapshot.data ?? [];
@@ -156,24 +175,31 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
                       color: colors.onSurfaceVariant,
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'No Products Yet',
-                      style: TextStyle(
+
+                    Text(
+                      l.noProductsYet,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+
                     const SizedBox(height: 8),
+
                     Text(
-                      'Start adding products to your store.',
+                      l.startAddingProducts,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: colors.onSurfaceVariant),
+                      style: TextStyle(
+                        color: colors.onSurfaceVariant,
+                      ),
                     ),
+
                     const SizedBox(height: 20),
+
                     ElevatedButton.icon(
                       onPressed: () => _openProductForm(),
                       icon: const Icon(Icons.add),
-                      label: const Text('Add Your First Product'),
+                      label: Text(l.addYourFirstProduct),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
                         foregroundColor: Colors.white,
@@ -191,12 +217,16 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Store Products',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
                   Text(
-                    '${products.length} Products',
+                    l.storeProducts,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  Text(
+                    l.productsCount(products.length),
                     style: TextStyle(
                       color: colors.onSurfaceVariant,
                       fontSize: 12,

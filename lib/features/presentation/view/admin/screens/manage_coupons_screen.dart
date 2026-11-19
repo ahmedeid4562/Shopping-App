@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../../data/api/coupon_api.dart';
 
@@ -13,6 +14,8 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
   static const Color primaryColor = Color(0xFF385CF2);
 
   final CouponApi _couponApi = CouponApi();
+
+  AppLocalizations get l => AppLocalizations.of(context)!;
 
   Future<void> _showAddCouponDialog() async {
     final formKey = GlobalKey<FormState>();
@@ -30,6 +33,8 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
       builder: (dialogContext) {
         return StatefulBuilder(
           builder: (dialogContext, setDialogState) {
+            final dialogL = AppLocalizations.of(dialogContext)!;
+
             Future<void> chooseDate() async {
               final picked = await showDatePicker(
                 context: dialogContext,
@@ -57,8 +62,8 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
 
               if (expiresAt == null) {
                 ScaffoldMessenger.of(dialogContext).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please choose an expiration date'),
+                  SnackBar(
+                    content: Text(dialogL.chooseExpirationDateFirst),
                   ),
                 );
                 return;
@@ -80,8 +85,8 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                 Navigator.pop(dialogContext);
 
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Coupon created successfully'),
+                  SnackBar(
+                    content: Text(l.couponCreatedSuccessfully),
                     backgroundColor: Colors.green,
                   ),
                 );
@@ -92,7 +97,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
 
                 ScaffoldMessenger.of(dialogContext).showSnackBar(
                   SnackBar(
-                    content: Text(e.toString()),
+                    content: Text('${dialogL.failedToCreateCoupon}: $e'),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -100,7 +105,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
             }
 
             return AlertDialog(
-              title: const Text('Create Coupon'),
+              title: Text(dialogL.createCoupon),
               content: SingleChildScrollView(
                 child: Form(
                   key: formKey,
@@ -111,14 +116,16 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                         controller: codeController,
                         textCapitalization: TextCapitalization.characters,
                         enabled: !isSaving,
-                        decoration: const InputDecoration(
-                          labelText: 'Coupon Code',
+                        decoration: InputDecoration(
+                          labelText: dialogL.couponCode,
                           hintText: 'SAVE20',
-                          prefixIcon: Icon(Icons.confirmation_number_outlined),
+                          prefixIcon: const Icon(
+                            Icons.confirmation_number_outlined,
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.trim().length < 3) {
-                            return 'Enter at least 3 characters';
+                            return dialogL.enterAtLeast3Characters;
                           }
 
                           return null;
@@ -129,17 +136,17 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
 
                       DropdownButtonFormField<String>(
                         initialValue: type,
-                        decoration: const InputDecoration(
-                          labelText: 'Discount Type',
+                        decoration: InputDecoration(
+                          labelText: dialogL.discountType,
                         ),
-                        items: const [
+                        items: [
                           DropdownMenuItem(
                             value: 'percentage',
-                            child: Text('Percentage (%)'),
+                            child: Text(dialogL.percentage),
                           ),
                           DropdownMenuItem(
                             value: 'fixed',
-                            child: Text('Fixed Amount'),
+                            child: Text(dialogL.fixedAmount),
                           ),
                         ],
                         onChanged: isSaving
@@ -163,18 +170,18 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                         ),
                         decoration: InputDecoration(
                           labelText: type == 'percentage'
-                              ? 'Discount Percentage'
-                              : 'Discount Amount',
+                              ? dialogL.discountPercentage
+                              : dialogL.discountAmount,
                         ),
                         validator: (value) {
                           final number = double.tryParse(value ?? '');
 
                           if (number == null || number <= 0) {
-                            return 'Enter a valid discount';
+                            return dialogL.enterValidDiscount;
                           }
 
                           if (type == 'percentage' && number > 100) {
-                            return 'Maximum percentage is 100';
+                            return dialogL.maximumPercentageIs100;
                           }
 
                           return null;
@@ -189,14 +196,14 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                         ),
-                        decoration: const InputDecoration(
-                          labelText: 'Minimum Order Amount',
+                        decoration: InputDecoration(
+                          labelText: dialogL.minimumOrderAmount,
                         ),
                         validator: (value) {
                           final number = double.tryParse(value ?? '');
 
                           if (number == null || number < 0) {
-                            return 'Enter a valid amount';
+                            return dialogL.enterValidAmount;
                           }
 
                           return null;
@@ -210,7 +217,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                         icon: const Icon(Icons.calendar_month),
                         label: Text(
                           expiresAt == null
-                              ? 'Choose Expiration Date'
+                              ? dialogL.chooseExpirationDate
                               : '${expiresAt!.year}-'
                                     '${expiresAt!.month.toString().padLeft(2, '0')}-'
                                     '${expiresAt!.day.toString().padLeft(2, '0')}',
@@ -225,7 +232,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                   onPressed: isSaving
                       ? null
                       : () => Navigator.pop(dialogContext),
-                  child: const Text('Cancel'),
+                  child: Text(dialogL.cancel),
                 ),
                 ElevatedButton(
                   onPressed: isSaving ? null : saveCoupon,
@@ -235,7 +242,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                           width: 18,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Create'),
+                      : Text(dialogL.create),
                 ),
               ],
             );
@@ -255,13 +262,19 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Coupon deleted')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l.couponDeleted),
+        ),
+      );
     } catch (e) {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+        SnackBar(
+          content: Text('${l.failedToDeleteCoupon}: $e'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -278,7 +291,9 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            coupon.isActive ? 'Coupon deactivated' : 'Coupon activated',
+            coupon.isActive
+                ? l.couponDeactivated
+                : l.couponActivated,
           ),
         ),
       );
@@ -286,7 +301,10 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+        SnackBar(
+          content: Text('${l.failedToUpdateCoupon}: $e'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -297,9 +315,9 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Manage Coupons',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.manageCoupons,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -308,31 +326,43 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
-        label: const Text('Add Coupon'),
+        label: Text(l.addCoupon),
       ),
       body: StreamBuilder<List<CouponModel>>(
         stream: _couponApi.watchCoupons(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
-              child: Text('Failed to load coupons: ${snapshot.error}'),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  '${l.failedToLoadCoupons}: ${snapshot.error}',
+                  textAlign: TextAlign.center,
+                ),
+              ),
             );
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
 
           final coupons = snapshot.data ?? [];
 
           if (coupons.isEmpty) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.discount_outlined, size: 65, color: Colors.grey),
-                  SizedBox(height: 12),
-                  Text('No coupons created yet'),
+                  const Icon(
+                    Icons.discount_outlined,
+                    size: 65,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(l.noCouponsCreatedYet),
                 ],
               ),
             );
@@ -345,8 +375,8 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
               final coupon = coupons[index];
 
               final discountText = coupon.type == 'percentage'
-                  ? '${coupon.value.toStringAsFixed(0)}% OFF'
-                  : '\$${coupon.value.toStringAsFixed(2)} OFF';
+                  ? '${coupon.value.toStringAsFixed(0)}% ${l.off}'
+                  : '\$${coupon.value.toStringAsFixed(2)} ${l.off}';
 
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
@@ -361,15 +391,17 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                   ),
                   title: Text(
                     coupon.code,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   subtitle: Text(
                     '$discountText\n'
-                    'Minimum order: \$${coupon.minOrder.toStringAsFixed(2)}\n'
-                    'Expires: ${coupon.expiresAt.year}-'
+                    '${l.minimumOrder}: \$${coupon.minOrder.toStringAsFixed(2)}\n'
+                    '${l.expires}: ${coupon.expiresAt.year}-'
                     '${coupon.expiresAt.month.toString().padLeft(2, '0')}-'
                     '${coupon.expiresAt.day.toString().padLeft(2, '0')}\n'
-                    'Status: ${coupon.isActive ? 'Active' : 'Inactive'}',
+                    '${l.status}: ${coupon.isActive ? l.active : l.inactive}',
                   ),
                   isThreeLine: true,
                   trailing: PopupMenuButton<String>(
@@ -384,12 +416,14 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                       PopupMenuItem(
                         value: 'toggle',
                         child: Text(
-                          coupon.isActive ? 'Deactivate' : 'Activate',
+                          coupon.isActive
+                              ? l.deactivate
+                              : l.activate,
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'delete',
-                        child: Text('Delete'),
+                        child: Text(l.deleteAction),
                       ),
                     ],
                   ),

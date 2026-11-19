@@ -1,0 +1,249 @@
+{
+  "@@locale": "en",
+  "appTitle": "Shopping App",
+  "user": "User",
+  "noEmailAvailable": "No email available",
+  "myProfile": "My Profile",
+  "myAccount": "My Account",
+  "editProfile": "Edit Profile",
+  "updatePersonalInfo": "Update your personal information",
+  "changePassword": "Change Password",
+  "updateAccountPassword": "Update your account password",
+  "myOrders": "My Orders",
+  "viewOrderHistory": "View your order history",
+  "myAddresses": "My Addresses",
+  "manageAddresses": "Manage your delivery addresses",
+  "paymentMethods": "Payment Methods",
+  "managePaymentOptions": "Manage your payment options",
+  "preferences": "Preferences",
+  "darkMode": "Dark Mode",
+  "darkAppearanceEnabled": "Dark appearance enabled",
+  "lightAppearanceEnabled": "Light appearance enabled",
+  "language": "Language",
+  "arabic": "Arabic",
+  "english": "English",
+  "notifications": "Notifications",
+  "manageNotifications": "Manage your notifications",
+  "support": "Support",
+  "helpSupport": "Help & Support",
+  "getHelpAccount": "Get help with your account",
+  "aboutApp": "About App",
+  "learnAboutApp": "Learn more about our app",
+  "logout": "Logout",
+  "shoppingMember": "Shopping Member",
+  "pleaseLoginAgain": "Please login again",
+  "accountNoEmailPassword": "Your account does not have an email and password",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "confirmNewPassword": "Confirm New Password",
+  "cancel": "Cancel",
+  "fillAllFields": "Please fill in all fields",
+  "passwordMinLength": "Password must be at least 6 characters",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "newPasswordDifferent": "New password must be different from current password",
+  "passwordChangedSuccessfully": "Password changed successfully",
+  "incorrectCurrentPassword": "Current password is incorrect",
+  "chooseStrongerPassword": "Please choose a stronger password",
+  "somethingWentWrong": "Something went wrong",
+  "logoutConfirmation": "Are you sure you want to logout?",
+  "logoutFailed": "Logout failed",
+
+  "adminDashboard": "Admin Dashboard",
+  "manageStoreOrders": "Manage store orders",
+  "changeAdminPassword": "Change Admin Password",
+  "failedToChangePassword": "Failed to change password",
+  "orderInformationMissing": "Order information is missing",
+  "orderStatusUpdatedTo": "Order status updated to",
+  "failedToUpdateOrder": "Failed to update order",
+  "failedToVerifyAdminAccess": "Failed to verify admin access",
+  "accessDenied": "Access Denied",
+  "adminPrivilegesRequired": "Admin privileges are required",
+
+  "manageProducts": "Manage Products",
+  "manageProductsSubtitle": "Add, edit and delete products",
+  "productAddedSuccessfully": "Product added successfully",
+  "productUpdatedSuccessfully": "Product updated successfully",
+  "cannotDeleteProduct": "Cannot delete this product",
+  "deleteProductTitle": "Delete Product",
+  "deleteProductConfirmation": "Are you sure you want to delete \"{productName}\"?",
+  "@deleteProductConfirmation": {
+    "placeholders": {
+      "productName": {
+        "type": "String"
+      }
+    }
+  },
+  "productDeletedSuccessfully": "Product deleted successfully",
+  "failedToDeleteProduct": "Failed to delete product",
+  "failedToLoadProducts": "Failed to load products",
+  "noProductsYet": "No Products Yet",
+  "startAddingProducts": "Start adding products to your store.",
+  "addYourFirstProduct": "Add Your First Product",
+  "storeProducts": "Store Products",
+  "productsCount": "{count} Products",
+  "@productsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "manageCoupons": "Manage Coupons",
+  "manageCouponsSubtitle": "Create and manage discount codes",
+  "createCoupon": "Create Coupon",
+  "couponCode": "Coupon Code",
+  "enterAtLeast3Characters": "Enter at least 3 characters",
+  "discountType": "Discount Type",
+  "percentage": "Percentage (%)",
+  "fixedAmount": "Fixed Amount",
+  "discountPercentage": "Discount Percentage",
+  "discountAmount": "Discount Amount",
+  "enterValidDiscount": "Enter a valid discount",
+  "maximumPercentageIs100": "Maximum percentage is 100",
+  "minimumOrderAmount": "Minimum Order Amount",
+  "enterValidAmount": "Enter a valid amount",
+  "chooseExpirationDate": "Choose Expiration Date",
+  "chooseExpirationDateFirst": "Please choose an expiration date",
+  "create": "Create",
+  "couponCreatedSuccessfully": "Coupon created successfully",
+  "failedToCreateCoupon": "Failed to create coupon",
+  "couponDeleted": "Coupon deleted",
+  "failedToDeleteCoupon": "Failed to delete coupon",
+  "couponDeactivated": "Coupon deactivated",
+  "couponActivated": "Coupon activated",
+  "failedToUpdateCoupon": "Failed to update coupon",
+  "failedToLoadCoupons": "Failed to load coupons",
+  "noCouponsCreatedYet": "No coupons created yet",
+  "addCoupon": "Add Coupon",
+  "off": "OFF",
+  "minimumOrder": "Minimum order",
+  "expires": "Expires",
+  "status": "Status",
+  "active": "Active",
+  "inactive": "Inactive",
+  "deactivate": "Deactivate",
+  "activate": "Activate",
+
+  "failedSelectImages": "Failed to select images",
+  "enterColorName": "Enter color name number {number}",
+  "@enterColorName": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "invalidHexColor": "Invalid hex color code for {colorName}",
+  "@invalidHexColor": {
+    "placeholders": {
+      "colorName": {
+        "type": "String"
+      }
+    }
+  },
+  "addAtLeastOneImage": "Add at least one image for {colorName}",
+  "@addAtLeastOneImage": {
+    "placeholders": {
+      "colorName": {
+        "type": "String"
+      }
+    }
+  },
+  "noValidImages": "No valid images found for {colorName}",
+  "@noValidImages": {
+    "placeholders": {
+      "colorName": {
+        "type": "String"
+      }
+    }
+  },
+  "addAtLeastOneColor": "Add at least one color",
+  "enterAllColorNames": "Please enter all color names",
+  "uniqueColorNames": "Color names must be unique",
+  "addProductImages": "Please add product images",
+  "productIdMissing": "Product ID is missing",
+  "failedSaveProduct": "Failed to save product",
+  "pleaseEnterField": "Please enter {label}",
+  "@pleaseEnterField": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "colorVariant": "Color Variant {number}",
+  "@colorVariant": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "removeColor": "Remove Color",
+  "colorName": "Color Name",
+  "colorNameExample": "Example: Red, Black, Blue",
+  "colorHex": "Color Hex Code",
+  "colorImages": "Color Images",
+  "imagesCount": "{count} images",
+  "@imagesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noImagesAdded": "No images added",
+  "openingGallery": "Opening gallery...",
+  "addImagesFromDevice": "Add Images From Device",
+  "editProduct": "Edit Product",
+  "addProduct": "Add Product",
+  "productInformation": "Product Information",
+  "productName": "Product Name",
+  "price": "Price",
+  "validPrice": "Please enter a valid price greater than zero",
+  "category": "Category",
+  "categoryExample": "Example: Clothes, Shoes, Accessories",
+  "description": "Description",
+  "productColorsImages": "Product Colors & Images",
+  "colorsCount": "{count} colors",
+  "@colorsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addAvailableColorsDescription": "Add available product colors and their images",
+  "addAnotherColor": "Add Another Color",
+  "saveChanges": "Save Changes",
+
+  "editAction": "Edit",
+  "deleteAction": "Delete",
+
+  "orderLabel": "Order",
+  "updateOrderStatus": "Update order status",
+  "unknownCustomer": "Unknown Customer",
+  "productsLabel": "Products",
+  "unknownProduct": "Unknown Product",
+  "totalAmount": "Total Amount",
+  "pendingStatus": "Pending",
+  "processingStatus": "Processing",
+  "shippedStatus": "Shipped",
+  "deliveredStatus": "Delivered",
+  "cancelledStatus": "Cancelled",
+
+  "failedToLoadOrders": "Failed to load orders",
+  "overview": "Overview",
+  "totalOrders": "Total Orders",
+  "allOrders": "All Orders",
+  "ordersCount": "{count} Orders",
+  "@ordersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noOrdersYet": "No Orders Yet"
+}

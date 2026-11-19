@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:shopping_app/features/data/api/auth_api.dart';
 import 'package:shopping_app/features/presentation/view/screens/login_screen.dart';
 import 'package:shopping_app/features/presentation/view/screens/signup_screen.dart';
 import 'package:shopping_app/features/presentation/view/screens/main_screen.dart';
@@ -11,22 +12,55 @@ class AppRoutes {
   static const String home = '/home';
   static const String admin = '/admin';
 
+  static final AuthApi _authApi = AuthApi();
+
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case login:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        return MaterialPageRoute(
+          builder: (_) => const LoginScreen(),
+        );
 
       case signup:
-        return MaterialPageRoute(builder: (_) => const SignupScreen());
+        return MaterialPageRoute(
+          builder: (_) => const SignupScreen(),
+        );
 
       case home:
-        return MaterialPageRoute(builder: (_) => const MainScreen());
+        return MaterialPageRoute(
+          builder: (_) => const MainScreen(),
+        );
 
       case admin:
-        return MaterialPageRoute(builder: (_) => const AdminDashboardScreen());
+        return MaterialPageRoute(
+          builder: (_) => FutureBuilder<bool>(
+            future: _authApi.isAdmin(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return const LoginScreen();
+              }
+
+              if (snapshot.data == true) {
+                return const AdminDashboardScreen();
+              }
+
+              return const LoginScreen();
+            },
+          ),
+        );
 
       default:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        return MaterialPageRoute(
+          builder: (_) => const LoginScreen(),
+        );
     }
   }
 }
