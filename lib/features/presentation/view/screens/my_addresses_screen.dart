@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 class MyAddressesScreen extends StatefulWidget {
   const MyAddressesScreen({super.key});
@@ -17,6 +18,8 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
   List<Map<String, dynamic>> _addresses = [];
   bool _isLoading = true;
   bool _isAddressDialogOpen = false;
+
+  AppLocalizations get l => AppLocalizations.of(context)!;
 
   @override
   void initState() {
@@ -99,21 +102,26 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
+        final dialogL = AppLocalizations.of(dialogContext)!;
+
         return AlertDialog(
-          title: const Text('Delete Address'),
-          content: const Text('Are you sure you want to delete this address?'),
+          title: Text(dialogL.deleteAddressTitle),
+          content: Text(dialogL.deleteAddressConfirmation),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(dialogContext, false);
               },
-              child: const Text('Cancel'),
+              child: Text(dialogL.cancel),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(dialogContext, true);
               },
-              child: const Text('Delete', style: TextStyle(color: Colors.red)),
+              child: Text(
+                dialogL.deleteAction,
+                style: const TextStyle(color: Colors.red),
+              ),
             ),
           ],
         );
@@ -151,9 +159,9 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'My Addresses',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.myAddresses,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -161,19 +169,19 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
-        label: const Text('Add Address'),
+        label: Text(l.addAddress),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _addresses.isEmpty
-          ? _buildEmptyState(colors)
-          : ListView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
-              itemCount: _addresses.length,
-              itemBuilder: (context, index) {
-                return _buildAddressCard(index, colors);
-              },
-            ),
+              ? _buildEmptyState(colors)
+              : ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
+                  itemCount: _addresses.length,
+                  itemBuilder: (context, index) {
+                    return _buildAddressCard(index, colors);
+                  },
+                ),
     );
   }
 
@@ -190,15 +198,20 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
               color: colors.onSurfaceVariant,
             ),
             const SizedBox(height: 16),
-            const Text(
-              'No Addresses Yet',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              l.noAddressesYet,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Add your address to make checkout easier.',
+              l.addAddressDescription,
               textAlign: TextAlign.center,
-              style: TextStyle(color: colors.onSurfaceVariant),
+              style: TextStyle(
+                color: colors.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -232,7 +245,8 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
                 CircleAvatar(
                   backgroundColor: primaryColor.withValues(alpha: 0.1),
                   child: Icon(
-                    address['name'].toString().toLowerCase() == 'home'
+                    address['name'].toString().toLowerCase() == 'home' ||
+                            address['name'].toString() == l.homeAddress
                         ? Icons.home_outlined
                         : Icons.location_on_outlined,
                     color: primaryColor,
@@ -249,10 +263,13 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
                   ),
                 ),
                 if (isDefault)
-                  const Chip(
+                  Chip(
                     label: Text(
-                      'Default',
-                      style: TextStyle(color: Colors.white, fontSize: 11),
+                      l.defaultAddress,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                      ),
                     ),
                     backgroundColor: primaryColor,
                     side: BorderSide.none,
@@ -269,16 +286,19 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
                   },
                   itemBuilder: (context) => [
                     if (!isDefault)
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'default',
-                        child: Text('Set as Default'),
+                        child: Text(l.setAsDefaultAddress),
                       ),
-                    const PopupMenuItem(value: 'edit', child: Text('Edit')),
-                    const PopupMenuItem(
+                    PopupMenuItem(
+                      value: 'edit',
+                      child: Text(l.editAddress),
+                    ),
+                    PopupMenuItem(
                       value: 'delete',
                       child: Text(
-                        'Delete',
-                        style: TextStyle(color: Colors.red),
+                        l.deleteAction,
+                        style: const TextStyle(color: Colors.red),
                       ),
                     ),
                   ],
@@ -288,17 +308,23 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
             const SizedBox(height: 12),
             Text(
               address['street'],
-              style: TextStyle(color: colors.onSurfaceVariant),
+              style: TextStyle(
+                color: colors.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: 5),
             Text(
               address['city'],
-              style: TextStyle(color: colors.onSurfaceVariant),
+              style: TextStyle(
+                color: colors.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: 5),
             Text(
               address['phone'],
-              style: TextStyle(color: colors.onSurfaceVariant),
+              style: TextStyle(
+                color: colors.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -334,6 +360,8 @@ class _AddressDialogState extends State<AddressDialog> {
   String _phone = '';
   String _city = '';
   String _street = '';
+
+  AppLocalizations get l => AppLocalizations.of(context)!;
 
   @override
   void initState() {
@@ -375,11 +403,13 @@ class _AddressDialogState extends State<AddressDialog> {
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
-            return 'This field is required';
+            return l.addressFieldRequired;
           }
 
           return null;
@@ -392,7 +422,9 @@ class _AddressDialogState extends State<AddressDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.isEditing ? 'Edit Address' : 'Add New Address'),
+      title: Text(
+        widget.isEditing ? l.editAddress : l.addNewAddress,
+      ),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -400,39 +432,43 @@ class _AddressDialogState extends State<AddressDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildTextField(
-                label: 'Address Name',
-                hint: 'Home, Work...',
-                initialValue: widget.address?['name']?.toString() ?? '',
+                label: l.addressName,
+                hint: l.addressNameHint,
+                initialValue:
+                    widget.address?['name']?.toString() ?? '',
                 onSaved: (value) {
                   _name = value?.trim() ?? '';
                 },
               ),
               _buildTextField(
-                label: 'Phone Number',
+                label: l.phoneNumber,
                 keyboardType: TextInputType.phone,
-                initialValue: widget.address?['phone']?.toString() ?? '',
+                initialValue:
+                    widget.address?['phone']?.toString() ?? '',
                 onSaved: (value) {
                   _phone = value?.trim() ?? '';
                 },
               ),
               _buildTextField(
-                label: 'City',
-                initialValue: widget.address?['city']?.toString() ?? '',
+                label: l.city,
+                initialValue:
+                    widget.address?['city']?.toString() ?? '',
                 onSaved: (value) {
                   _city = value?.trim() ?? '';
                 },
               ),
               _buildTextField(
-                label: 'Street Address',
+                label: l.streetAddress,
                 maxLines: 2,
-                initialValue: widget.address?['street']?.toString() ?? '',
+                initialValue:
+                    widget.address?['street']?.toString() ?? '',
                 onSaved: (value) {
                   _street = value?.trim() ?? '';
                 },
               ),
               CheckboxListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Set as default address'),
+                title: Text(l.setAsDefaultAddress),
                 value: _isDefault,
                 activeColor: primaryColor,
                 onChanged: (value) {
@@ -448,7 +484,7 @@ class _AddressDialogState extends State<AddressDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: Text(l.cancel),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -456,7 +492,9 @@ class _AddressDialogState extends State<AddressDialog> {
             foregroundColor: Colors.white,
           ),
           onPressed: _submit,
-          child: Text(widget.isEditing ? 'Save Changes' : 'Add Address'),
+          child: Text(
+            widget.isEditing ? l.saveChanges : l.addAddress,
+          ),
         ),
       ],
     );

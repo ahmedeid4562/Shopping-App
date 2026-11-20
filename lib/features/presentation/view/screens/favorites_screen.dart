@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/api/favorite_api.dart';
 import '../../../data/model/product_model.dart';
@@ -10,19 +11,22 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'My Favorites',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.myFavorites,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: StreamBuilder<List<ProductModel>>(
         stream: FavoriteApi().watchFavorites(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
 
           if (snapshot.hasError) {
@@ -30,9 +34,13 @@ class FavoritesScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, size: 55, color: Colors.red),
+                  const Icon(
+                    Icons.error_outline,
+                    size: 55,
+                    color: Colors.red,
+                  ),
                   const SizedBox(height: 12),
-                  const Text('Failed to load favorites'),
+                  Text(l.failedToLoadFavorites),
                   const SizedBox(height: 15),
                   ElevatedButton(
                     onPressed: () {
@@ -43,7 +51,7 @@ class FavoritesScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Text('Try Again'),
+                    child: Text(l.tryAgain),
                   ),
                 ],
               ),
@@ -63,14 +71,19 @@ class FavoritesScreen extends StatelessWidget {
                     color: colors.onSurfaceVariant,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'No Favorites Yet!',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    l.noFavoritesYet,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Add products to your favorites',
-                    style: TextStyle(color: colors.onSurfaceVariant),
+                    l.addProductsToFavorites,
+                    style: TextStyle(
+                      color: colors.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
@@ -80,14 +93,17 @@ class FavoritesScreen extends StatelessWidget {
           return GridView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: favorites.length,
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            gridDelegate:
+                const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 250,
               mainAxisSpacing: 15,
               crossAxisSpacing: 15,
               mainAxisExtent: 280,
             ),
             itemBuilder: (context, index) {
-              return ProductCard(product: favorites[index]);
+              return ProductCard(
+                product: favorites[index],
+              );
             },
           );
         },

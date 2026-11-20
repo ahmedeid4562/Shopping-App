@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 class AboutAppScreen extends StatelessWidget {
   const AboutAppScreen({super.key});
@@ -8,12 +9,13 @@ class AboutAppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'About App',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.aboutApp,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -40,7 +42,7 @@ class AboutAppScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             Text(
-              'Shopping App',
+              l.appTitle,
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -51,14 +53,17 @@ class AboutAppScreen extends StatelessWidget {
             const SizedBox(height: 8),
 
             Text(
-              'Version 1.0.0',
-              style: TextStyle(fontSize: 14, color: colors.onSurfaceVariant),
+              l.appVersion,
+              style: TextStyle(
+                fontSize: 14,
+                color: colors.onSurfaceVariant,
+              ),
             ),
 
             const SizedBox(height: 30),
 
             Text(
-              'About Us',
+              l.aboutUs,
               style: TextStyle(
                 fontSize: 19,
                 fontWeight: FontWeight.bold,
@@ -69,10 +74,7 @@ class AboutAppScreen extends StatelessWidget {
             const SizedBox(height: 12),
 
             Text(
-              'Shopping App is your simple and convenient shopping '
-              'companion. Explore different products, discover categories, '
-              'save your favorite items, and manage your shopping experience '
-              'all in one place.',
+              l.aboutAppDescription,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -86,41 +88,49 @@ class AboutAppScreen extends StatelessWidget {
             _buildInfoTile(
               context,
               icon: Icons.shopping_cart_outlined,
-              title: 'Easy Shopping',
-              subtitle: 'Browse and discover different products.',
+              title: l.aboutEasyShopping,
+              subtitle: l.aboutEasyShoppingDescription,
             ),
 
             _buildInfoTile(
               context,
               icon: Icons.favorite_border,
-              title: 'Favorites',
-              subtitle: 'Save products you love.',
+              title: l.aboutFavorites,
+              subtitle: l.aboutFavoritesDescription,
             ),
 
             _buildInfoTile(
               context,
               icon: Icons.security_outlined,
-              title: 'Secure Experience',
-              subtitle: 'Enjoy a simple and secure user experience.',
+              title: l.aboutSecureExperience,
+              subtitle: l.aboutSecureExperienceDescription,
             ),
 
             const SizedBox(height: 30),
 
-            Divider(color: colors.outline.withValues(alpha: 0.2)),
+            Divider(
+              color: colors.outline.withValues(alpha: 0.2),
+            ),
 
             const SizedBox(height: 15),
 
             Text(
-              'Made with Flutter',
-              style: TextStyle(fontSize: 13, color: colors.onSurfaceVariant),
+              l.madeWithFlutter,
+              style: TextStyle(
+                fontSize: 13,
+                color: colors.onSurfaceVariant,
+              ),
             ),
 
             const SizedBox(height: 8),
 
             Text(
-              '© 2026 Shopping App. All rights reserved.',
+              l.copyrightNotice,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
+              style: TextStyle(
+                fontSize: 12,
+                color: colors.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -142,7 +152,9 @@ class AboutAppScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: colors.outline.withValues(alpha: 0.12)),
+        border: Border.all(
+          color: colors.outline.withValues(alpha: 0.12),
+        ),
       ),
       child: Row(
         children: [
@@ -153,7 +165,10 @@ class AboutAppScreen extends StatelessWidget {
               color: primaryColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: primaryColor),
+            child: Icon(
+              icon,
+              color: primaryColor,
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(

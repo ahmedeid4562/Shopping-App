@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/api/profile_api.dart';
 
@@ -20,6 +21,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final ProfileApi _profileApi = ProfileApi();
 
   bool _isLoading = false;
+
+  AppLocalizations get l => AppLocalizations.of(context)!;
 
   @override
   void initState() {
@@ -44,7 +47,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      _showMessage('Please login first');
+      _showMessage(l.pleaseLoginFirst);
       return;
     }
 
@@ -63,11 +66,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
         if (!mounted) return;
 
-        _showMessage('Verification email sent. Please check your inbox.');
+        _showMessage(l.verificationEmailSent);
       } else {
         if (!mounted) return;
 
-        _showMessage('Profile updated successfully');
+        _showMessage(l.profileUpdatedSuccessfully);
       }
 
       if (!mounted) return;
@@ -76,7 +79,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     } catch (e) {
       if (!mounted) return;
 
-      _showMessage(e.toString().replaceFirst('Exception: ', ''));
+      _showMessage(
+        e.toString().replaceFirst('Exception: ', ''),
+      );
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -85,8 +90,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override
@@ -95,9 +101,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Edit Profile',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.editProfile,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -122,17 +130,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
               const SizedBox(height: 30),
 
-              const Text(
-                'Full Name',
-                style: TextStyle(fontWeight: FontWeight.w600),
+              Text(
+                l.fullName,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
+
               const SizedBox(height: 10),
 
               TextFormField(
                 controller: _nameController,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                  hintText: 'Enter your name',
+                  hintText: l.enterYourName,
                   prefixIcon: const Icon(Icons.person_outline),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -140,7 +151,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please enter your name';
+                    return l.pleaseEnterYourName;
                   }
 
                   return null;
@@ -149,17 +160,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
               const SizedBox(height: 22),
 
-              const Text(
-                'Email Address',
-                style: TextStyle(fontWeight: FontWeight.w600),
+              Text(
+                l.emailAddress,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
+
               const SizedBox(height: 10),
 
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  hintText: 'Enter your email',
+                  hintText: l.enterYourEmail,
                   prefixIcon: const Icon(Icons.email_outlined),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -167,11 +181,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please enter your email';
+                    return l.pleaseEnterYourEmail;
                   }
 
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value.trim())) {
-                    return 'Please enter a valid email';
+                  if (!RegExp(
+                    r'^[^@]+@[^@]+\.[^@]+',
+                  ).hasMatch(value.trim())) {
+                    return l.validEmailAddress;
                   }
 
                   return null;
@@ -181,8 +197,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const SizedBox(height: 12),
 
               Text(
-                'Changing your email requires verification.',
-                style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
+                l.emailVerificationRequired,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: colors.onSurfaceVariant,
+                ),
               ),
 
               const SizedBox(height: 35),
@@ -208,9 +227,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             strokeWidth: 2,
                           ),
                         )
-                      : const Text(
-                          'Save Changes',
-                          style: TextStyle(
+                      : Text(
+                          l.saveChanges,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),

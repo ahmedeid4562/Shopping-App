@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../view_model/cart_cubit.dart';
 import '../../view_model/cart_state.dart';
@@ -14,11 +15,13 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'My Cart',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.myCart,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
@@ -27,7 +30,7 @@ class CartScreen extends StatelessWidget {
               context.read<CartCubit>().clearCart();
             },
             icon: const Icon(Icons.delete_outline),
-            tooltip: 'Clear Cart',
+            tooltip: l.clearCart,
           ),
         ],
       ),
@@ -40,15 +43,17 @@ class CartScreen extends StatelessWidget {
           }
 
           if (state is CartError) {
-            return Center(child: Text(state.message));
+            return Center(
+              child: Text(state.message),
+            );
           }
 
           if (state is CartLoaded) {
             if (state.products.isEmpty) {
-              return _buildEmptyCart(context);
+              return _buildEmptyCart(context, l);
             }
 
-            return _buildCartContent(context, state.products);
+            return _buildCartContent(context, state.products, l);
           }
 
           return const Center(
@@ -59,7 +64,10 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyCart(BuildContext context) {
+  Widget _buildEmptyCart(
+    BuildContext context,
+    AppLocalizations l,
+  ) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -72,15 +80,21 @@ class CartScreen extends StatelessWidget {
               color: Colors.grey.shade400,
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Your Cart Is Empty',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Text(
+              l.yourCartIsEmpty,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 10),
             Text(
-              'Looks like you haven\'t added anything yet.',
+              l.emptyCartDescription,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey.shade600),
+              style: TextStyle(
+                color: Colors.grey.shade600,
+              ),
             ),
           ],
         ),
@@ -88,7 +102,11 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartContent(BuildContext context, List<ProductModel> products) {
+  Widget _buildCartContent(
+    BuildContext context,
+    List<ProductModel> products,
+    AppLocalizations l,
+  ) {
     final totalPrice = products.fold<double>(
       0,
       (total, product) => total + product.price,
@@ -111,7 +129,9 @@ class CartScreen extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(24),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.05),
@@ -127,9 +147,9 @@ class CartScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Total',
-                      style: TextStyle(
+                    Text(
+                      l.totalAmount,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -164,9 +184,9 @@ class CartScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
-                    child: const Text(
-                      'Proceed to Checkout',
-                      style: TextStyle(
+                    child: Text(
+                      l.proceedToCheckout,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -181,13 +201,18 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, ProductModel product) {
+  Widget _buildCartItem(
+    BuildContext context,
+    ProductModel product,
+  ) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outlineVariant,
+        ),
       ),
       child: Row(
         children: [
@@ -201,12 +226,18 @@ class CartScreen extends StatelessWidget {
               placeholder: (_, _) => const SizedBox(
                 width: 85,
                 height: 85,
-                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                ),
               ),
               errorWidget: (_, _, _) => const SizedBox(
                 width: 85,
                 height: 85,
-                child: Icon(Icons.image_not_supported_outlined),
+                child: Icon(
+                  Icons.image_not_supported_outlined,
+                ),
               ),
             ),
           ),
@@ -240,7 +271,10 @@ class CartScreen extends StatelessWidget {
             onPressed: () {
               context.read<CartCubit>().removeFromCart(product.id);
             },
-            icon: const Icon(Icons.delete_outline, color: Colors.red),
+            icon: const Icon(
+              Icons.delete_outline,
+              color: Colors.red,
+            ),
           ),
         ],
       ),

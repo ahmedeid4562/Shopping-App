@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/api/order_api.dart';
 import '../../../data/api/coupon_api.dart';
@@ -35,6 +36,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   bool _isLoading = false;
   bool _isApplyingCoupon = false;
 
+  AppLocalizations get l => AppLocalizations.of(context)!;
+
   @override
   void initState() {
     super.initState();
@@ -54,7 +57,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   Future<void> _applyCoupon(double subtotal) async {
     if (_couponController.text.trim().isEmpty) {
-      _showMessage('Enter a coupon code');
+      _showMessage(l.enterCouponCode);
       return;
     }
 
@@ -73,7 +76,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         _discountAmount = coupon.calculateDiscount(subtotal);
       });
 
-      _showMessage('Coupon applied successfully!', isError: false);
+      _showMessage(
+        l.couponAppliedSuccessfully,
+        isError: false,
+      );
     } catch (e) {
       if (!mounted) return;
 
@@ -111,7 +117,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     if (state.products.isEmpty) {
-      _showMessage('Your cart is empty');
+      _showMessage(l.yourCartIsEmpty);
       return;
     }
 
@@ -146,11 +152,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         context: context,
         barrierDismissible: false,
         builder: (dialogContext) {
+          final dialogL = AppLocalizations.of(dialogContext)!;
+
           return AlertDialog(
-            icon: const Icon(Icons.check_circle, color: Colors.green, size: 55),
-            title: const Text('Order Placed Successfully!'),
-            content: const Text(
-              'Your order has been saved successfully.',
+            icon: const Icon(
+              Icons.check_circle,
+              color: Colors.green,
+              size: 55,
+            ),
+            title: Text(dialogL.orderPlacedSuccessfully),
+            content: Text(
+              dialogL.orderSavedSuccessfully,
               textAlign: TextAlign.center,
             ),
             actions: [
@@ -159,7 +171,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   Navigator.pop(dialogContext);
                   navigator.pop();
                 },
-                child: const Text('Continue Shopping'),
+                child: Text(dialogL.continueShopping),
               ),
             ],
           );
@@ -170,7 +182,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
       messenger.showSnackBar(
         SnackBar(
-          content: Text('Failed to place order: $e'),
+          content: Text('${l.failedToPlaceOrder}: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -190,11 +202,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         decoration: BoxDecoration(
           color: Colors.green.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
+          border: Border.all(
+            color: Colors.green.withValues(alpha: 0.3),
+          ),
         ),
         child: Row(
           children: [
-            const Icon(Icons.check_circle, color: Colors.green),
+            const Icon(
+              Icons.check_circle,
+              color: Colors.green,
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -202,18 +219,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 children: [
                   Text(
                     _appliedCoupon!.code,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const Text(
-                    'Coupon applied successfully',
-                    style: TextStyle(fontSize: 12),
+                  Text(
+                    l.couponAppliedSuccessfully,
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ],
               ),
             ),
             TextButton(
               onPressed: _isLoading ? null : _removeCoupon,
-              child: const Text('Remove'),
+              child: Text(l.removeCoupon),
             ),
           ],
         ),
@@ -228,7 +247,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             textCapitalization: TextCapitalization.characters,
             enabled: !_isLoading && !_isApplyingCoupon,
             decoration: InputDecoration(
-              hintText: 'Enter promo code',
+              hintText: l.enterPromoCode,
               prefixIcon: const Icon(Icons.discount_outlined),
               filled: true,
               fillColor: colors.surfaceContainerHighest,
@@ -262,7 +281,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       strokeWidth: 2,
                     ),
                   )
-                : const Text('Apply'),
+                : Text(l.applyCoupon),
           ),
         ),
       ],
@@ -275,16 +294,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Checkout',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.checkoutTitle,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
       body: BlocBuilder<CartCubit, CartState>(
         builder: (context, state) {
           if (state is! CartLoaded || state.products.isEmpty) {
-            return const Center(child: Text('Your cart is empty'));
+            return Center(
+              child: Text(l.yourCartIsEmpty),
+            );
           }
 
           final subtotal = state.totalPrice;
@@ -300,40 +323,51 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Delivery Information',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    l.deliveryInformation,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+
                   const SizedBox(height: 20),
 
                   _buildTextField(
                     controller: _nameController,
-                    label: 'Full Name',
+                    label: l.checkoutFullName,
                     icon: Icons.person_outline,
                   ),
+
                   const SizedBox(height: 16),
 
                   _buildTextField(
                     controller: _phoneController,
-                    label: 'Phone Number',
+                    label: l.checkoutPhoneNumber,
                     icon: Icons.phone_outlined,
                     keyboardType: TextInputType.phone,
+                    isPhoneNumber: true,
                   ),
+
                   const SizedBox(height: 16),
 
                   _buildTextField(
                     controller: _addressController,
-                    label: 'Delivery Address',
+                    label: l.checkoutDeliveryAddress,
                     icon: Icons.location_on_outlined,
                     maxLines: 3,
                   ),
 
                   const SizedBox(height: 28),
 
-                  const Text(
-                    'Payment Method',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    l.paymentMethodTitle,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+
                   const SizedBox(height: 12),
 
                   RadioGroup<String>(
@@ -348,7 +382,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     child: RadioListTile<String>(
                       value: 'Cash on Delivery',
                       activeColor: primaryColor,
-                      title: const Text('Cash on Delivery'),
+                      title: Text(l.cashOnDelivery),
                       secondary: const Icon(Icons.money),
                       enabled: !_isLoading,
                     ),
@@ -356,10 +390,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                   const SizedBox(height: 24),
 
-                  const Text(
-                    'Promo Code',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    l.promoCode,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+
                   const SizedBox(height: 12),
 
                   _buildCouponSection(subtotal),
@@ -374,20 +412,27 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                     child: Column(
                       children: [
-                        _buildPriceRow('Subtotal', subtotal),
-                        const SizedBox(height: 10),
                         _buildPriceRow(
-                          'Discount',
+                          l.subtotal,
+                          subtotal,
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        _buildPriceRow(
+                          l.discount,
                           -_discountAmount,
                           valueColor: Colors.green,
                         ),
+
                         const Divider(height: 24),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'Total Amount',
-                              style: TextStyle(
+                            Text(
+                              l.totalAmount,
+                              style: const TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -423,10 +468,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       ),
                       child: _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text(
-                              'Place Order',
-                              style: TextStyle(
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : Text(
+                              l.placeOrder,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -442,14 +489,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  Widget _buildPriceRow(String title, double amount, {Color? valueColor}) {
+  Widget _buildPriceRow(
+    String title,
+    double amount, {
+    Color? valueColor,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title),
         Text(
           '${amount < 0 ? '-' : ''}\$${amount.abs().toStringAsFixed(2)}',
-          style: TextStyle(color: valueColor, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: valueColor,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -461,6 +515,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     required IconData icon,
     TextInputType keyboardType = TextInputType.text,
     int maxLines = 1,
+    bool isPhoneNumber = false,
   }) {
     return TextFormField(
       controller: controller,
@@ -469,15 +524,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+        ),
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please enter $label';
+          return l.pleaseEnterCheckoutField(label);
         }
 
-        if (label == 'Phone Number' && value.trim().length < 7) {
-          return 'Please enter a valid phone number';
+        if (isPhoneNumber && value.trim().length < 7) {
+          return l.validPhoneNumber;
         }
 
         return null;

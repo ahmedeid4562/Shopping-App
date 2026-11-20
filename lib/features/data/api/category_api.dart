@@ -21,35 +21,35 @@ class CategoryApi {
             );
 
   Future<List<CategoryModel>> getCategories() async {
-    try {
-      return [
-        CategoryModel.fromJson({
-          'name': "Men's Clothing",
-          'slug': "men's clothing",
-        }),
-      ];
-    } catch (e) {
-      throw Exception('Failed to load categories: $e');
-    }
+    return const [
+      CategoryModel(slug: 'men', name: 'Men', url: ''),
+      CategoryModel(slug: 'women', name: 'Women', url: ''),
+      CategoryModel(slug: 'kids', name: 'Kids', url: ''),
+      CategoryModel(slug: 'watches', name: 'Watches', url: ''),
+      CategoryModel(slug: 'bags', name: 'Bags', url: ''),
+      CategoryModel(slug: 'jewelry', name: 'Jewelry', url: ''),
+      CategoryModel(slug: 'sunglasses', name: 'Sunglasses', url: ''),
+      CategoryModel(slug: 'belts', name: 'Belts', url: ''),
+      CategoryModel(slug: 'wallets', name: 'Wallets', url: ''),
+    ];
   }
 
-  Future<List<ProductModel>> getProductsByCategory(String category) async {
+  Future<List<ProductModel>> getProductsByCategory(
+    String category,
+  ) async {
+    final normalized = category.trim().toLowerCase();
+
+    if (normalized != 'men') {
+      return [];
+    }
+
     try {
-      final normalizedCategory = category
-          .trim()
-          .toLowerCase()
-          .replaceAll('-', ' ');
-
-      if (normalizedCategory != "men's clothing") {
-        return [];
-      }
-
       final response = await _dio.get(
         ApiConstants.menClothingEndpoint,
       );
 
       if (response.statusCode == 200 && response.data is List) {
-        final List<dynamic> data = response.data as List<dynamic>;
+        final data = response.data as List<dynamic>;
 
         return data
             .map(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/api/auth_api.dart';
 
@@ -21,6 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
 
   static const Color primaryColor = Color(0xFF385CF2);
+
+  AppLocalizations get l => AppLocalizations.of(context)!;
 
   @override
   void dispose() {
@@ -45,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = _passwordController.text;
 
     if (email.isEmpty || password.isEmpty) {
-      _showMessage('Please enter your email and password');
+      _showMessage(l.loginEnterEmailAndPassword);
       return;
     }
 
@@ -60,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final user = credential.user;
 
       if (user == null) {
-        throw Exception('Unable to sign in');
+        throw Exception(l.loginUnableToSignIn);
       }
 
       final isAdmin = await _authApi.isAdmin();
@@ -79,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _showMessage(_getAuthErrorMessage(e.code));
       }
     } catch (e) {
-      _showMessage('Something went wrong. Please try again.');
+      _showMessage(l.somethingWentWrong);
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -90,19 +93,24 @@ class _LoginScreenState extends State<LoginScreen> {
   String _getAuthErrorMessage(String code) {
     switch (code) {
       case 'invalid-email':
-        return 'Invalid email address';
+        return l.loginInvalidEmail;
+
       case 'user-not-found':
       case 'wrong-password':
       case 'invalid-credential':
-        return 'Incorrect email or password';
+        return l.loginIncorrectEmailOrPassword;
+
       case 'user-disabled':
-        return 'This account has been disabled';
+        return l.loginAccountDisabled;
+
       case 'too-many-requests':
-        return 'Too many attempts. Please try again later';
+        return l.loginTooManyAttempts;
+
       case 'network-request-failed':
-        return 'Check your internet connection';
+        return l.loginCheckInternetConnection;
+
       default:
-        return 'Login failed. Please try again';
+        return l.loginFailedTryAgain;
     }
   }
 
@@ -111,19 +119,20 @@ class _LoginScreenState extends State<LoginScreen> {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) {
+        final dialogL = AppLocalizations.of(dialogContext)!;
+
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
-          title: const Text('Email Not Verified'),
+          title: Text(dialogL.loginEmailNotVerified),
           content: Text(
-            'Your email address ($email) has not been verified yet. '
-            'Please check your inbox or resend the verification email.',
+            dialogL.loginEmailNotVerifiedMessage(email),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('Cancel'),
+              child: Text(dialogL.cancel),
             ),
             ElevatedButton(
               onPressed: () {
@@ -134,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 backgroundColor: primaryColor,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Resend Email'),
+              child: Text(dialogL.loginResendEmail),
             ),
           ],
         );
@@ -154,23 +163,23 @@ class _LoginScreenState extends State<LoginScreen> {
         password: password,
       );
 
-      _showMessage('Verification email sent successfully. Check your inbox.');
+      _showMessage(l.loginVerificationEmailSent);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-verified') {
-        _showMessage('Your email is already verified. Please login.');
+        _showMessage(l.loginEmailAlreadyVerified);
       } else if (e.code == 'too-many-requests') {
-        _showMessage('Please wait before requesting another email.');
+        _showMessage(l.loginWaitBeforeRequestingEmail);
       } else if (e.code == 'invalid-credential' ||
           e.code == 'wrong-password' ||
           e.code == 'user-not-found') {
-        _showMessage('Incorrect email or password.');
+        _showMessage(l.loginIncorrectEmailOrPassword);
       } else if (e.code == 'network-request-failed') {
-        _showMessage('Check your internet connection.');
+        _showMessage(l.loginCheckInternetConnection);
       } else {
-        _showMessage('Could not send verification email. Please try again.');
+        _showMessage(l.loginCouldNotSendVerificationEmail);
       }
     } catch (e) {
-      _showMessage('Something went wrong. Please try again.');
+      _showMessage(l.somethingWentWrong);
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -196,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } on FirebaseAuthException catch (e) {
       _showMessage(_getAuthErrorMessage(e.code));
     } catch (e) {
-      _showMessage('Google login failed. Please try again.');
+      _showMessage(l.loginGoogleFailed);
     } finally {
       if (mounted) {
         setState(() => _isGoogleLoading = false);
@@ -208,29 +217,34 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = _emailController.text.trim();
 
     if (email.isEmpty) {
-      _showMessage('Please enter your email first');
+      _showMessage(l.loginEnterEmailFirst);
       return;
     }
 
     try {
       await _authApi.resetPassword(email);
 
-      _showMessage('Password reset email sent. Check your inbox.');
+      _showMessage(l.loginPasswordResetEmailSent);
     } on FirebaseAuthException catch (e) {
       _showMessage(_getAuthErrorMessage(e.code));
     } catch (e) {
-      _showMessage('Could not send password reset email.');
+      _showMessage(l.loginCouldNotSendPasswordResetEmail);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final localizations = l;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 25,
+              vertical: 30,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -239,43 +253,51 @@ class _LoginScreenState extends State<LoginScreen> {
                   size: 75,
                   color: primaryColor,
                 ),
+
                 const SizedBox(height: 20),
-                const Text(
-                  'Welcome Back!',
+
+                Text(
+                  localizations.loginWelcomeBack,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 29,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
+
                 const SizedBox(height: 8),
-                const Text(
-                  'Login to continue shopping',
+
+                Text(
+                  localizations.loginSubtitle,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15,
                     color: Colors.grey,
                   ),
                 ),
+
                 const SizedBox(height: 40),
+
                 TextField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: localizations.loginEmailLabel,
                     prefixIcon: const Icon(Icons.email_outlined),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 20),
+
                 TextField(
                   controller: _passwordController,
                   obscureText: _obscurePassword,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: localizations.loginPasswordLabel,
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       onPressed: () {
@@ -294,22 +316,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 10),
+
                 Align(
-                  alignment: Alignment.centerRight,
+                  alignment: AlignmentDirectional.centerEnd,
                   child: TextButton(
                     onPressed: _forgotPassword,
-                    child: const Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: primaryColor),
+                    child: Text(
+                      localizations.loginForgotPassword,
+                      style: const TextStyle(
+                        color: primaryColor,
+                      ),
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 15),
+
                 SizedBox(
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: _isLoading || _isGoogleLoading ? null : _login,
+                    onPressed: _isLoading || _isGoogleLoading
+                        ? null
+                        : _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryColor,
                       foregroundColor: Colors.white,
@@ -321,49 +351,60 @@ class _LoginScreenState extends State<LoginScreen> {
                         ? const CircularProgressIndicator(
                             color: Colors.white,
                           )
-                        : const Text(
-                            'Login',
-                            style: TextStyle(
+                        : Text(
+                            localizations.loginButton,
+                            style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                   ),
                 ),
+
                 const SizedBox(height: 25),
-                const Row(
+
+                Row(
                   children: [
-                    Expanded(child: Divider()),
+                    const Expanded(child: Divider()),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ),
                       child: Text(
-                        'OR',
-                        style: TextStyle(color: Colors.grey),
+                        localizations.loginOr,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
-                    Expanded(child: Divider()),
+                    const Expanded(child: Divider()),
                   ],
                 ),
+
                 const SizedBox(height: 25),
+
                 SizedBox(
                   height: 55,
                   child: OutlinedButton.icon(
-                    onPressed:
-                        _isLoading || _isGoogleLoading ? null : _googleLogin,
+                    onPressed: _isLoading || _isGoogleLoading
+                        ? null
+                        : _googleLogin,
                     icon: _isGoogleLoading
                         ? const SizedBox(
                             width: 20,
                             height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
                           )
                         : const Icon(
                             Icons.g_mobiledata,
                             size: 30,
                             color: Colors.red,
                           ),
-                    label: const Text(
-                      'Continue with Google',
-                      style: TextStyle(
+                    label: Text(
+                      localizations.loginContinueWithGoogle,
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.black87,
                       ),
@@ -372,25 +413,33 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      side: const BorderSide(color: Colors.grey),
+                      side: const BorderSide(
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 30),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Don't have an account? ",
-                      style: TextStyle(color: Colors.grey),
+                    Flexible(
+                      child: Text(
+                        localizations.loginNoAccount,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, '/signup');
                       },
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(
+                      child: Text(
+                        localizations.loginSignUp,
+                        style: const TextStyle(
                           color: primaryColor,
                           fontWeight: FontWeight.bold,
                         ),

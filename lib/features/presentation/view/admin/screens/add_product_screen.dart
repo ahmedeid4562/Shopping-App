@@ -38,6 +38,94 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   AppLocalizations get l => AppLocalizations.of(context)!;
 
+  static const Map<String, List<String>> _categoryOptions = {
+    'clothing': ['clothing'],
+    'men': ['men', "men's clothing", 'mens clothing'],
+    'women': ['women', "women's clothing", 'womens clothing'],
+    'kids': ['kids', 'children', "children's clothing"],
+    'accessories': ['accessories'],
+    'watches': ['watches', 'watch'],
+    'bags': ['bags', 'bag'],
+    'jewelry': ['jewelry', 'jewellery'],
+    'sunglasses': ['sunglasses', 'sunglass'],
+    'belts': ['belts', 'belt'],
+    'wallets': ['wallets', 'wallet'],
+    'tops': ['tops'],
+    'shoes': ['shoes'],
+    'dresses': ['dresses'],
+    'electronics': ['electronics'],
+  };
+
+  static const List<String> _availableCategories = [
+    'clothing',
+    'men',
+    'women',
+    'kids',
+    'accessories',
+    'watches',
+    'bags',
+    'jewelry',
+    'sunglasses',
+    'belts',
+    'wallets',
+    'tops',
+    'shoes',
+    'dresses',
+    'electronics',
+  ];
+
+  String _normalizeCategory(String value) {
+    final normalized = value.trim().toLowerCase();
+
+    for (final entry in _categoryOptions.entries) {
+      if (entry.key == normalized ||
+          entry.value.any(
+            (alias) => alias.toLowerCase() == normalized,
+          )) {
+        return entry.key;
+      }
+    }
+
+    return normalized;
+  }
+
+  String _localizedCategoryName(String slug) {
+    switch (slug) {
+      case 'clothing':
+        return l.categoryClothing;
+      case 'men':
+        return l.categoryMen;
+      case 'women':
+        return l.categoryWomen;
+      case 'kids':
+        return l.categoryKids;
+      case 'accessories':
+        return l.categoryAccessories;
+      case 'watches':
+        return l.categoryWatches;
+      case 'bags':
+        return l.categoryBags;
+      case 'jewelry':
+        return l.categoryJewelry;
+      case 'sunglasses':
+        return l.categorySunglasses;
+      case 'belts':
+        return l.categoryBelts;
+      case 'wallets':
+        return l.categoryWallets;
+      case 'tops':
+        return l.categoryTops;
+      case 'shoes':
+        return l.categoryShoes;
+      case 'dresses':
+        return l.categoryDresses;
+      case 'electronics':
+        return l.categoryElectronics;
+      default:
+        return slug;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -48,7 +136,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       _titleController.text = product.title;
       _priceController.text = product.price.toString();
       _descriptionController.text = product.description;
-      _categoryController.text = product.category;
+      _categoryController.text = _normalizeCategory(product.category);
 
       if (product.variants.isNotEmpty) {
         for (final variant in product.variants) {
@@ -298,7 +386,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       final title = _titleController.text.trim();
       final price = double.parse(_priceController.text.trim());
       final description = _descriptionController.text.trim();
-      final category = _categoryController.text.trim();
+      final category = _normalizeCategory(_categoryController.text);
 
       final List<ProductVariant> variants =
           await _prepareVariants();
@@ -384,6 +472,52 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
               return null;
             },
+      ),
+    );
+  }
+
+  Widget _buildCategoryDropdown() {
+    final selectedCategory = _categoryController.text.isEmpty
+        ? null
+        : _normalizeCategory(_categoryController.text);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: DropdownButtonFormField<String>(
+        initialValue: _availableCategories.contains(selectedCategory)
+            ? selectedCategory
+            : null,
+        isExpanded: true,
+        decoration: InputDecoration(
+          labelText: l.category,
+          prefixIcon: const Icon(Icons.category_outlined),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+        hint: Text(l.categoryExample),
+        items: _availableCategories.map((category) {
+          return DropdownMenuItem<String>(
+            value: category,
+            child: Text(_localizedCategoryName(category)),
+          );
+        }).toList(),
+        onChanged: _isLoading
+            ? null
+            : (value) {
+                if (value == null) return;
+
+                setState(() {
+                  _categoryController.text = value;
+                });
+              },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return l.pleaseEnterField(l.category);
+          }
+
+          return null;
+        },
       ),
     );
   }
@@ -474,9 +608,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
               ],
             ),
-
             const SizedBox(height: 16),
-
             TextFormField(
               controller: variant.colorNameController,
               enabled: !_isLoading && !_isPickingImages,
@@ -489,9 +621,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
               ),
             ),
-
             const SizedBox(height: 14),
-
             Row(
               children: [
                 Expanded(
@@ -530,9 +660,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
               ],
             ),
-
             const SizedBox(height: 22),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -552,9 +680,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
               ],
             ),
-
             const SizedBox(height: 12),
-
             if (variant.images.isEmpty)
               Container(
                 width: double.infinity,
@@ -626,9 +752,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   );
                 },
               ),
-
             const SizedBox(height: 14),
-
             SizedBox(
               width: double.infinity,
               height: 48,
@@ -685,15 +809,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               const SizedBox(height: 20),
-
               _buildTextField(
                 controller: _titleController,
                 label: l.productName,
                 icon: Icons.shopping_bag_outlined,
               ),
-
               _buildTextField(
                 controller: _priceController,
                 label: l.price,
@@ -714,23 +835,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   return null;
                 },
               ),
-
-              _buildTextField(
-                controller: _categoryController,
-                label: l.category,
-                icon: Icons.category_outlined,
-                hint: l.categoryExample,
-              ),
-
+              _buildCategoryDropdown(),
               _buildTextField(
                 controller: _descriptionController,
                 label: l.description,
                 icon: Icons.description_outlined,
                 maxLines: 4,
               ),
-
               const SizedBox(height: 12),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -752,9 +864,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 8),
-
               Text(
                 l.addAvailableColorsDescription,
                 style: TextStyle(
@@ -764,14 +874,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   fontSize: 13,
                 ),
               ),
-
               const SizedBox(height: 18),
-
               ...List.generate(
                 _variants.length,
                 (index) => _buildVariantCard(index),
               ),
-
               SizedBox(
                 width: double.infinity,
                 height: 52,
@@ -793,9 +900,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 28),
-
               SizedBox(
                 width: double.infinity,
                 height: 55,
@@ -830,7 +935,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         ),
                 ),
               ),
-
               const SizedBox(height: 25),
             ],
           ),

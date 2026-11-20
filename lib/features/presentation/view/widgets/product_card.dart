@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shopping_app/features/data/model/product_model.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/api/favorite_api.dart';
 import '../screens/product_details_screen.dart';
@@ -90,10 +91,14 @@ class _ProductCardState extends State<ProductCard> {
         _isFavorite = !_isFavorite;
       });
 
+      final l = AppLocalizations.of(context)!;
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            _isFavorite ? 'Added to favorites' : 'Removed from favorites',
+            _isFavorite
+                ? l.addedToFavorites
+                : l.removedFromFavorites,
           ),
           duration: const Duration(seconds: 1),
         ),
@@ -117,6 +122,7 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+    final l = AppLocalizations.of(context)!;
 
     final productImages = widget.product.allImages;
     final imageUrl = productImages.isNotEmpty ? productImages.first : '';
@@ -181,8 +187,8 @@ class _ProductCardState extends State<ProductCard> {
                             ? null
                             : _toggleFavorite,
                         tooltip: _isFavorite
-                            ? 'Remove from favorites'
-                            : 'Add to favorites',
+                            ? l.removeFromFavorites
+                            : l.addToFavorites,
                         icon: _isUpdating
                             ? const SizedBox(
                                 width: 18,

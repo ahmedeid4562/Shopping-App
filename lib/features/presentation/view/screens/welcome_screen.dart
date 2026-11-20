@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/app_colors.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -26,25 +29,25 @@ class WelcomeScreen extends StatelessWidget {
 
               RichText(
                 textAlign: TextAlign.center,
-                text: const TextSpan(
-                  style: TextStyle(
+                text: TextSpan(
+                  style: const TextStyle(
                     fontSize: 38,
                     fontWeight: FontWeight.bold,
                   ),
                   children: [
                     TextSpan(
-                      text: 'Welcome to\n',
-                      style: TextStyle(
+                      text: '${l.welcomeTo}\n',
+                      style: const TextStyle(
                         color: Color(0xFF172033),
                       ),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: 'Shop',
                       style: TextStyle(
                         color: Color(0xFF172033),
                       ),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: 'In',
                       style: TextStyle(
                         color: AppColors.primaryColor,
@@ -56,10 +59,10 @@ class WelcomeScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              const Text(
-                "Discover the latest men's fashion and find your perfect style.",
+              Text(
+                l.welcomeDescription,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   height: 1.5,
                   color: Colors.black54,
@@ -83,9 +86,9 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     elevation: 0,
                   ),
-                  child: const Text(
-                    'Sign up',
-                    style: TextStyle(
+                  child: Text(
+                    l.signup,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -112,9 +115,9 @@ class WelcomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
+                  child: Text(
+                    l.login,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),

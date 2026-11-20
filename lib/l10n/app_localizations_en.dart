@@ -13,6 +13,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Shopping App';
 
   @override
+  String get appVersion => 'Version 1.0.0';
+
+  @override
   String get user => 'User';
 
   @override
@@ -519,4 +522,808 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noOrdersYet => 'No Orders Yet';
+
+  @override
+  String get ordersWillAppearHere => 'Your orders will appear here';
+
+  @override
+  String get welcomeTo => 'Welcome to';
+
+  @override
+  String get welcomeDescription =>
+      'Discover the latest men\'s fashion and find your perfect style.';
+
+  @override
+  String get aboutFavoritesDescription =>
+      'Save your favorite products and access them easily anytime';
+
+  @override
+  String get aboutSecureExperience => 'Secure Shopping Experience';
+
+  @override
+  String get aboutSecureExperienceDescription =>
+      'We provide a safe and reliable shopping experience to protect your data';
+
+  @override
+  String get madeWithFlutter => 'Made with Flutter';
+
+  @override
+  String get copyrightNotice => 'All Rights Reserved © 2026';
+
+  @override
+  String get myCart => 'My Cart';
+
+  @override
+  String get clearCart => 'Clear Cart';
+
+  @override
+  String get yourCartIsEmpty => 'Your Cart Is Empty';
+
+  @override
+  String get emptyCartDescription =>
+      'You haven\'t added any products to your shopping cart yet';
+
+  @override
+  String get proceedToCheckout => 'Proceed to Checkout';
+
+  @override
+  String get categoryTops => 'Tops';
+
+  @override
+  String get categoryShoes => 'Shoes';
+
+  @override
+  String get categoryWatches => 'Watches';
+
+  @override
+  String get categoryBags => 'Bags';
+
+  @override
+  String get categoryJewelry => 'Jewelry';
+
+  @override
+  String get categoryDresses => 'Dresses';
+
+  @override
+  String get categoryElectronics => 'Electronics';
+
+  @override
+  String get categoriesTitle => 'Categories';
+
+  @override
+  String get couldNotLoadCategories => 'Could not load categories';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get noCategoriesAvailable => 'No categories available';
+
+  @override
+  String get couldNotLoadProducts => 'Could not load products';
+
+  @override
+  String get failedToLoadStoreProducts => 'Failed to load store products';
+
+  @override
+  String get noProductsFoundInCategory => 'No products found in this category';
+
+  @override
+  String get noProductsFound => 'No products found';
+
+  @override
+  String get exploreProducts => 'Explore Products';
+
+  @override
+  String categoryItemsCount(int count) {
+    return '$count products';
+  }
+
+  @override
+  String get aboutVersion => 'Version 1.0.0';
+
+  @override
+  String get aboutUs => 'About Us';
+
+  @override
+  String get aboutAppDescription =>
+      'We offer a convenient shopping experience where you can discover and purchase your favorite products easily.';
+
+  @override
+  String get aboutEasyShopping => 'Easy Shopping';
+
+  @override
+  String get aboutEasyShoppingDescription =>
+      'Browse products and shop easily from anywhere.';
+
+  @override
+  String get aboutFavorites => 'Your Favorites';
+
+  @override
+  String get checkoutTitle => 'Checkout';
+
+  @override
+  String get deliveryInformation => 'Delivery Information';
+
+  @override
+  String get checkoutFullName => 'Full Name';
+
+  @override
+  String get checkoutPhoneNumber => 'Phone Number';
+
+  @override
+  String get checkoutDeliveryAddress => 'Delivery Address';
+
+  @override
+  String get paymentMethodTitle => 'Payment Method';
+
+  @override
+  String get cashOnDelivery => 'Cash on Delivery';
+
+  @override
+  String get promoCode => 'Promo Code';
+
+  @override
+  String get enterPromoCode => 'Enter promo code';
+
+  @override
+  String get applyCoupon => 'Apply';
+
+  @override
+  String get enterCouponCode => 'Please enter a coupon code';
+
+  @override
+  String get couponAppliedSuccessfully => 'Coupon applied successfully';
+
+  @override
+  String get removeCoupon => 'Remove';
+
+  @override
+  String get subtotal => 'Subtotal';
+
+  @override
+  String get discount => 'Discount';
+
+  @override
+  String get placeOrder => 'Place Order';
+
+  @override
+  String get orderPlacedSuccessfully => 'Order Placed Successfully';
+
+  @override
+  String get orderSavedSuccessfully =>
+      'Your order has been saved successfully.';
+
+  @override
+  String get continueShopping => 'Continue Shopping';
+
+  @override
+  String get failedToPlaceOrder => 'Failed to place order';
+
+  @override
+  String get validPhoneNumber => 'Please enter a valid phone number';
+
+  @override
+  String pleaseEnterCheckoutField(String field) {
+    return 'Please enter $field';
+  }
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get enterYourName => 'Enter your name';
+
+  @override
+  String get enterFullName => 'Enter your full name';
+
+  @override
+  String get pleaseEnterYourName => 'Please enter your name';
+
+  @override
+  String get emailAddress => 'Email Address';
+
+  @override
+  String get enterYourEmail => 'Enter your email';
+
+  @override
+  String get pleaseEnterYourEmail => 'Please enter your email';
+
+  @override
+  String get validEmailAddress => 'Please enter a valid email address';
+
+  @override
+  String get emailVerificationRequired =>
+      'Email verification is required when changing your email address.';
+
+  @override
+  String get pleaseLoginFirst => 'Please login first';
+
+  @override
+  String get verificationEmailSent =>
+      'A verification email has been sent to your new email address.';
+
+  @override
+  String get profileUpdatedSuccessfully => 'Profile updated successfully';
+
+  @override
+  String get myFavorites => 'My Favorites';
+
+  @override
+  String get failedToLoadFavorites => 'Failed to load favorites';
+
+  @override
+  String get noFavoritesYet => 'No Favorites Yet';
+
+  @override
+  String get addProductsToFavorites =>
+      'Add products to your favorites to find them here.';
+
+  @override
+  String get howCanWeHelp => 'How Can We Help You?';
+
+  @override
+  String get helpDescription =>
+      'Find answers to common questions and get the support you need.';
+
+  @override
+  String get frequentlyAskedQuestions => 'Frequently Asked Questions';
+
+  @override
+  String get faqTrackOrderQuestion => 'How can I track my order?';
+
+  @override
+  String get faqTrackOrderAnswer =>
+      'You can view your orders and their status from the My Orders section in your profile.';
+
+  @override
+  String get faqCancelOrderQuestion => 'Can I cancel my order?';
+
+  @override
+  String get faqCancelOrderAnswer =>
+      'Please contact support as soon as possible to ask about cancelling your order.';
+
+  @override
+  String get faqAddFavoriteQuestion =>
+      'How can I add a product to my favorites?';
+
+  @override
+  String get faqAddFavoriteAnswer =>
+      'Tap the heart icon on a product to add it to your favorites.';
+
+  @override
+  String get faqChangePersonalInfoQuestion =>
+      'How can I change my personal information?';
+
+  @override
+  String get faqChangePersonalInfoAnswer =>
+      'Open your profile, select Edit Profile, update your information, and save your changes.';
+
+  @override
+  String get faqChangePasswordQuestion => 'How can I change my password?';
+
+  @override
+  String get faqChangePasswordAnswer =>
+      'Open the Change Password section from your account settings and follow the instructions.';
+
+  @override
+  String get faqPaymentMethodsQuestion => 'What payment methods are available?';
+
+  @override
+  String get faqPaymentMethodsAnswer =>
+      'Currently, you can pay for your order using Cash on Delivery.';
+
+  @override
+  String get stillNeedHelp => 'Still Need Help?';
+
+  @override
+  String get contactSupportDescription =>
+      'Contact our support team if you need further assistance.';
+
+  @override
+  String get contactSupport => 'Contact Support';
+
+  @override
+  String get supportDetailsComingSoon =>
+      'Support contact details will be available soon.';
+
+  @override
+  String get supportDialogOk => 'OK';
+
+  @override
+  String get loginWelcomeBack => 'Welcome Back';
+
+  @override
+  String get loginSubtitle => 'Sign in to continue shopping';
+
+  @override
+  String get loginEmailLabel => 'Email';
+
+  @override
+  String get loginPasswordLabel => 'Password';
+
+  @override
+  String get loginForgotPassword => 'Forgot Password?';
+
+  @override
+  String get loginButton => 'Login';
+
+  @override
+  String get loginOr => 'OR';
+
+  @override
+  String get loginContinueWithGoogle => 'Continue with Google';
+
+  @override
+  String get loginNoAccount => 'Don\'t have an account? ';
+
+  @override
+  String get loginSignUp => 'Sign Up';
+
+  @override
+  String get loginEnterEmailAndPassword =>
+      'Please enter your email and password';
+
+  @override
+  String get loginUnableToSignIn => 'Unable to sign in. Please try again.';
+
+  @override
+  String get loginInvalidEmail => 'The email address is invalid';
+
+  @override
+  String get loginIncorrectEmailOrPassword => 'Incorrect email or password';
+
+  @override
+  String get loginAccountDisabled => 'This account has been disabled';
+
+  @override
+  String get loginTooManyAttempts =>
+      'Too many attempts. Please try again later.';
+
+  @override
+  String get loginCheckInternetConnection =>
+      'Please check your internet connection';
+
+  @override
+  String get loginFailedTryAgain => 'Login failed. Please try again.';
+
+  @override
+  String get loginEmailNotVerified => 'Email Not Verified';
+
+  @override
+  String loginEmailNotVerifiedMessage(String email) {
+    return 'Your email address $email has not been verified. Would you like us to send another verification email?';
+  }
+
+  @override
+  String get loginResendEmail => 'Resend Email';
+
+  @override
+  String get loginVerificationEmailSent =>
+      'Verification email sent successfully';
+
+  @override
+  String get loginEmailAlreadyVerified => 'Your email is already verified';
+
+  @override
+  String get loginWaitBeforeRequestingEmail =>
+      'Please wait before requesting another email';
+
+  @override
+  String get loginCouldNotSendVerificationEmail =>
+      'Could not send verification email';
+
+  @override
+  String get loginGoogleFailed => 'Google sign-in failed. Please try again.';
+
+  @override
+  String get loginEnterEmailFirst => 'Please enter your email address first';
+
+  @override
+  String get loginPasswordResetEmailSent =>
+      'Password reset email sent successfully';
+
+  @override
+  String get loginCouldNotSendPasswordResetEmail =>
+      'Could not send password reset email';
+
+  @override
+  String get signup => 'Sign Up';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get homeAddress => 'Home';
+
+  @override
+  String get defaultAddress => 'Default';
+
+  @override
+  String get setAsDefaultAddress => 'Set as default address';
+
+  @override
+  String get addAddress => 'Add Address';
+
+  @override
+  String get deleteAddressTitle => 'Delete Address';
+
+  @override
+  String get deleteAddressConfirmation =>
+      'Are you sure you want to delete this address?';
+
+  @override
+  String get noAddressesYet => 'No Addresses Yet';
+
+  @override
+  String get addAddressDescription =>
+      'Add a delivery address to make checkout easier.';
+
+  @override
+  String get editAddress => 'Edit Address';
+
+  @override
+  String get streetAddress => 'Street Address';
+
+  @override
+  String get city => 'City';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get addressFieldRequired => 'This field is required';
+
+  @override
+  String get addNewAddress => 'Add New Address';
+
+  @override
+  String get addressName => 'Address Name';
+
+  @override
+  String get addressNameHint => 'Example: Home, Work';
+
+  @override
+  String get onboardingTitle => 'Find Everything You Love';
+
+  @override
+  String get onboardingDescription =>
+      'Discover amazing products and enjoy a simple shopping experience.';
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get chooseNotifications =>
+      'Choose which notifications you want to receive';
+
+  @override
+  String get general => 'General';
+
+  @override
+  String get orderUpdates => 'Order Updates';
+
+  @override
+  String get orderUpdatesDescription => 'Receive updates about your orders';
+
+  @override
+  String get promotionsOffers => 'Promotions & Offers';
+
+  @override
+  String get promotionsDescription =>
+      'Get notified about discounts and special offers';
+
+  @override
+  String get recommendations => 'Recommendations';
+
+  @override
+  String get recommendationsDescription => 'Discover products picked for you';
+
+  @override
+  String get notificationChannels => 'Notification Channels';
+
+  @override
+  String get pushNotifications => 'Push Notifications';
+
+  @override
+  String get pushNotificationsDescription =>
+      'Receive notifications on your device';
+
+  @override
+  String get emailNotifications => 'Email Notifications';
+
+  @override
+  String get emailNotificationsDescription => 'Receive notifications by email';
+
+  @override
+  String get notificationSettingsInfo =>
+      'You can change these preferences at any time.';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
+  String get processing => 'Processing';
+
+  @override
+  String get shipped => 'Shipped';
+
+  @override
+  String get delivered => 'Delivered';
+
+  @override
+  String get cancelled => 'Cancelled';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get cancelOrder => 'Cancel Order';
+
+  @override
+  String get cancelOrderConfirmation =>
+      'Are you sure you want to cancel this order?';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get yesCancel => 'Yes, Cancel';
+
+  @override
+  String get orderCancelledSuccessfully => 'Order cancelled successfully';
+
+  @override
+  String get failedToCancelOrder => 'Failed to cancel order';
+
+  @override
+  String get deleteOrder => 'Delete Order';
+
+  @override
+  String get deleteOrderConfirmation =>
+      'Are you sure you want to delete this order?';
+
+  @override
+  String get yesDelete => 'Yes, Delete';
+
+  @override
+  String get orderDeletedSuccessfully => 'Order deleted successfully';
+
+  @override
+  String get failedToDeleteOrder => 'Failed to delete order';
+
+  @override
+  String get dateUnavailable => 'Date unavailable';
+
+  @override
+  String get orderDetails => 'Order Details';
+
+  @override
+  String get orderId => 'Order ID';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get editPaymentMethod => 'Edit Payment Method';
+
+  @override
+  String get addPaymentMethod => 'Add Payment Method';
+
+  @override
+  String get cardholderName => 'Cardholder Name';
+
+  @override
+  String get enterCardholderName => 'Enter cardholder name';
+
+  @override
+  String get lastFourDigits => 'Last Four Digits';
+
+  @override
+  String get enterExactlyFourDigits => 'Enter exactly 4 digits';
+
+  @override
+  String get expiryDate => 'Expiry Date';
+
+  @override
+  String get useMmYyFormat => 'Use MM/YY format';
+
+  @override
+  String get setAsDefault => 'Set as default';
+
+  @override
+  String get addCard => 'Add Card';
+
+  @override
+  String get deleteCard => 'Delete Card';
+
+  @override
+  String get deletePaymentConfirmation =>
+      'Are you sure you want to delete this payment method?';
+
+  @override
+  String get noPaymentMethods => 'No Payment Methods';
+
+  @override
+  String get addPaymentDescription =>
+      'Add a payment method to make checkout easier.';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get productDetails => 'Product Details';
+
+  @override
+  String get reviews => 'Reviews';
+
+  @override
+  String productAddedToCart(String product) {
+    return '$product added to cart';
+  }
+
+  @override
+  String get addToCart => 'Add to Cart';
+
+  @override
+  String get searchProducts => 'Search Products';
+
+  @override
+  String get searchForProducts => 'Search for products';
+
+  @override
+  String get findFavoriteProducts => 'Find Your Favorite Products';
+
+  @override
+  String get searchByProductName => 'Search by product name';
+
+  @override
+  String get searchResults => 'Search Results';
+
+  @override
+  String get items => 'items';
+
+  @override
+  String get failedToLoadSearchResults => 'Failed to load search results';
+
+  @override
+  String get trySearchingAnotherName => 'Try searching for another name';
+
+  @override
+  String get shopper => 'Shopper';
+
+  @override
+  String helloShopper(String name) {
+    return 'Hello, $name';
+  }
+
+  @override
+  String get findYourStyle => 'Find Your Style';
+
+  @override
+  String get searchProductsHint => 'Search products...';
+
+  @override
+  String get newCollection => 'NEW COLLECTION';
+
+  @override
+  String get discoverYourStyle => 'Discover Your Style';
+
+  @override
+  String get exploreLatestFashion => 'Explore the latest fashion trends';
+
+  @override
+  String get shopNow => 'Shop Now';
+
+  @override
+  String get categories => 'Categories';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get featuredProducts => 'Featured Products';
+
+  @override
+  String itemCount(int count) {
+    return '$count items';
+  }
+
+  @override
+  String get pleaseFillAllFields => 'Please fill in all fields';
+
+  @override
+  String get enterValidEmail => 'Please enter a valid email address';
+
+  @override
+  String get verifyYourEmail => 'Verify Your Email';
+
+  @override
+  String verificationEmailInstructions(String email) {
+    return 'We have sent a verification email to $email. Please check your inbox.';
+  }
+
+  @override
+  String get gotIt => 'Got It';
+
+  @override
+  String get joinShoppingApp => 'Join Shopping App';
+
+  @override
+  String get createAccountDescription =>
+      'Create an account to start your shopping journey';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get createPassword => 'Create a password';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get confirmYourPassword => 'Confirm your password';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account?';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get favorites => 'Favorites';
+
+  @override
+  String get cart => 'Cart';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get addedToFavorites => 'Added to favorites';
+
+  @override
+  String get removedFromFavorites => 'Removed from favorites';
+
+  @override
+  String get addToFavorites => 'Add to favorites';
+
+  @override
+  String get removeFromFavorites => 'Remove from favorites';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get categoryClothing => 'Clothing';
+
+  @override
+  String get categoryClothingSubtitle =>
+      'Explore men\'s, women\'s and kids\' clothing';
+
+  @override
+  String get categoryAccessories => 'Accessories';
+
+  @override
+  String get categoryAccessoriesSubtitle =>
+      'Complete your look with accessories';
+
+  @override
+  String get categoryMen => 'Men';
+
+  @override
+  String get categoryWomen => 'Women';
+
+  @override
+  String get categoryKids => 'Kids';
+
+  @override
+  String get categorySunglasses => 'Sunglasses';
+
+  @override
+  String get categoryBelts => 'Belts';
+
+  @override
+  String get categoryWallets => 'Wallets';
 }

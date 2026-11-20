@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
+
 import 'login_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -8,6 +10,8 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -28,10 +32,10 @@ class OnboardingScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 25),
-              const Text(
-                'Latest out fit',
+              Text(
+                l.onboardingTitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -39,9 +43,9 @@ class OnboardingScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                "Express your self through the art of the fashionism",
+                l.onboardingDescription,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   height: 1.5,
                   color: Colors.grey,
@@ -68,9 +72,9 @@ class OnboardingScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'Get Started',
-                    style: TextStyle(
+                  child: Text(
+                    l.getStarted,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
