@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/api/product_api.dart';
 import '../../../data/api/admin_product_api.dart';
@@ -142,12 +143,13 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Search Products',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.searchProducts,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -164,7 +166,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 _searchProducts(value.trim());
               },
               decoration: InputDecoration(
-                hintText: 'Search for products...',
+                hintText: l.searchForProducts,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
@@ -188,7 +190,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: primaryColor, width: 1.5),
+                  borderSide: const BorderSide(
+                    color: primaryColor,
+                    width: 1.5,
+                  ),
                 ),
               ),
             ),
@@ -204,6 +209,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   colors,
                   storeProducts,
                   snapshot,
+                  l,
                 );
               },
             ),
@@ -218,6 +224,7 @@ class _SearchScreenState extends State<SearchScreen> {
     ColorScheme colors,
     List<ProductModel> storeProducts,
     AsyncSnapshot<List<ProductModel>> snapshot,
+    AppLocalizations l,
   ) {
     if (!_hasSearched) {
       return Center(
@@ -231,14 +238,14 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Find Your Favorite Products',
+              l.findFavoriteProducts,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Search by product name',
+              l.searchByProductName,
               style: TextStyle(color: colors.onSurfaceVariant),
             ),
           ],
@@ -257,13 +264,13 @@ class _SearchScreenState extends State<SearchScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Search Results',
+                  l.searchResults,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  '${products.length} Items',
+                  '${products.length} ${l.items}',
                   style: TextStyle(color: colors.onSurfaceVariant),
                 ),
               ],
@@ -288,7 +295,8 @@ class _SearchScreenState extends State<SearchScreen> {
       );
     }
 
-    if (_isLoading || snapshot.connectionState == ConnectionState.waiting) {
+    if (_isLoading ||
+        snapshot.connectionState == ConnectionState.waiting) {
       return const Center(
         child: CircularProgressIndicator(color: primaryColor),
       );
@@ -299,7 +307,7 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Text(
-            'Failed to load search results:\n$_errorMessage\n${snapshot.error}',
+            '${l.failedToLoadSearchResults}\n$_errorMessage\n${snapshot.error}',
             textAlign: TextAlign.center,
           ),
         ),
@@ -313,11 +321,18 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 60, color: Colors.grey),
+              const Icon(
+                Icons.error_outline,
+                size: 60,
+                color: Colors.grey,
+              ),
               const SizedBox(height: 16),
-              const Text(
-                'Something went wrong',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              Text(
+                l.somethingWentWrong,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 10),
               Text(
@@ -331,7 +346,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   _searchProducts(_searchController.text.trim());
                 },
                 icon: const Icon(Icons.refresh),
-                label: const Text('Try Again'),
+                label: Text(l.tryAgain),
               ),
             ],
           ),
@@ -349,13 +364,16 @@ class _SearchScreenState extends State<SearchScreen> {
             color: colors.onSurfaceVariant.withValues(alpha: 0.4),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'No Products Found',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Text(
+            l.noProductsFound,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Try searching with another name',
+            l.trySearchingAnotherName,
             style: TextStyle(color: colors.onSurfaceVariant),
           ),
         ],

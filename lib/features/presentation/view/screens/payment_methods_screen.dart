@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 class PaymentMethodsScreen extends StatefulWidget {
   const PaymentMethodsScreen({super.key});
@@ -16,6 +17,8 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
 
   List<Map<String, dynamic>> _methods = [];
   bool _isLoading = true;
+
+  AppLocalizations get l => AppLocalizations.of(context)!;
 
   @override
   void initState() {
@@ -50,163 +53,166 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
     final isEditing = index != null;
     final method = isEditing ? _methods[index] : null;
 
-    final nameController = TextEditingController(text: method?['name'] ?? '');
+    final nameController = TextEditingController(
+      text: method?['name']?.toString() ?? '',
+    );
 
     final lastFourController = TextEditingController(
-      text: method?['lastFour'] ?? '',
+      text: method?['lastFour']?.toString() ?? '',
     );
 
     final expiryController = TextEditingController(
-      text: method?['expiry'] ?? '',
+      text: method?['expiry']?.toString() ?? '',
     );
 
     final formKey = GlobalKey<FormState>();
 
     bool isDefault = method?['isDefault'] ?? _methods.isEmpty;
 
-    await showDialog(
-      context: context,
-      builder: (dialogContext) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            return AlertDialog(
-              title: Text(
-                isEditing ? 'Edit Payment Method' : 'Add Payment Method',
-              ),
-              content: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextFormField(
-                        controller: nameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Cardholder Name',
-                          prefixIcon: Icon(Icons.person_outline),
+    try {
+      await showDialog(
+        context: context,
+        builder: (dialogContext) {
+          final dialogL = AppLocalizations.of(dialogContext)!;
+
+          return StatefulBuilder(
+            builder: (context, setDialogState) {
+              return AlertDialog(
+                title: Text(
+                  isEditing
+                      ? dialogL.editPaymentMethod
+                      : dialogL.addPaymentMethod,
+                ),
+                content: SingleChildScrollView(
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextFormField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                            labelText: dialogL.cardholderName,
+                            prefixIcon: const Icon(Icons.person_outline),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return dialogL.enterCardholderName;
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Enter cardholder name';
-                          }
-                          return null;
-                        },
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      TextFormField(
-                        controller: lastFourController,
-                        keyboardType: TextInputType.number,
-                        maxLength: 4,
-                        decoration: const InputDecoration(
-                          labelText: 'Last 4 Digits',
-                          prefixIcon: Icon(Icons.credit_card),
-                          counterText: '',
+                        const SizedBox(height: 12),
+                        TextFormField(
+                          controller: lastFourController,
+                          keyboardType: TextInputType.number,
+                          maxLength: 4,
+                          decoration: InputDecoration(
+                            labelText: dialogL.lastFourDigits,
+                            prefixIcon: const Icon(Icons.credit_card),
+                            counterText: '',
+                          ),
+                          validator: (value) {
+                            if (value == null ||
+                                !RegExp(r'^\d{4}$').hasMatch(value)) {
+                              return dialogL.enterExactlyFourDigits;
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null ||
-                              !RegExp(r'^\d{4}$').hasMatch(value)) {
-                            return 'Enter exactly 4 digits';
-                          }
-                          return null;
-                        },
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      TextFormField(
-                        controller: expiryController,
-                        keyboardType: TextInputType.datetime,
-                        decoration: const InputDecoration(
-                          labelText: 'Expiry Date',
-                          hintText: 'MM/YY',
-                          prefixIcon: Icon(Icons.calendar_month),
+                        const SizedBox(height: 12),
+                        TextFormField(
+                          controller: expiryController,
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                            labelText: dialogL.expiryDate,
+                            hintText: 'MM/YY',
+                            prefixIcon: const Icon(Icons.calendar_month),
+                          ),
+                          validator: (value) {
+                            if (value == null ||
+                                !RegExp(r'^(0[1-9]|1[0-2])/\d{2}$')
+                                    .hasMatch(value.trim())) {
+                              return dialogL.useMmYyFormat;
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null ||
-                              !RegExp(r'^(0[1-9]|1[0-2])/\d{2}$')
-                                  .hasMatch(value.trim())) {
-                            return 'Use MM/YY format';
-                          }
-                          return null;
-                        },
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      CheckboxListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: const Text('Set as default'),
-                        value: isDefault,
-                        activeColor: primaryColor,
-                        onChanged: (value) {
-                          setDialogState(() {
-                            isDefault = value ?? false;
-                          });
-                        },
-                      ),
-                    ],
+                        const SizedBox(height: 12),
+                        CheckboxListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: Text(dialogL.setAsDefault),
+                          value: isDefault,
+                          activeColor: primaryColor,
+                          onChanged: (value) {
+                            setDialogState(() {
+                              isDefault = value ?? false;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(dialogContext),
-                  child: const Text('Cancel'),
-                ),
-
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
-                    foregroundColor: Colors.white,
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(dialogContext),
+                    child: Text(dialogL.cancel),
                   ),
-                  onPressed: () async {
-                    if (!formKey.currentState!.validate()) return;
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () async {
+                      if (!formKey.currentState!.validate()) return;
 
-                    final newMethod = {
-                      'name': nameController.text.trim(),
-                      'lastFour': lastFourController.text.trim(),
-                      'expiry': expiryController.text.trim(),
-                      'isDefault': isDefault,
-                    };
+                      final newMethod = {
+                        'name': nameController.text.trim(),
+                        'lastFour': lastFourController.text.trim(),
+                        'expiry': expiryController.text.trim(),
+                        'isDefault': isDefault,
+                      };
 
-                    setState(() {
-                      if (isDefault) {
-                        for (final item in _methods) {
-                          item['isDefault'] = false;
+                      setState(() {
+                        if (isDefault) {
+                          for (final item in _methods) {
+                            item['isDefault'] = false;
+                          }
                         }
-                      }
 
-                      if (isEditing) {
-                        _methods[index] = newMethod;
-                      } else {
-                        _methods.add(newMethod);
-                      }
+                        if (isEditing) {
+                          _methods[index] = newMethod;
+                        } else {
+                          _methods.add(newMethod);
+                        }
 
-                      if (_methods.length == 1) {
-                        _methods.first['isDefault'] = true;
-                      }
-                    });
+                        if (_methods.length == 1) {
+                          _methods.first['isDefault'] = true;
+                        }
+                      });
 
-                    await _saveMethods();
+                      await _saveMethods();
 
-                    if (!mounted || !dialogContext.mounted) return;
+                      if (!mounted || !dialogContext.mounted) return;
 
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text(isEditing ? 'Save Changes' : 'Add Card'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-
-    nameController.dispose();
-    lastFourController.dispose();
-    expiryController.dispose();
+                      Navigator.pop(dialogContext);
+                    },
+                    child: Text(
+                      isEditing ? dialogL.saveChanges : dialogL.addCard,
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
+    } finally {
+      nameController.dispose();
+      lastFourController.dispose();
+      expiryController.dispose();
+    }
   }
 
   Future<void> _setDefault(int index) async {
@@ -222,25 +228,30 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   Future<void> _deleteMethod(int index) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Card'),
-        content: const Text(
-          'Are you sure you want to delete this payment method?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
+      builder: (dialogContext) {
+        final dialogL = AppLocalizations.of(dialogContext)!;
+
+        return AlertDialog(
+          title: Text(dialogL.deleteCard),
+          content: Text(dialogL.deletePaymentConfirmation),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(dialogL.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(
+                dialogL.deleteAction,
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
 
-    if (confirmed != true) return;
+    if (!mounted || confirmed != true) return;
 
     setState(() {
       final wasDefault = _methods[index]['isDefault'] == true;
@@ -261,9 +272,9 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Payment Methods',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.paymentMethods,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -271,19 +282,19 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
-        label: const Text('Add Card'),
+        label: Text(l.addCard),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _methods.isEmpty
-          ? _buildEmptyState(colors)
-          : ListView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
-              itemCount: _methods.length,
-              itemBuilder: (context, index) {
-                return _buildPaymentCard(index, colors);
-              },
-            ),
+              ? _buildEmptyState(colors)
+              : ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
+                  itemCount: _methods.length,
+                  itemBuilder: (context, index) {
+                    return _buildPaymentCard(index, colors);
+                  },
+                ),
     );
   }
 
@@ -299,18 +310,17 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
               size: 75,
               color: colors.onSurfaceVariant,
             ),
-
             const SizedBox(height: 16),
-
-            const Text(
-              'No Payment Methods Yet',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 8),
-
             Text(
-              'Add a payment method to manage your cards.',
+              l.noPaymentMethods,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l.addPaymentDescription,
               textAlign: TextAlign.center,
               style: TextStyle(color: colors.onSurfaceVariant),
             ),
@@ -355,23 +365,19 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                     size: 28,
                   ),
                 ),
-
                 const SizedBox(width: 12),
-
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        method['name'],
+                        method['name']?.toString() ?? '',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),
                       ),
-
                       const SizedBox(height: 5),
-
                       Text(
                         '•••• ${method['lastFour']}',
                         style: TextStyle(
@@ -382,7 +388,6 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                     ],
                   ),
                 ),
-
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'edit') {
@@ -395,44 +400,44 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                   },
                   itemBuilder: (context) => [
                     if (!isDefault)
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'default',
-                        child: Text('Set as Default'),
+                        child: Text(l.setAsDefault),
                       ),
-
-                    const PopupMenuItem(value: 'edit', child: Text('Edit')),
-
-                    const PopupMenuItem(
+                    PopupMenuItem(
+                      value: 'edit',
+                      child: Text(l.edit),
+                    ),
+                    PopupMenuItem(
                       value: 'delete',
                       child: Text(
-                        'Delete',
-                        style: TextStyle(color: Colors.red),
+                        l.deleteAction,
+                        style: const TextStyle(color: Colors.red),
                       ),
                     ),
                   ],
                 ),
               ],
             ),
-
             const SizedBox(height: 14),
-
             Row(
               children: [
                 Text(
-                  'Expires: ${method['expiry']}',
+                  '${l.expires}: ${method['expiry']}',
                   style: TextStyle(
                     color: colors.onSurfaceVariant,
                     fontSize: 12,
                   ),
                 ),
-
                 const Spacer(),
-
                 if (isDefault)
-                  const Chip(
+                  Chip(
                     label: Text(
-                      'Default',
-                      style: TextStyle(color: Colors.white, fontSize: 11),
+                      l.defaultAddress,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                      ),
                     ),
                     backgroundColor: primaryColor,
                     side: BorderSide.none,

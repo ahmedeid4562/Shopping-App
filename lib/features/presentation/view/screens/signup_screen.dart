@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/api/auth_api.dart';
 
@@ -25,6 +26,8 @@ class _SignupScreenState extends State<SignupScreen> {
   static const Color primaryColor = Color(0xFF385CF2);
 
   Future<void> _signup() async {
+    final l = AppLocalizations.of(context)!;
+
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
@@ -34,22 +37,22 @@ class _SignupScreenState extends State<SignupScreen> {
         email.isEmpty ||
         password.isEmpty ||
         confirmPassword.isEmpty) {
-      _showMessage('Please fill in all fields');
+      _showMessage(l.pleaseFillAllFields);
       return;
     }
 
     if (!email.contains('@') || !email.contains('.')) {
-      _showMessage('Please enter a valid email address');
+      _showMessage(l.enterValidEmail);
       return;
     }
 
     if (password.length < 6) {
-      _showMessage('Password must be at least 6 characters');
+      _showMessage(l.passwordMinLength);
       return;
     }
 
     if (password != confirmPassword) {
-      _showMessage('Passwords do not match');
+      _showMessage(l.passwordsDoNotMatch);
       return;
     }
 
@@ -64,7 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
       if (!mounted) return;
 
-      _showMessage('Verification email sent! Please check your inbox.');
+      _showMessage(l.verificationEmailSent);
 
       await _showVerificationDialog(email);
 
@@ -82,6 +85,8 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> _showVerificationDialog(String email) async {
+    final l = AppLocalizations.of(context)!;
+
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -95,12 +100,12 @@ class _SignupScreenState extends State<SignupScreen> {
             color: primaryColor,
             size: 55,
           ),
-          title: const Text(
-            'Verify Your Email',
+          title: Text(
+            l.verifyYourEmail,
             textAlign: TextAlign.center,
           ),
           content: Text(
-            'We sent a verification link to:\n\n$email\n\nPlease open your email and click the verification link before logging in.',
+            l.verificationEmailInstructions(email),
             textAlign: TextAlign.center,
           ),
           actions: [
@@ -114,7 +119,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   backgroundColor: primaryColor,
                   foregroundColor: Colors.white,
                 ),
-                child: const Text('Got it'),
+                child: Text(l.gotIt),
               ),
             ),
           ],
@@ -171,12 +176,13 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Create Account',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.signup,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -196,7 +202,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Join Shopping App',
+                    l.joinShoppingApp,
                     textAlign: TextAlign.center,
                     style: theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
@@ -204,51 +210,51 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Create your account and start shopping',
+                    l.createAccountDescription,
                     textAlign: TextAlign.center,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: colors.onSurfaceVariant,
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const Text(
-                    'Full Name',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                  Text(
+                    l.fullName,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _nameController,
                     textCapitalization: TextCapitalization.words,
                     decoration: _inputDecoration(
-                      hint: 'Enter your full name',
+                      hint: l.enterFullName,
                       icon: Icons.person_outline,
                     ),
                   ),
                   const SizedBox(height: 18),
-                  const Text(
-                    'Email Address',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                  Text(
+                    l.emailAddress,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: _inputDecoration(
-                      hint: 'Enter your email',
+                      hint: l.enterYourEmail,
                       icon: Icons.email_outlined,
                     ),
                   ),
                   const SizedBox(height: 18),
-                  const Text(
-                    'Password',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                  Text(
+                    l.password,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _passwordController,
                     obscureText: !_isPasswordVisible,
                     decoration: _inputDecoration(
-                      hint: 'Create a password',
+                      hint: l.createPassword,
                       icon: Icons.lock_outline,
                       suffix: IconButton(
                         onPressed: () {
@@ -265,16 +271,16 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                   const SizedBox(height: 18),
-                  const Text(
-                    'Confirm Password',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                  Text(
+                    l.confirmPassword,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _confirmPasswordController,
                     obscureText: !_isConfirmPasswordVisible,
                     decoration: _inputDecoration(
-                      hint: 'Confirm your password',
+                      hint: l.confirmYourPassword,
                       icon: Icons.lock_outline,
                       suffix: IconButton(
                         onPressed: () {
@@ -307,9 +313,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           ? const CircularProgressIndicator(
                               color: Colors.white,
                             )
-                          : const Text(
-                              'Create Account',
-                              style: TextStyle(
+                          : Text(
+                              l.signup,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -320,12 +326,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Already have an account?'),
+                      Text(l.alreadyHaveAccount),
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(
+                        child: Text(
+                          l.login,
+                          style: const TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.bold,
                           ),

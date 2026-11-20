@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -18,6 +19,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   bool _pushNotifications = true;
 
   bool _isLoading = true;
+
+  AppLocalizations get l => AppLocalizations.of(context)!;
 
   @override
   void initState() {
@@ -73,7 +76,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: colors.outline.withValues(alpha: 0.12)),
+        border: Border.all(
+          color: colors.outline.withValues(alpha: 0.12),
+        ),
       ),
       child: SwitchListTile(
         value: value,
@@ -90,11 +95,17 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
         title: Text(
           title,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
+          style: TextStyle(
+            fontSize: 12,
+            color: colors.onSurfaceVariant,
+          ),
         ),
       ),
     );
@@ -106,19 +117,21 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Notifications',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.notifications,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: primaryColor))
+          ? const Center(
+              child: CircularProgressIndicator(color: primaryColor),
+            )
           : ListView(
               padding: const EdgeInsets.all(20),
               children: [
                 Text(
-                  'Manage your notifications',
+                  l.manageNotifications,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -127,18 +140,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Choose which notifications you want to receive.',
+                  l.chooseNotifications,
                   style: TextStyle(
                     fontSize: 13,
                     color: colors.onSurfaceVariant,
                   ),
                 ),
 
-                _buildSectionTitle('General', colors.onSurface),
+                _buildSectionTitle(l.general, colors.onSurface),
 
                 _buildNotificationTile(
-                  title: 'Order Updates',
-                  subtitle: 'Get updates about your orders.',
+                  title: l.orderUpdates,
+                  subtitle: l.orderUpdatesDescription,
                   icon: Icons.local_shipping_outlined,
                   value: _orderUpdates,
                   onChanged: (value) {
@@ -148,8 +161,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ),
 
                 _buildNotificationTile(
-                  title: 'Promotions & Offers',
-                  subtitle: 'Receive discounts and special offers.',
+                  title: l.promotionsOffers,
+                  subtitle: l.promotionsDescription,
                   icon: Icons.local_offer_outlined,
                   value: _promotions,
                   onChanged: (value) {
@@ -159,8 +172,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ),
 
                 _buildNotificationTile(
-                  title: 'Recommendations',
-                  subtitle: 'Get recommendations for products.',
+                  title: l.recommendations,
+                  subtitle: l.recommendationsDescription,
                   icon: Icons.recommend_outlined,
                   value: _recommendations,
                   onChanged: (value) {
@@ -169,11 +182,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   },
                 ),
 
-                _buildSectionTitle('Notification Channels', colors.onSurface),
+                _buildSectionTitle(
+                  l.notificationChannels,
+                  colors.onSurface,
+                ),
 
                 _buildNotificationTile(
-                  title: 'Push Notifications',
-                  subtitle: 'Receive notifications on your device.',
+                  title: l.pushNotifications,
+                  subtitle: l.pushNotificationsDescription,
                   icon: Icons.notifications_active_outlined,
                   value: _pushNotifications,
                   onChanged: (value) {
@@ -183,8 +199,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ),
 
                 _buildNotificationTile(
-                  title: 'Email Notifications',
-                  subtitle: 'Receive updates through your email.',
+                  title: l.emailNotifications,
+                  subtitle: l.emailNotificationsDescription,
                   icon: Icons.email_outlined,
                   value: _emailNotifications,
                   onChanged: (value) {
@@ -201,16 +217,22 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     color: primaryColor.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Row(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.info_outline, color: primaryColor, size: 20),
-                      SizedBox(width: 10),
+                      const Icon(
+                        Icons.info_outline,
+                        color: primaryColor,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          'These settings save your notification preferences. '
-                          'Actual push and email delivery requires notification services to be configured.',
-                          style: TextStyle(fontSize: 12, height: 1.5),
+                          l.notificationSettingsInfo,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            height: 1.5,
+                          ),
                         ),
                       ),
                     ],

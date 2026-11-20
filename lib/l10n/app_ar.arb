@@ -1,6 +1,7 @@
 {
   "@@locale": "ar",
   "appTitle": "تطبيق التسوق",
+  "appVersion": "الإصدار 1.0.0",
   "user": "مستخدم",
   "noEmailAvailable": "لا يوجد بريد إلكتروني",
   "myProfile": "ملفي الشخصي",
@@ -245,5 +246,325 @@
       }
     }
   },
-  "noOrdersYet": "لا توجد طلبات حتى الآن"
+  "noOrdersYet": "لا توجد طلبات حتى الآن",
+  "ordersWillAppearHere": "ستظهر طلباتك هنا",
+
+  "welcomeTo": "مرحباً بك في",
+  "welcomeDescription": "اكتشف أحدث صيحات الموضة الرجالية واعثر على أسلوبك المثالي.",
+
+  "aboutFavoritesDescription": "احفظ منتجاتك المفضلة للوصول إليها بسهولة في أي وقت",
+  "aboutSecureExperience": "تجربة تسوق آمنة",
+  "aboutSecureExperienceDescription": "نوفر لك تجربة تسوق آمنة وموثوقة لحماية بياناتك",
+  "madeWithFlutter": "تم التطوير باستخدام Flutter",
+  "copyrightNotice": "جميع الحقوق محفوظة © 2026",
+
+  "myCart": "سلة التسوق",
+  "clearCart": "إفراغ السلة",
+  "yourCartIsEmpty": "سلة التسوق فارغة",
+  "emptyCartDescription": "لم تقم بإضافة أي منتجات إلى سلة التسوق حتى الآن",
+  "proceedToCheckout": "إتمام الشراء",
+
+  "categoryTops": "القمصان والبلوزات",
+  "categoryShoes": "الأحذية",
+  "categoryWatches": "الساعات",
+  "categoryBags": "الحقائب",
+  "categoryJewelry": "المجوهرات",
+  "categoryDresses": "الفساتين",
+  "categoryElectronics": "الإلكترونيات",
+  "categoriesTitle": "التصنيفات",
+  "couldNotLoadCategories": "تعذر تحميل التصنيفات",
+  "tryAgain": "حاول مرة أخرى",
+  "noCategoriesAvailable": "لا توجد تصنيفات متاحة",
+
+  "couldNotLoadProducts": "تعذر تحميل المنتجات",
+  "failedToLoadStoreProducts": "فشل تحميل منتجات المتجر",
+  "noProductsFoundInCategory": "لا توجد منتجات في هذا التصنيف",
+  "noProductsFound": "لم يتم العثور على منتجات",
+  "exploreProducts": "استكشف المنتجات",
+  "categoryItemsCount": "{count} منتجات",
+  "@categoryItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "aboutVersion": "الإصدار 1.0.0",
+  "aboutUs": "من نحن",
+  "aboutAppDescription": "نوفر لك تجربة تسوق سهلة ومريحة تتيح لك اكتشاف وشراء منتجاتك المفضلة بكل سهولة.",
+  "aboutEasyShopping": "تسوق بسهولة",
+  "aboutEasyShoppingDescription": "تصفح المنتجات وتسوق بسهولة من أي مكان.",
+  "aboutFavorites": "منتجاتك المفضلة",
+
+  "checkoutTitle": "إتمام الشراء",
+  "deliveryInformation": "معلومات التوصيل",
+  "checkoutFullName": "الاسم بالكامل",
+  "checkoutPhoneNumber": "رقم الهاتف",
+  "checkoutDeliveryAddress": "عنوان التوصيل",
+  "paymentMethodTitle": "طريقة الدفع",
+  "cashOnDelivery": "الدفع عند الاستلام",
+  "promoCode": "كود الخصم",
+  "enterPromoCode": "أدخل كود الخصم",
+  "applyCoupon": "تطبيق",
+  "enterCouponCode": "يرجى إدخال كود الخصم",
+  "couponAppliedSuccessfully": "تم تطبيق الكوبون بنجاح",
+  "removeCoupon": "إزالة",
+  "subtotal": "المبلغ الفرعي",
+  "discount": "الخصم",
+  "placeOrder": "تأكيد الطلب",
+  "orderPlacedSuccessfully": "تم تأكيد الطلب بنجاح",
+  "orderSavedSuccessfully": "تم حفظ طلبك بنجاح.",
+  "continueShopping": "متابعة التسوق",
+  "failedToPlaceOrder": "فشل في تأكيد الطلب",
+  "validPhoneNumber": "يرجى إدخال رقم هاتف صحيح",
+  "pleaseEnterCheckoutField": "يرجى إدخال {field}",
+  "@pleaseEnterCheckoutField": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+
+  "fullName": "الاسم بالكامل",
+  "enterYourName": "أدخل اسمك",
+  "enterFullName": "أدخل اسمك بالكامل",
+  "pleaseEnterYourName": "يرجى إدخال اسمك",
+  "emailAddress": "البريد الإلكتروني",
+  "enterYourEmail": "أدخل بريدك الإلكتروني",
+  "pleaseEnterYourEmail": "يرجى إدخال بريدك الإلكتروني",
+  "validEmailAddress": "يرجى إدخال بريد إلكتروني صحيح",
+  "emailVerificationRequired": "يجب تأكيد البريد الإلكتروني عند تغييره.",
+  "pleaseLoginFirst": "يرجى تسجيل الدخول أولاً",
+  "verificationEmailSent": "تم إرسال رسالة تأكيد إلى بريدك الإلكتروني الجديد.",
+  "profileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح",
+
+  "myFavorites": "المفضلة",
+  "failedToLoadFavorites": "فشل تحميل المنتجات المفضلة",
+  "noFavoritesYet": "لا توجد منتجات مفضلة حتى الآن",
+  "addProductsToFavorites": "أضف المنتجات إلى المفضلة لتجدها هنا.",
+
+  "howCanWeHelp": "كيف يمكننا مساعدتك؟",
+  "helpDescription": "اعثر على إجابات للأسئلة الشائعة واحصل على الدعم الذي تحتاجه.",
+  "frequentlyAskedQuestions": "الأسئلة الشائعة",
+  "faqTrackOrderQuestion": "كيف يمكنني تتبع طلبي؟",
+  "faqTrackOrderAnswer": "يمكنك عرض طلباتك وحالتها من قسم طلباتي في ملفك الشخصي.",
+  "faqCancelOrderQuestion": "هل يمكنني إلغاء طلبي؟",
+  "faqCancelOrderAnswer": "يرجى التواصل مع الدعم في أقرب وقت ممكن للاستفسار عن إمكانية إلغاء طلبك.",
+  "faqAddFavoriteQuestion": "كيف أضيف منتجًا إلى المفضلة؟",
+  "faqAddFavoriteAnswer": "اضغط على أيقونة القلب الموجودة على المنتج لإضافته إلى المفضلة.",
+  "faqChangePersonalInfoQuestion": "كيف يمكنني تغيير معلوماتي الشخصية؟",
+  "faqChangePersonalInfoAnswer": "افتح ملفك الشخصي، واختر تعديل الملف الشخصي، ثم حدّث معلوماتك واحفظ التغييرات.",
+  "faqChangePasswordQuestion": "كيف يمكنني تغيير كلمة المرور؟",
+  "faqChangePasswordAnswer": "افتح قسم تغيير كلمة المرور من إعدادات حسابك واتبع التعليمات.",
+  "faqPaymentMethodsQuestion": "ما طرق الدفع المتاحة؟",
+  "faqPaymentMethodsAnswer": "يمكنك حاليًا دفع قيمة طلبك عند الاستلام.",
+  "stillNeedHelp": "هل ما زلت بحاجة إلى مساعدة؟",
+  "contactSupportDescription": "تواصل مع فريق الدعم إذا كنت بحاجة إلى مزيد من المساعدة.",
+  "contactSupport": "تواصل مع الدعم",
+  "supportDetailsComingSoon": "ستتوفر بيانات التواصل مع الدعم قريبًا.",
+  "supportDialogOk": "حسنًا",
+
+  "loginWelcomeBack": "مرحبًا بعودتك",
+  "loginSubtitle": "سجل الدخول لمتابعة التسوق",
+  "loginEmailLabel": "البريد الإلكتروني",
+  "loginPasswordLabel": "كلمة المرور",
+  "loginForgotPassword": "نسيت كلمة المرور؟",
+  "loginButton": "تسجيل الدخول",
+  "loginOr": "أو",
+  "loginContinueWithGoogle": "المتابعة باستخدام Google",
+  "loginNoAccount": "ليس لديك حساب؟ ",
+  "loginSignUp": "إنشاء حساب",
+  "loginEnterEmailAndPassword": "يرجى إدخال البريد الإلكتروني وكلمة المرور",
+  "loginUnableToSignIn": "تعذر تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+  "loginInvalidEmail": "عنوان البريد الإلكتروني غير صالح",
+  "loginIncorrectEmailOrPassword": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+  "loginAccountDisabled": "تم تعطيل هذا الحساب",
+  "loginTooManyAttempts": "عدد المحاولات كبير جدًا. يرجى المحاولة لاحقًا.",
+  "loginCheckInternetConnection": "يرجى التحقق من اتصالك بالإنترنت",
+  "loginFailedTryAgain": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+  "loginEmailNotVerified": "البريد الإلكتروني غير مؤكد",
+  "loginEmailNotVerifiedMessage": "لم يتم تأكيد عنوان بريدك الإلكتروني {email}. هل تريد إرسال رسالة تأكيد أخرى؟",
+  "@loginEmailNotVerifiedMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "loginResendEmail": "إعادة إرسال الرسالة",
+  "loginVerificationEmailSent": "تم إرسال رسالة التأكيد بنجاح",
+  "loginEmailAlreadyVerified": "تم تأكيد بريدك الإلكتروني بالفعل",
+  "loginWaitBeforeRequestingEmail": "يرجى الانتظار قبل طلب رسالة أخرى",
+  "loginCouldNotSendVerificationEmail": "تعذر إرسال رسالة التأكيد",
+  "loginGoogleFailed": "فشل تسجيل الدخول باستخدام Google. يرجى المحاولة مرة أخرى.",
+  "loginEnterEmailFirst": "يرجى إدخال بريدك الإلكتروني أولاً",
+  "loginPasswordResetEmailSent": "تم إرسال رسالة إعادة تعيين كلمة المرور بنجاح",
+  "loginCouldNotSendPasswordResetEmail": "تعذر إرسال رسالة إعادة تعيين كلمة المرور",
+
+  "signup": "إنشاء حساب",
+  "login": "تسجيل الدخول",
+
+  "homeAddress": "المنزل",
+  "defaultAddress": "افتراضي",
+  "setAsDefaultAddress": "تعيين كعنوان افتراضي",
+  "addAddress": "إضافة عنوان",
+  "deleteAddressTitle": "حذف العنوان",
+  "deleteAddressConfirmation": "هل أنت متأكد أنك تريد حذف هذا العنوان؟",
+  "noAddressesYet": "لا توجد عناوين حتى الآن",
+  "addAddressDescription": "أضف عنوان توصيل لتسهيل إتمام طلباتك.",
+  "editAddress": "تعديل العنوان",
+  "streetAddress": "عنوان الشارع",
+  "city": "المدينة",
+  "phoneNumber": "رقم الهاتف",
+  "addressFieldRequired": "هذا الحقل مطلوب",
+  "addNewAddress": "إضافة عنوان جديد",
+  "addressName": "اسم العنوان",
+  "addressNameHint": "مثال: المنزل، العمل",
+
+  "onboardingTitle": "اعثر على كل ما تحب",
+  "onboardingDescription": "اكتشف منتجات رائعة واستمتع بتجربة تسوق سهلة.",
+  "getStarted": "ابدأ الآن",
+
+  "chooseNotifications": "اختر الإشعارات التي تريد استقبالها",
+  "general": "عام",
+  "orderUpdates": "تحديثات الطلبات",
+  "orderUpdatesDescription": "استقبل تحديثات حول طلباتك",
+  "promotionsOffers": "العروض والتخفيضات",
+  "promotionsDescription": "احصل على إشعارات بالخصومات والعروض الخاصة",
+  "recommendations": "الاقتراحات",
+  "recommendationsDescription": "اكتشف المنتجات المختارة لك",
+  "notificationChannels": "قنوات الإشعارات",
+  "pushNotifications": "إشعارات التطبيق",
+  "pushNotificationsDescription": "استقبل الإشعارات على جهازك",
+  "emailNotifications": "إشعارات البريد الإلكتروني",
+  "emailNotificationsDescription": "استقبل الإشعارات عبر البريد الإلكتروني",
+  "notificationSettingsInfo": "يمكنك تغيير هذه التفضيلات في أي وقت.",
+
+  "pending": "قيد الانتظار",
+  "processing": "قيد التجهيز",
+  "shipped": "تم الشحن",
+  "delivered": "تم التوصيل",
+  "cancelled": "تم الإلغاء",
+  "completed": "مكتمل",
+  "cancelOrder": "إلغاء الطلب",
+  "cancelOrderConfirmation": "هل أنت متأكد أنك تريد إلغاء هذا الطلب؟",
+  "no": "لا",
+  "yesCancel": "نعم، إلغاء",
+  "orderCancelledSuccessfully": "تم إلغاء الطلب بنجاح",
+  "failedToCancelOrder": "فشل إلغاء الطلب",
+  "deleteOrder": "حذف الطلب",
+  "deleteOrderConfirmation": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
+  "yesDelete": "نعم، احذف",
+  "orderDeletedSuccessfully": "تم حذف الطلب بنجاح",
+  "failedToDeleteOrder": "فشل حذف الطلب",
+  "dateUnavailable": "التاريخ غير متاح",
+  "orderDetails": "تفاصيل الطلب",
+  "orderId": "رقم الطلب",
+  "date": "التاريخ",
+
+  "editPaymentMethod": "تعديل طريقة الدفع",
+  "addPaymentMethod": "إضافة طريقة دفع",
+  "cardholderName": "اسم حامل البطاقة",
+  "enterCardholderName": "أدخل اسم حامل البطاقة",
+  "lastFourDigits": "آخر أربعة أرقام",
+  "enterExactlyFourDigits": "أدخل 4 أرقام بالضبط",
+  "expiryDate": "تاريخ الانتهاء",
+  "useMmYyFormat": "استخدم تنسيق MM/YY",
+  "setAsDefault": "تعيين كافتراضي",
+  "addCard": "إضافة بطاقة",
+  "deleteCard": "حذف البطاقة",
+  "deletePaymentConfirmation": "هل أنت متأكد أنك تريد حذف طريقة الدفع هذه؟",
+  "noPaymentMethods": "لا توجد طرق دفع",
+  "addPaymentDescription": "أضف طريقة دفع لتسهيل إتمام طلباتك.",
+  "edit": "تعديل",
+
+  "productDetails": "تفاصيل المنتج",
+  "reviews": "التقييمات",
+  "productAddedToCart": "تمت إضافة {product} إلى السلة",
+  "@productAddedToCart": {
+    "placeholders": {
+      "product": {
+        "type": "String"
+      }
+    }
+  },
+  "addToCart": "أضف إلى السلة",
+
+  "searchProducts": "البحث عن المنتجات",
+  "searchForProducts": "ابحث عن المنتجات",
+  "findFavoriteProducts": "اعثر على منتجاتك المفضلة",
+  "searchByProductName": "ابحث باستخدام اسم المنتج",
+  "searchResults": "نتائج البحث",
+  "items": "منتجات",
+  "failedToLoadSearchResults": "فشل تحميل نتائج البحث",
+  "trySearchingAnotherName": "حاول البحث باستخدام اسم آخر",
+
+  "shopper": "متسوق",
+  "helloShopper": "مرحبًا، {name}",
+  "@helloShopper": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "findYourStyle": "اكتشف أسلوبك",
+  "searchProductsHint": "ابحث عن المنتجات...",
+  "newCollection": "مجموعة جديدة",
+  "discoverYourStyle": "اكتشف أسلوبك الخاص",
+  "exploreLatestFashion": "اكتشف أحدث صيحات الموضة",
+  "shopNow": "تسوق الآن",
+  "categories": "التصنيفات",
+  "all": "الكل",
+  "featuredProducts": "المنتجات المميزة",
+  "itemCount": "{count} منتجات",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "pleaseFillAllFields": "يرجى ملء جميع الحقول",
+  "enterValidEmail": "يرجى إدخال بريد إلكتروني صحيح",
+  "verifyYourEmail": "تأكيد البريد الإلكتروني",
+  "verificationEmailInstructions": "لقد أرسلنا رسالة تأكيد إلى {email}. يرجى التحقق من صندوق الوارد.",
+  "@verificationEmailInstructions": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "gotIt": "حسنًا",
+  "joinShoppingApp": "انضم إلى تطبيق التسوق",
+  "createAccountDescription": "أنشئ حسابًا لبدء تجربة التسوق الخاصة بك",
+  "password": "كلمة المرور",
+  "createPassword": "أنشئ كلمة مرور",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "confirmYourPassword": "أعد إدخال كلمة المرور",
+  "alreadyHaveAccount": "لديك حساب بالفعل؟",
+
+  "home": "الرئيسية",
+  "favorites": "المفضلة",
+  "cart": "السلة",
+  "profile": "حسابي",
+  "addedToFavorites": "تمت الإضافة إلى المفضلة",
+  "removedFromFavorites": "تمت الإزالة من المفضلة",
+  "addToFavorites": "إضافة إلى المفضلة",
+  "removeFromFavorites": "إزالة من المفضلة",
+  "filter": "تصفية",
+  "categoryClothing": "الملابس",
+"categoryClothingSubtitle": "تسوق ملابس الرجال والنساء والأطفال",
+"categoryAccessories": "الإكسسوارات",
+"categoryAccessoriesSubtitle": "أكمل إطلالتك بأجمل الإكسسوارات",
+"categoryMen": "رجالي",
+"categoryWomen": "حريمي",
+"categoryKids": "أطفال",
+"categorySunglasses": "نظارات شمسية",
+"categoryBelts": "أحزمة",
+"categoryWallets": "محافظ"
 }

@@ -13,6 +13,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appTitle => 'تطبيق التسوق';
 
   @override
+  String get appVersion => 'الإصدار 1.0.0';
+
+  @override
   String get user => 'مستخدم';
 
   @override
@@ -520,4 +523,798 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noOrdersYet => 'لا توجد طلبات حتى الآن';
+
+  @override
+  String get ordersWillAppearHere => 'ستظهر طلباتك هنا';
+
+  @override
+  String get welcomeTo => 'مرحباً بك في';
+
+  @override
+  String get welcomeDescription =>
+      'اكتشف أحدث صيحات الموضة الرجالية واعثر على أسلوبك المثالي.';
+
+  @override
+  String get aboutFavoritesDescription =>
+      'احفظ منتجاتك المفضلة للوصول إليها بسهولة في أي وقت';
+
+  @override
+  String get aboutSecureExperience => 'تجربة تسوق آمنة';
+
+  @override
+  String get aboutSecureExperienceDescription =>
+      'نوفر لك تجربة تسوق آمنة وموثوقة لحماية بياناتك';
+
+  @override
+  String get madeWithFlutter => 'تم التطوير باستخدام Flutter';
+
+  @override
+  String get copyrightNotice => 'جميع الحقوق محفوظة © 2026';
+
+  @override
+  String get myCart => 'سلة التسوق';
+
+  @override
+  String get clearCart => 'إفراغ السلة';
+
+  @override
+  String get yourCartIsEmpty => 'سلة التسوق فارغة';
+
+  @override
+  String get emptyCartDescription =>
+      'لم تقم بإضافة أي منتجات إلى سلة التسوق حتى الآن';
+
+  @override
+  String get proceedToCheckout => 'إتمام الشراء';
+
+  @override
+  String get categoryTops => 'القمصان والبلوزات';
+
+  @override
+  String get categoryShoes => 'الأحذية';
+
+  @override
+  String get categoryWatches => 'الساعات';
+
+  @override
+  String get categoryBags => 'الحقائب';
+
+  @override
+  String get categoryJewelry => 'المجوهرات';
+
+  @override
+  String get categoryDresses => 'الفساتين';
+
+  @override
+  String get categoryElectronics => 'الإلكترونيات';
+
+  @override
+  String get categoriesTitle => 'التصنيفات';
+
+  @override
+  String get couldNotLoadCategories => 'تعذر تحميل التصنيفات';
+
+  @override
+  String get tryAgain => 'حاول مرة أخرى';
+
+  @override
+  String get noCategoriesAvailable => 'لا توجد تصنيفات متاحة';
+
+  @override
+  String get couldNotLoadProducts => 'تعذر تحميل المنتجات';
+
+  @override
+  String get failedToLoadStoreProducts => 'فشل تحميل منتجات المتجر';
+
+  @override
+  String get noProductsFoundInCategory => 'لا توجد منتجات في هذا التصنيف';
+
+  @override
+  String get noProductsFound => 'لم يتم العثور على منتجات';
+
+  @override
+  String get exploreProducts => 'استكشف المنتجات';
+
+  @override
+  String categoryItemsCount(int count) {
+    return '$count منتجات';
+  }
+
+  @override
+  String get aboutVersion => 'الإصدار 1.0.0';
+
+  @override
+  String get aboutUs => 'من نحن';
+
+  @override
+  String get aboutAppDescription =>
+      'نوفر لك تجربة تسوق سهلة ومريحة تتيح لك اكتشاف وشراء منتجاتك المفضلة بكل سهولة.';
+
+  @override
+  String get aboutEasyShopping => 'تسوق بسهولة';
+
+  @override
+  String get aboutEasyShoppingDescription =>
+      'تصفح المنتجات وتسوق بسهولة من أي مكان.';
+
+  @override
+  String get aboutFavorites => 'منتجاتك المفضلة';
+
+  @override
+  String get checkoutTitle => 'إتمام الشراء';
+
+  @override
+  String get deliveryInformation => 'معلومات التوصيل';
+
+  @override
+  String get checkoutFullName => 'الاسم بالكامل';
+
+  @override
+  String get checkoutPhoneNumber => 'رقم الهاتف';
+
+  @override
+  String get checkoutDeliveryAddress => 'عنوان التوصيل';
+
+  @override
+  String get paymentMethodTitle => 'طريقة الدفع';
+
+  @override
+  String get cashOnDelivery => 'الدفع عند الاستلام';
+
+  @override
+  String get promoCode => 'كود الخصم';
+
+  @override
+  String get enterPromoCode => 'أدخل كود الخصم';
+
+  @override
+  String get applyCoupon => 'تطبيق';
+
+  @override
+  String get enterCouponCode => 'يرجى إدخال كود الخصم';
+
+  @override
+  String get couponAppliedSuccessfully => 'تم تطبيق الكوبون بنجاح';
+
+  @override
+  String get removeCoupon => 'إزالة';
+
+  @override
+  String get subtotal => 'المبلغ الفرعي';
+
+  @override
+  String get discount => 'الخصم';
+
+  @override
+  String get placeOrder => 'تأكيد الطلب';
+
+  @override
+  String get orderPlacedSuccessfully => 'تم تأكيد الطلب بنجاح';
+
+  @override
+  String get orderSavedSuccessfully => 'تم حفظ طلبك بنجاح.';
+
+  @override
+  String get continueShopping => 'متابعة التسوق';
+
+  @override
+  String get failedToPlaceOrder => 'فشل في تأكيد الطلب';
+
+  @override
+  String get validPhoneNumber => 'يرجى إدخال رقم هاتف صحيح';
+
+  @override
+  String pleaseEnterCheckoutField(String field) {
+    return 'يرجى إدخال $field';
+  }
+
+  @override
+  String get fullName => 'الاسم بالكامل';
+
+  @override
+  String get enterYourName => 'أدخل اسمك';
+
+  @override
+  String get enterFullName => 'أدخل اسمك بالكامل';
+
+  @override
+  String get pleaseEnterYourName => 'يرجى إدخال اسمك';
+
+  @override
+  String get emailAddress => 'البريد الإلكتروني';
+
+  @override
+  String get enterYourEmail => 'أدخل بريدك الإلكتروني';
+
+  @override
+  String get pleaseEnterYourEmail => 'يرجى إدخال بريدك الإلكتروني';
+
+  @override
+  String get validEmailAddress => 'يرجى إدخال بريد إلكتروني صحيح';
+
+  @override
+  String get emailVerificationRequired =>
+      'يجب تأكيد البريد الإلكتروني عند تغييره.';
+
+  @override
+  String get pleaseLoginFirst => 'يرجى تسجيل الدخول أولاً';
+
+  @override
+  String get verificationEmailSent =>
+      'تم إرسال رسالة تأكيد إلى بريدك الإلكتروني الجديد.';
+
+  @override
+  String get profileUpdatedSuccessfully => 'تم تحديث الملف الشخصي بنجاح';
+
+  @override
+  String get myFavorites => 'المفضلة';
+
+  @override
+  String get failedToLoadFavorites => 'فشل تحميل المنتجات المفضلة';
+
+  @override
+  String get noFavoritesYet => 'لا توجد منتجات مفضلة حتى الآن';
+
+  @override
+  String get addProductsToFavorites => 'أضف المنتجات إلى المفضلة لتجدها هنا.';
+
+  @override
+  String get howCanWeHelp => 'كيف يمكننا مساعدتك؟';
+
+  @override
+  String get helpDescription =>
+      'اعثر على إجابات للأسئلة الشائعة واحصل على الدعم الذي تحتاجه.';
+
+  @override
+  String get frequentlyAskedQuestions => 'الأسئلة الشائعة';
+
+  @override
+  String get faqTrackOrderQuestion => 'كيف يمكنني تتبع طلبي؟';
+
+  @override
+  String get faqTrackOrderAnswer =>
+      'يمكنك عرض طلباتك وحالتها من قسم طلباتي في ملفك الشخصي.';
+
+  @override
+  String get faqCancelOrderQuestion => 'هل يمكنني إلغاء طلبي؟';
+
+  @override
+  String get faqCancelOrderAnswer =>
+      'يرجى التواصل مع الدعم في أقرب وقت ممكن للاستفسار عن إمكانية إلغاء طلبك.';
+
+  @override
+  String get faqAddFavoriteQuestion => 'كيف أضيف منتجًا إلى المفضلة؟';
+
+  @override
+  String get faqAddFavoriteAnswer =>
+      'اضغط على أيقونة القلب الموجودة على المنتج لإضافته إلى المفضلة.';
+
+  @override
+  String get faqChangePersonalInfoQuestion =>
+      'كيف يمكنني تغيير معلوماتي الشخصية؟';
+
+  @override
+  String get faqChangePersonalInfoAnswer =>
+      'افتح ملفك الشخصي، واختر تعديل الملف الشخصي، ثم حدّث معلوماتك واحفظ التغييرات.';
+
+  @override
+  String get faqChangePasswordQuestion => 'كيف يمكنني تغيير كلمة المرور؟';
+
+  @override
+  String get faqChangePasswordAnswer =>
+      'افتح قسم تغيير كلمة المرور من إعدادات حسابك واتبع التعليمات.';
+
+  @override
+  String get faqPaymentMethodsQuestion => 'ما طرق الدفع المتاحة؟';
+
+  @override
+  String get faqPaymentMethodsAnswer =>
+      'يمكنك حاليًا دفع قيمة طلبك عند الاستلام.';
+
+  @override
+  String get stillNeedHelp => 'هل ما زلت بحاجة إلى مساعدة؟';
+
+  @override
+  String get contactSupportDescription =>
+      'تواصل مع فريق الدعم إذا كنت بحاجة إلى مزيد من المساعدة.';
+
+  @override
+  String get contactSupport => 'تواصل مع الدعم';
+
+  @override
+  String get supportDetailsComingSoon =>
+      'ستتوفر بيانات التواصل مع الدعم قريبًا.';
+
+  @override
+  String get supportDialogOk => 'حسنًا';
+
+  @override
+  String get loginWelcomeBack => 'مرحبًا بعودتك';
+
+  @override
+  String get loginSubtitle => 'سجل الدخول لمتابعة التسوق';
+
+  @override
+  String get loginEmailLabel => 'البريد الإلكتروني';
+
+  @override
+  String get loginPasswordLabel => 'كلمة المرور';
+
+  @override
+  String get loginForgotPassword => 'نسيت كلمة المرور؟';
+
+  @override
+  String get loginButton => 'تسجيل الدخول';
+
+  @override
+  String get loginOr => 'أو';
+
+  @override
+  String get loginContinueWithGoogle => 'المتابعة باستخدام Google';
+
+  @override
+  String get loginNoAccount => 'ليس لديك حساب؟ ';
+
+  @override
+  String get loginSignUp => 'إنشاء حساب';
+
+  @override
+  String get loginEnterEmailAndPassword =>
+      'يرجى إدخال البريد الإلكتروني وكلمة المرور';
+
+  @override
+  String get loginUnableToSignIn =>
+      'تعذر تسجيل الدخول. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get loginInvalidEmail => 'عنوان البريد الإلكتروني غير صالح';
+
+  @override
+  String get loginIncorrectEmailOrPassword =>
+      'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+
+  @override
+  String get loginAccountDisabled => 'تم تعطيل هذا الحساب';
+
+  @override
+  String get loginTooManyAttempts =>
+      'عدد المحاولات كبير جدًا. يرجى المحاولة لاحقًا.';
+
+  @override
+  String get loginCheckInternetConnection => 'يرجى التحقق من اتصالك بالإنترنت';
+
+  @override
+  String get loginFailedTryAgain => 'فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get loginEmailNotVerified => 'البريد الإلكتروني غير مؤكد';
+
+  @override
+  String loginEmailNotVerifiedMessage(String email) {
+    return 'لم يتم تأكيد عنوان بريدك الإلكتروني $email. هل تريد إرسال رسالة تأكيد أخرى؟';
+  }
+
+  @override
+  String get loginResendEmail => 'إعادة إرسال الرسالة';
+
+  @override
+  String get loginVerificationEmailSent => 'تم إرسال رسالة التأكيد بنجاح';
+
+  @override
+  String get loginEmailAlreadyVerified => 'تم تأكيد بريدك الإلكتروني بالفعل';
+
+  @override
+  String get loginWaitBeforeRequestingEmail =>
+      'يرجى الانتظار قبل طلب رسالة أخرى';
+
+  @override
+  String get loginCouldNotSendVerificationEmail => 'تعذر إرسال رسالة التأكيد';
+
+  @override
+  String get loginGoogleFailed =>
+      'فشل تسجيل الدخول باستخدام Google. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get loginEnterEmailFirst => 'يرجى إدخال بريدك الإلكتروني أولاً';
+
+  @override
+  String get loginPasswordResetEmailSent =>
+      'تم إرسال رسالة إعادة تعيين كلمة المرور بنجاح';
+
+  @override
+  String get loginCouldNotSendPasswordResetEmail =>
+      'تعذر إرسال رسالة إعادة تعيين كلمة المرور';
+
+  @override
+  String get signup => 'إنشاء حساب';
+
+  @override
+  String get login => 'تسجيل الدخول';
+
+  @override
+  String get homeAddress => 'المنزل';
+
+  @override
+  String get defaultAddress => 'افتراضي';
+
+  @override
+  String get setAsDefaultAddress => 'تعيين كعنوان افتراضي';
+
+  @override
+  String get addAddress => 'إضافة عنوان';
+
+  @override
+  String get deleteAddressTitle => 'حذف العنوان';
+
+  @override
+  String get deleteAddressConfirmation =>
+      'هل أنت متأكد أنك تريد حذف هذا العنوان؟';
+
+  @override
+  String get noAddressesYet => 'لا توجد عناوين حتى الآن';
+
+  @override
+  String get addAddressDescription => 'أضف عنوان توصيل لتسهيل إتمام طلباتك.';
+
+  @override
+  String get editAddress => 'تعديل العنوان';
+
+  @override
+  String get streetAddress => 'عنوان الشارع';
+
+  @override
+  String get city => 'المدينة';
+
+  @override
+  String get phoneNumber => 'رقم الهاتف';
+
+  @override
+  String get addressFieldRequired => 'هذا الحقل مطلوب';
+
+  @override
+  String get addNewAddress => 'إضافة عنوان جديد';
+
+  @override
+  String get addressName => 'اسم العنوان';
+
+  @override
+  String get addressNameHint => 'مثال: المنزل، العمل';
+
+  @override
+  String get onboardingTitle => 'اعثر على كل ما تحب';
+
+  @override
+  String get onboardingDescription =>
+      'اكتشف منتجات رائعة واستمتع بتجربة تسوق سهلة.';
+
+  @override
+  String get getStarted => 'ابدأ الآن';
+
+  @override
+  String get chooseNotifications => 'اختر الإشعارات التي تريد استقبالها';
+
+  @override
+  String get general => 'عام';
+
+  @override
+  String get orderUpdates => 'تحديثات الطلبات';
+
+  @override
+  String get orderUpdatesDescription => 'استقبل تحديثات حول طلباتك';
+
+  @override
+  String get promotionsOffers => 'العروض والتخفيضات';
+
+  @override
+  String get promotionsDescription =>
+      'احصل على إشعارات بالخصومات والعروض الخاصة';
+
+  @override
+  String get recommendations => 'الاقتراحات';
+
+  @override
+  String get recommendationsDescription => 'اكتشف المنتجات المختارة لك';
+
+  @override
+  String get notificationChannels => 'قنوات الإشعارات';
+
+  @override
+  String get pushNotifications => 'إشعارات التطبيق';
+
+  @override
+  String get pushNotificationsDescription => 'استقبل الإشعارات على جهازك';
+
+  @override
+  String get emailNotifications => 'إشعارات البريد الإلكتروني';
+
+  @override
+  String get emailNotificationsDescription =>
+      'استقبل الإشعارات عبر البريد الإلكتروني';
+
+  @override
+  String get notificationSettingsInfo => 'يمكنك تغيير هذه التفضيلات في أي وقت.';
+
+  @override
+  String get pending => 'قيد الانتظار';
+
+  @override
+  String get processing => 'قيد التجهيز';
+
+  @override
+  String get shipped => 'تم الشحن';
+
+  @override
+  String get delivered => 'تم التوصيل';
+
+  @override
+  String get cancelled => 'تم الإلغاء';
+
+  @override
+  String get completed => 'مكتمل';
+
+  @override
+  String get cancelOrder => 'إلغاء الطلب';
+
+  @override
+  String get cancelOrderConfirmation =>
+      'هل أنت متأكد أنك تريد إلغاء هذا الطلب؟';
+
+  @override
+  String get no => 'لا';
+
+  @override
+  String get yesCancel => 'نعم، إلغاء';
+
+  @override
+  String get orderCancelledSuccessfully => 'تم إلغاء الطلب بنجاح';
+
+  @override
+  String get failedToCancelOrder => 'فشل إلغاء الطلب';
+
+  @override
+  String get deleteOrder => 'حذف الطلب';
+
+  @override
+  String get deleteOrderConfirmation => 'هل أنت متأكد أنك تريد حذف هذا الطلب؟';
+
+  @override
+  String get yesDelete => 'نعم، احذف';
+
+  @override
+  String get orderDeletedSuccessfully => 'تم حذف الطلب بنجاح';
+
+  @override
+  String get failedToDeleteOrder => 'فشل حذف الطلب';
+
+  @override
+  String get dateUnavailable => 'التاريخ غير متاح';
+
+  @override
+  String get orderDetails => 'تفاصيل الطلب';
+
+  @override
+  String get orderId => 'رقم الطلب';
+
+  @override
+  String get date => 'التاريخ';
+
+  @override
+  String get editPaymentMethod => 'تعديل طريقة الدفع';
+
+  @override
+  String get addPaymentMethod => 'إضافة طريقة دفع';
+
+  @override
+  String get cardholderName => 'اسم حامل البطاقة';
+
+  @override
+  String get enterCardholderName => 'أدخل اسم حامل البطاقة';
+
+  @override
+  String get lastFourDigits => 'آخر أربعة أرقام';
+
+  @override
+  String get enterExactlyFourDigits => 'أدخل 4 أرقام بالضبط';
+
+  @override
+  String get expiryDate => 'تاريخ الانتهاء';
+
+  @override
+  String get useMmYyFormat => 'استخدم تنسيق MM/YY';
+
+  @override
+  String get setAsDefault => 'تعيين كافتراضي';
+
+  @override
+  String get addCard => 'إضافة بطاقة';
+
+  @override
+  String get deleteCard => 'حذف البطاقة';
+
+  @override
+  String get deletePaymentConfirmation =>
+      'هل أنت متأكد أنك تريد حذف طريقة الدفع هذه؟';
+
+  @override
+  String get noPaymentMethods => 'لا توجد طرق دفع';
+
+  @override
+  String get addPaymentDescription => 'أضف طريقة دفع لتسهيل إتمام طلباتك.';
+
+  @override
+  String get edit => 'تعديل';
+
+  @override
+  String get productDetails => 'تفاصيل المنتج';
+
+  @override
+  String get reviews => 'التقييمات';
+
+  @override
+  String productAddedToCart(String product) {
+    return 'تمت إضافة $product إلى السلة';
+  }
+
+  @override
+  String get addToCart => 'أضف إلى السلة';
+
+  @override
+  String get searchProducts => 'البحث عن المنتجات';
+
+  @override
+  String get searchForProducts => 'ابحث عن المنتجات';
+
+  @override
+  String get findFavoriteProducts => 'اعثر على منتجاتك المفضلة';
+
+  @override
+  String get searchByProductName => 'ابحث باستخدام اسم المنتج';
+
+  @override
+  String get searchResults => 'نتائج البحث';
+
+  @override
+  String get items => 'منتجات';
+
+  @override
+  String get failedToLoadSearchResults => 'فشل تحميل نتائج البحث';
+
+  @override
+  String get trySearchingAnotherName => 'حاول البحث باستخدام اسم آخر';
+
+  @override
+  String get shopper => 'متسوق';
+
+  @override
+  String helloShopper(String name) {
+    return 'مرحبًا، $name';
+  }
+
+  @override
+  String get findYourStyle => 'اكتشف أسلوبك';
+
+  @override
+  String get searchProductsHint => 'ابحث عن المنتجات...';
+
+  @override
+  String get newCollection => 'مجموعة جديدة';
+
+  @override
+  String get discoverYourStyle => 'اكتشف أسلوبك الخاص';
+
+  @override
+  String get exploreLatestFashion => 'اكتشف أحدث صيحات الموضة';
+
+  @override
+  String get shopNow => 'تسوق الآن';
+
+  @override
+  String get categories => 'التصنيفات';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get featuredProducts => 'المنتجات المميزة';
+
+  @override
+  String itemCount(int count) {
+    return '$count منتجات';
+  }
+
+  @override
+  String get pleaseFillAllFields => 'يرجى ملء جميع الحقول';
+
+  @override
+  String get enterValidEmail => 'يرجى إدخال بريد إلكتروني صحيح';
+
+  @override
+  String get verifyYourEmail => 'تأكيد البريد الإلكتروني';
+
+  @override
+  String verificationEmailInstructions(String email) {
+    return 'لقد أرسلنا رسالة تأكيد إلى $email. يرجى التحقق من صندوق الوارد.';
+  }
+
+  @override
+  String get gotIt => 'حسنًا';
+
+  @override
+  String get joinShoppingApp => 'انضم إلى تطبيق التسوق';
+
+  @override
+  String get createAccountDescription =>
+      'أنشئ حسابًا لبدء تجربة التسوق الخاصة بك';
+
+  @override
+  String get password => 'كلمة المرور';
+
+  @override
+  String get createPassword => 'أنشئ كلمة مرور';
+
+  @override
+  String get confirmPassword => 'تأكيد كلمة المرور';
+
+  @override
+  String get confirmYourPassword => 'أعد إدخال كلمة المرور';
+
+  @override
+  String get alreadyHaveAccount => 'لديك حساب بالفعل؟';
+
+  @override
+  String get home => 'الرئيسية';
+
+  @override
+  String get favorites => 'المفضلة';
+
+  @override
+  String get cart => 'السلة';
+
+  @override
+  String get profile => 'حسابي';
+
+  @override
+  String get addedToFavorites => 'تمت الإضافة إلى المفضلة';
+
+  @override
+  String get removedFromFavorites => 'تمت الإزالة من المفضلة';
+
+  @override
+  String get addToFavorites => 'إضافة إلى المفضلة';
+
+  @override
+  String get removeFromFavorites => 'إزالة من المفضلة';
+
+  @override
+  String get filter => 'تصفية';
+
+  @override
+  String get categoryClothing => 'الملابس';
+
+  @override
+  String get categoryClothingSubtitle => 'تسوق ملابس الرجال والنساء والأطفال';
+
+  @override
+  String get categoryAccessories => 'الإكسسوارات';
+
+  @override
+  String get categoryAccessoriesSubtitle => 'أكمل إطلالتك بأجمل الإكسسوارات';
+
+  @override
+  String get categoryMen => 'رجالي';
+
+  @override
+  String get categoryWomen => 'حريمي';
+
+  @override
+  String get categoryKids => 'أطفال';
+
+  @override
+  String get categorySunglasses => 'نظارات شمسية';
+
+  @override
+  String get categoryBelts => 'أحزمة';
+
+  @override
+  String get categoryWallets => 'محافظ';
 }

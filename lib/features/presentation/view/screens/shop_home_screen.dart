@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/api/auth_api.dart';
-
 import '../../view_model/home_cubit.dart';
 import '../../view_model/home_state.dart';
-
 import '../widgets/product_card.dart';
 import 'cart_screen.dart';
 
@@ -45,17 +44,24 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
   }
 
   Future<void> _logout() async {
+    final l = AppLocalizations.of(context)!;
+
     try {
       await AuthApi().signOut();
 
       if (!mounted) return;
 
-      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/login',
+        (route) => false,
+      );
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l.logoutFailed)),
+      );
     }
   }
 
@@ -63,28 +69,31 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Shopping App',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.appTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const CartScreen()),
+                MaterialPageRoute(
+                  builder: (_) => const CartScreen(),
+                ),
               );
             },
             icon: const Icon(Icons.shopping_cart_outlined),
-            tooltip: 'My Cart',
+            tooltip: l.myCart,
           ),
           IconButton(
             onPressed: _logout,
             icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
+            tooltip: l.logout,
           ),
           const SizedBox(width: 8),
         ],
@@ -110,9 +119,9 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                       color: Colors.grey,
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Something went wrong!',
-                      style: TextStyle(
+                    Text(
+                      l.somethingWentWrong,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -129,7 +138,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                         context.read<HomeCubit>().getProducts();
                       },
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Try Again'),
+                      label: Text(l.tryAgain),
                     ),
                   ],
                 ),
@@ -138,10 +147,8 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
           }
 
           if (state is HomeSuccess) {
-            // Show only products saved by the admin in Firestore.
             final products = state.products;
 
-            // Build categories from the available store products.
             final categories = [
               'All',
               ...products
@@ -152,7 +159,6 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                 ..sort(),
             ];
 
-            // Reset selected category if it no longer exists.
             if (_selectedCategory != 'All' &&
                 !categories.contains(_selectedCategory)) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -164,15 +170,13 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
               });
             }
 
-            // Filter products by category and search query.
             final filteredProducts = products.where((product) {
-              final matchesCategory =
-                  _selectedCategory == 'All' ||
+              final matchesCategory = _selectedCategory == 'All' ||
                   product.category == _selectedCategory;
 
               final matchesSearch = product.title.toLowerCase().contains(
-                _searchQuery.toLowerCase(),
-              );
+                    _searchQuery.toLowerCase(),
+                  );
 
               return matchesCategory && matchesSearch;
             }).toList();
@@ -192,21 +196,22 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Hello, ${AuthApi().currentUser?.displayName ?? 'Shopper'} 👋',
+                            l.helloShopper(
+                              AuthApi().currentUser?.displayName ??
+                                  l.shopper,
+                            ),
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: colors.onSurfaceVariant,
                             ),
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            'Find Your Style',
+                            l.findYourStyle,
                             style: theme.textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 20),
-
-                          // Search.
                           TextField(
                             controller: _searchController,
                             onChanged: (value) {
@@ -215,7 +220,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                               });
                             },
                             decoration: InputDecoration(
-                              hintText: 'Search products...',
+                              hintText: l.searchProductsHint,
                               prefixIcon: const Icon(Icons.search),
                               filled: true,
                               fillColor: colors.surfaceContainerHighest,
@@ -226,23 +231,24 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                             ),
                           ),
                           const SizedBox(height: 25),
-
-                          // Banner.
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(22),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [Color(0xFF385CF2), Color(0xFF7188FF)],
+                                colors: [
+                                  Color(0xFF385CF2),
+                                  Color(0xFF7188FF),
+                                ],
                               ),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'NEW COLLECTION',
-                                  style: TextStyle(
+                                Text(
+                                  l.newCollection,
+                                  style: const TextStyle(
                                     color: Colors.white70,
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -250,18 +256,18 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                const Text(
-                                  'Discover Your\nOwn Style',
-                                  style: TextStyle(
+                                Text(
+                                  l.discoverYourStyle,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 const SizedBox(height: 12),
-                                const Text(
-                                  'Explore our latest fashion products.',
-                                  style: TextStyle(
+                                Text(
+                                  l.exploreLatestFashion,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 13,
                                   ),
@@ -276,9 +282,9 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: const Text(
-                                    'Shop Now',
-                                    style: TextStyle(
+                                  child: Text(
+                                    l.shopNow,
+                                    style: const TextStyle(
                                       color: primaryColor,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -288,10 +294,8 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                             ),
                           ),
                           const SizedBox(height: 28),
-
-                          // Categories.
                           Text(
-                            'Categories',
+                            l.categories,
                             style: theme.textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -313,9 +317,9 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                                 return ChoiceChip(
                                   label: Text(
                                     category == 'All'
-                                        ? 'All'
+                                        ? l.all
                                         : category[0].toUpperCase() +
-                                              category.substring(1),
+                                            category.substring(1),
                                   ),
                                   selected: isSelected,
                                   selectedColor: primaryColor,
@@ -335,19 +339,17 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                             ),
                           ),
                           const SizedBox(height: 28),
-
-                          // Featured products title.
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Featured Products',
+                                l.featuredProducts,
                                 style: theme.textTheme.titleLarge?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
-                                '${filteredProducts.length} Items',
+                                l.itemCount(filteredProducts.length),
                                 style: TextStyle(
                                   color: colors.onSurfaceVariant,
                                 ),
@@ -359,31 +361,37 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                       ),
                     ),
                   ),
-
-                  // Products Grid.
                   if (filteredProducts.isEmpty)
-                    const SliverFillRemaining(
+                    SliverFillRemaining(
                       hasScrollBody: false,
-                      child: Center(child: Text('No products found')),
+                      child: Center(
+                        child: Text(l.noProductsFound),
+                      ),
                     )
                   else
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       sliver: SliverGrid(
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                          return ProductCard(product: filteredProducts[index]);
-                        }, childCount: filteredProducts.length),
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return ProductCard(
+                              product: filteredProducts[index],
+                            );
+                          },
+                          childCount: filteredProducts.length,
+                        ),
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 250,
-                              mainAxisSpacing: 15,
-                              crossAxisSpacing: 15,
-                              mainAxisExtent: 280,
-                            ),
+                          maxCrossAxisExtent: 250,
+                          mainAxisSpacing: 15,
+                          crossAxisSpacing: 15,
+                          mainAxisExtent: 280,
+                        ),
                       ),
                     ),
-
-                  const SliverToBoxAdapter(child: SizedBox(height: 25)),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 25),
+                  ),
                 ],
               ),
             );

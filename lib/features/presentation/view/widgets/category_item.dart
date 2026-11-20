@@ -6,7 +6,11 @@ class CategoryItem extends StatelessWidget {
   final CategoryModel category;
   final VoidCallback onTap;
 
-  const CategoryItem({super.key, required this.category, required this.onTap});
+  const CategoryItem({
+    super.key,
+    required this.category,
+    required this.onTap,
+  });
 
   static const Color primaryColor = Color(0xFF385CF2);
 
@@ -53,10 +57,15 @@ class CategoryItem extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 16,
+          ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: colors.outline.withValues(alpha: 0.15)),
+            border: Border.all(
+              color: colors.outline.withValues(alpha: 0.15),
+            ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -68,7 +77,11 @@ class CategoryItem extends StatelessWidget {
                   color: primaryColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Icon(_getCategoryIcon(), color: primaryColor, size: 28),
+                child: Icon(
+                  _getCategoryIcon(),
+                  color: primaryColor,
+                  size: 28,
+                ),
               ),
               const SizedBox(height: 12),
               Text(

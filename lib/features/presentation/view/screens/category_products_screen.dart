@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/api/category_api.dart';
 import '../../../data/api/admin_product_api.dart';
@@ -17,7 +18,8 @@ class CategoryProductsScreen extends StatefulWidget {
   });
 
   @override
-  State<CategoryProductsScreen> createState() => _CategoryProductsScreenState();
+  State<CategoryProductsScreen> createState() =>
+      _CategoryProductsScreenState();
 }
 
 class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
@@ -33,6 +35,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
 
   static const Color primaryColor = Color(0xFF385CF2);
 
+  AppLocalizations get l => AppLocalizations.of(context)!;
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +47,43 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   }
 
   String _normalizeCategory(String value) {
-    return value.trim().toLowerCase().replaceAll(RegExp(r'[\s_]+'), '-');
+    return value
+        .trim()
+        .toLowerCase()
+        .replaceAll(RegExp(r'[\s_]+'), '-');
+  }
+
+  List<String> _categoryAliases(String slug) {
+    switch (_normalizeCategory(slug)) {
+      case 'men':
+        return ['men', "men's clothing", 'mens clothing'];
+      case 'women':
+        return ['women', "women's clothing", 'womens clothing'];
+      case 'kids':
+        return ['kids', 'children', "children's clothing"];
+      case 'watches':
+        return ['watches', 'watch'];
+      case 'bags':
+        return ['bags', 'bag'];
+      case 'jewelry':
+        return ['jewelry', 'jewellery'];
+      case 'sunglasses':
+        return ['sunglasses', 'sunglass'];
+      case 'belts':
+        return ['belts', 'belt'];
+      case 'wallets':
+        return ['wallets', 'wallet'];
+      default:
+        return [slug];
+    }
+  }
+
+  bool _matchesCategory(String productCategory) {
+    final normalizedProduct = _normalizeCategory(productCategory);
+
+    return _categoryAliases(widget.categorySlug).any(
+      (alias) => _normalizeCategory(alias) == normalizedProduct,
+    );
   }
 
   Future<void> _loadProducts() async {
@@ -74,11 +114,11 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     }
   }
 
-  List<ProductModel> _mergeProducts(List<ProductModel> storeProducts) {
-    final selectedCategory = _normalizeCategory(widget.categorySlug);
-
+  List<ProductModel> _mergeProducts(
+    List<ProductModel> storeProducts,
+  ) {
     final matchingStoreProducts = storeProducts.where((product) {
-      return _normalizeCategory(product.category) == selectedCategory;
+      return _matchesCategory(product.category);
     }).toList();
 
     final combined = <ProductModel>[];
@@ -97,29 +137,45 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     return combined;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colors = theme.colorScheme;
+  Widget _buildError() {
+    final colors = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.categoryName,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.error_outline,
+              size: 60,
+              color: Colors.grey,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              l.couldNotLoadProducts,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              _errorMessage!,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: colors.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: _loadProducts,
+              icon: const Icon(Icons.refresh),
+              label: Text(l.tryAgain),
+            ),
+          ],
         ),
-        centerTitle: true,
-      ),
-      body: StreamBuilder<List<ProductModel>>(
-        stream: _storeProductsStream,
-        builder: (context, snapshot) {
-          return _buildBody(
-            theme,
-            colors,
-            snapshot.data ?? [],
-            snapshot.hasError,
-          );
-        },
       ),
     );
   }
@@ -132,54 +188,48 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   ) {
     if (_isLoading) {
       return const Center(
-        child: CircularProgressIndicator(color: primaryColor),
+        child: CircularProgressIndicator(
+          color: primaryColor,
+        ),
       );
     }
 
     final products = _mergeProducts(storeProducts);
 
     if (products.isEmpty && _errorMessage != null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error_outline, size: 60, color: Colors.grey),
-              const SizedBox(height: 16),
-              const Text(
-                'Could not load products',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                _errorMessage!,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: colors.onSurfaceVariant),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton.icon(
-                onPressed: _loadProducts,
-                icon: const Icon(Icons.refresh),
-                label: const Text('Try Again'),
-              ),
-            ],
-          ),
-        ),
-      );
+      return _buildError();
     }
 
     if (products.isEmpty && hasStreamError) {
       return Center(
         child: Text(
-          'Failed to load store products.',
-          style: TextStyle(color: colors.onSurfaceVariant),
+          l.failedToLoadStoreProducts,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: colors.onSurfaceVariant,
+          ),
         ),
       );
     }
 
     if (products.isEmpty) {
-      return const Center(child: Text('No products found in this category'));
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.shopping_bag_outlined,
+              size: 65,
+              color: colors.onSurfaceVariant.withValues(alpha: 0.5),
+            ),
+            const SizedBox(height: 14),
+            Text(
+              l.noProductsFoundInCategory,
+              style: theme.textTheme.titleMedium,
+            ),
+          ],
+        ),
+      );
     }
 
     return RefreshIndicator(
@@ -194,15 +244,19 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Explore Products',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                      l.exploreProducts,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   Text(
-                    '${products.length} Items',
-                    style: TextStyle(color: colors.onSurfaceVariant),
+                    l.categoryItemsCount(products.length),
+                    style: TextStyle(
+                      color: colors.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
@@ -211,10 +265,16 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
           SliverPadding(
             padding: const EdgeInsets.all(20),
             sliver: SliverGrid(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return ProductCard(product: products[index]);
-              }, childCount: products.length),
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return ProductCard(
+                    product: products[index],
+                  );
+                },
+                childCount: products.length,
+              ),
+              gridDelegate:
+                  const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 250,
                 mainAxisSpacing: 15,
                 crossAxisSpacing: 15,
@@ -223,6 +283,35 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.categoryName,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: StreamBuilder<List<ProductModel>>(
+        stream: _storeProductsStream,
+        builder: (context, snapshot) {
+          return _buildBody(
+            theme,
+            colors,
+            snapshot.data ?? [],
+            snapshot.hasError,
+          );
+        },
       ),
     );
   }

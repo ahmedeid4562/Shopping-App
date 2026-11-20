@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/model/product_model.dart';
 import '../../view_model/cart_cubit.dart';
@@ -26,15 +27,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+    final l = AppLocalizations.of(context)!;
 
     final product = widget.product;
     final productImages = product.allImages;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Product Details',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.productDetails,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -91,7 +93,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                 ),
               ),
-
               if (productImages.length > 1) ...[
                 const SizedBox(height: 12),
                 Row(
@@ -117,9 +118,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                 ),
               ],
-
               const SizedBox(height: 24),
-
               Text(
                 product.category.toUpperCase(),
                 style: const TextStyle(
@@ -128,18 +127,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   fontSize: 13,
                 ),
               ),
-
               const SizedBox(height: 10),
-
               Text(
                 product.title,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               const SizedBox(height: 14),
-
               Row(
                 children: [
                   const Icon(
@@ -157,7 +152,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   if (product.ratingCount > 0) ...[
                     const SizedBox(width: 5),
                     Text(
-                      '(${product.ratingCount} reviews)',
+                      '(${product.ratingCount} ${l.reviews})',
                       style: TextStyle(
                         color: colors.onSurfaceVariant,
                       ),
@@ -165,9 +160,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ],
                 ],
               ),
-
               const SizedBox(height: 20),
-
               Text(
                 '\$${product.price.toStringAsFixed(2)}',
                 style: const TextStyle(
@@ -176,18 +169,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               const SizedBox(height: 24),
-
               Text(
-                'Description',
+                l.description,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               const SizedBox(height: 10),
-
               Text(
                 product.description,
                 style: theme.textTheme.bodyLarge?.copyWith(
@@ -195,9 +184,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   height: 1.6,
                 ),
               ),
-
               const SizedBox(height: 30),
-
               SizedBox(
                 width: double.infinity,
                 height: 55,
@@ -208,7 +195,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          '${product.title} added to cart',
+                          l.productAddedToCart(product.title),
                         ),
                         backgroundColor: Colors.green,
                         duration: const Duration(seconds: 2),
@@ -218,9 +205,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   icon: const Icon(
                     Icons.shopping_cart_outlined,
                   ),
-                  label: const Text(
-                    'Add to Cart',
-                    style: TextStyle(
+                  label: Text(
+                    l.addToCart,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -234,7 +221,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
             ],
           ),

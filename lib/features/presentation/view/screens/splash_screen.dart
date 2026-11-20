@@ -34,18 +34,23 @@ class _SplashScreenState extends State<SplashScreen> {
     super.dispose();
   }
 
- @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    backgroundColor: const Color(0xFFF5F5F5),
-    body: Center(
-      child: Image.asset(
-        'assets/images/splash.png',
-        width: 400,
-        height: 362,
-        fit: BoxFit.contain,
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: Localizations.localeOf(context).languageCode == 'ar'
+          ? TextDirection.rtl
+          : TextDirection.ltr,
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF5F5F5),
+        body: Center(
+          child: Image.asset(
+            'assets/images/splash.png',
+            width: 400,
+            height: 362,
+            fit: BoxFit.contain,
+          ),
+        ),
       ),
-    ),
-  );
-} }
-
+    );
+  }
+}

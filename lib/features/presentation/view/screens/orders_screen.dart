@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../data/api/order_api.dart';
 import '../../../data/model/product_model.dart';
@@ -10,23 +11,48 @@ class OrdersScreen extends StatelessWidget {
 
   static const Color primaryColor = Color(0xFF385CF2);
 
+  AppLocalizations getL(BuildContext context) {
+    return AppLocalizations.of(context)!;
+  }
+
+  String _localizedStatus(String status, AppLocalizations l) {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return l.pending;
+      case 'processing':
+        return l.processing;
+      case 'shipped':
+        return l.shipped;
+      case 'delivered':
+        return l.delivered;
+      case 'cancelled':
+        return l.cancelled;
+      case 'completed':
+        return l.completed;
+      default:
+        return status;
+    }
+  }
+
   Future<void> _cancelOrder(BuildContext context, String orderId) async {
+    final l = getL(context);
+
     final confirm = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Cancel Order'),
-          content: const Text('Are you sure you want to cancel this order?'),
+          title: Text(l.cancelOrder),
+          content: Text(l.cancelOrderConfirmation),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, false),
-              child: const Text('No'),
+              child: Text(l.no),
             ),
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, true),
-              child: const Text(
-                'Yes, Cancel',
-                style: TextStyle(color: Colors.red),
+              child: Text(
+                l.yesCancel,
+                style: const TextStyle(color: Colors.red),
               ),
             ),
           ],
@@ -42,8 +68,8 @@ class OrdersScreen extends StatelessWidget {
       if (!context.mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Order cancelled successfully'),
+        SnackBar(
+          content: Text(l.orderCancelledSuccessfully),
           backgroundColor: Colors.green,
         ),
       );
@@ -52,7 +78,7 @@ class OrdersScreen extends StatelessWidget {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to cancel order: $e'),
+          content: Text('${l.failedToCancelOrder}: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -60,25 +86,29 @@ class OrdersScreen extends StatelessWidget {
   }
 
   Future<void> _deleteOrder(BuildContext context, String orderId) async {
+    final l = getL(context);
+
     final confirm = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          icon: const Icon(Icons.delete_forever, color: Colors.red, size: 45),
-          title: const Text('Delete Order'),
-          content: const Text(
-            'Are you sure you want to permanently delete this order?',
+          icon: const Icon(
+            Icons.delete_forever,
+            color: Colors.red,
+            size: 45,
           ),
+          title: Text(l.deleteOrder),
+          content: Text(l.deleteOrderConfirmation),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, false),
-              child: const Text('No'),
+              child: Text(l.no),
             ),
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, true),
-              child: const Text(
-                'Yes, Delete',
-                style: TextStyle(
+              child: Text(
+                l.yesDelete,
+                style: const TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
                 ),
@@ -95,7 +125,7 @@ class OrdersScreen extends StatelessWidget {
       final uid = FirebaseAuth.instance.currentUser?.uid;
 
       if (uid == null) {
-        throw Exception('Please login first');
+        throw Exception(l.pleaseLoginFirst);
       }
 
       await FirebaseFirestore.instance
@@ -108,8 +138,8 @@ class OrdersScreen extends StatelessWidget {
       if (!context.mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Order deleted successfully'),
+        SnackBar(
+          content: Text(l.orderDeletedSuccessfully),
           backgroundColor: Colors.green,
         ),
       );
@@ -118,7 +148,7 @@ class OrdersScreen extends StatelessWidget {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to delete order: $e'),
+          content: Text('${l.failedToDeleteOrder}: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -128,12 +158,13 @@ class OrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l = getL(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'My Orders',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l.myOrders,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -159,9 +190,9 @@ class OrdersScreen extends StatelessWidget {
                       color: Colors.red,
                     ),
                     const SizedBox(height: 12),
-                    const Text(
-                      'Failed to load orders',
-                      style: TextStyle(fontSize: 18),
+                    Text(
+                      l.failedToLoadOrders,
+                      style: const TextStyle(fontSize: 18),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -191,13 +222,16 @@ class OrdersScreen extends StatelessWidget {
                     color: colors.onSurfaceVariant,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'No Orders Yet!',
-                    style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                  Text(
+                    l.noOrdersYet,
+                    style: const TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Your orders will appear here.',
+                    l.ordersWillAppearHere,
                     style: TextStyle(color: colors.onSurfaceVariant),
                   ),
                 ],
@@ -220,8 +254,12 @@ class OrdersScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderCard(BuildContext context, Map<String, dynamic> order) {
+  Widget _buildOrderCard(
+    BuildContext context,
+    Map<String, dynamic> order,
+  ) {
     final colors = Theme.of(context).colorScheme;
+    final l = getL(context);
 
     final orderId = order['id']?.toString() ?? '';
     final status = order['status']?.toString() ?? 'Pending';
@@ -239,7 +277,7 @@ class OrdersScreen extends StatelessWidget {
 
     final createdAt = order['createdAt'];
 
-    String orderDate = 'Date unavailable';
+    String orderDate = l.dateUnavailable;
 
     if (createdAt is Timestamp) {
       final date = createdAt.toDate();
@@ -249,7 +287,7 @@ class OrdersScreen extends StatelessWidget {
       orderDate = '${createdAt.day}/${createdAt.month}/${createdAt.year}';
     }
 
-    final isCancelled = status == 'Cancelled';
+    final isCancelled = status.toLowerCase() == 'cancelled';
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -264,9 +302,12 @@ class OrdersScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Order Details',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              Text(
+                l.orderDetails,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -280,7 +321,7 @@ class OrdersScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  status,
+                  _localizedStatus(status, l),
                   style: TextStyle(
                     color: isCancelled ? Colors.red : Colors.orange.shade800,
                     fontWeight: FontWeight.bold,
@@ -290,23 +331,23 @@ class OrdersScreen extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 10),
-
           Text(
-            'Order ID: $orderId',
-            style: TextStyle(color: colors.onSurfaceVariant, fontSize: 12),
+            '${l.orderId}: $orderId',
+            style: TextStyle(
+              color: colors.onSurfaceVariant,
+              fontSize: 12,
+            ),
           ),
-
           const SizedBox(height: 5),
-
           Text(
-            'Date: $orderDate',
-            style: TextStyle(color: colors.onSurfaceVariant, fontSize: 13),
+            '${l.date}: $orderDate',
+            style: TextStyle(
+              color: colors.onSurfaceVariant,
+              fontSize: 13,
+            ),
           ),
-
           const Divider(height: 24),
-
           ...products.map((product) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -324,7 +365,9 @@ class OrdersScreen extends StatelessWidget {
                           width: 55,
                           height: 55,
                           color: colors.surfaceContainerHighest,
-                          child: const Icon(Icons.image_not_supported_outlined),
+                          child: const Icon(
+                            Icons.image_not_supported_outlined,
+                          ),
                         );
                       },
                     ),
@@ -349,15 +392,16 @@ class OrdersScreen extends StatelessWidget {
               ),
             );
           }),
-
           const Divider(height: 20),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Total Amount',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              Text(
+                l.totalAmount,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
               Text(
                 '\$${totalPrice.toStringAsFixed(2)}',
@@ -369,9 +413,7 @@ class OrdersScreen extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 18),
-
           Row(
             children: [
               if (!isCancelled)
@@ -381,7 +423,7 @@ class OrdersScreen extends StatelessWidget {
                         ? null
                         : () => _cancelOrder(context, orderId),
                     icon: const Icon(Icons.cancel_outlined, size: 18),
-                    label: const Text('Cancel Order'),
+                    label: Text(l.cancelOrder),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.orange.shade800,
                       side: BorderSide(color: Colors.orange.shade800),
@@ -389,16 +431,14 @@ class OrdersScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
               if (!isCancelled) const SizedBox(width: 10),
-
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: orderId.isEmpty
                       ? null
                       : () => _deleteOrder(context, orderId),
                   icon: const Icon(Icons.delete_outline, size: 18),
-                  label: const Text('Delete Order'),
+                  label: Text(l.deleteOrder),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,

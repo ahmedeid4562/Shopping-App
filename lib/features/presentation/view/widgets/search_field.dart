@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/l10n/app_localizations.dart';
 
 class SearchField extends StatelessWidget {
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
-  final String hintText;
+  final String? hintText;
   final bool enabled;
   final VoidCallback? onFilterTap;
 
@@ -13,7 +14,7 @@ class SearchField extends StatelessWidget {
     this.controller,
     this.onChanged,
     this.onSubmitted,
-    this.hintText = 'Search products...',
+    this.hintText,
     this.enabled = true,
     this.onFilterTap,
   });
@@ -23,6 +24,7 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l = AppLocalizations.of(context)!;
 
     return TextField(
       controller: controller,
@@ -31,14 +33,23 @@ class SearchField extends StatelessWidget {
       onSubmitted: onSubmitted,
       textInputAction: TextInputAction.search,
       decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(color: colors.onSurfaceVariant, fontSize: 14),
-        prefixIcon: const Icon(Icons.search, color: primaryColor),
+        hintText: hintText ?? l.searchProductsHint,
+        hintStyle: TextStyle(
+          color: colors.onSurfaceVariant,
+          fontSize: 14,
+        ),
+        prefixIcon: const Icon(
+          Icons.search,
+          color: primaryColor,
+        ),
         suffixIcon: onFilterTap != null
             ? IconButton(
                 onPressed: onFilterTap,
-                tooltip: 'Filter',
-                icon: const Icon(Icons.tune, color: primaryColor),
+                tooltip: l.filter,
+                icon: const Icon(
+                  Icons.tune,
+                  color: primaryColor,
+                ),
               )
             : null,
         filled: true,
@@ -53,11 +64,16 @@ class SearchField extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: colors.outline.withValues(alpha: 0.15)),
+          borderSide: BorderSide(
+            color: colors.outline.withValues(alpha: 0.15),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: primaryColor, width: 1.5),
+          borderSide: const BorderSide(
+            color: primaryColor,
+            width: 1.5,
+          ),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
