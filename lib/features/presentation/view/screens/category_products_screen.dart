@@ -18,8 +18,7 @@ class CategoryProductsScreen extends StatefulWidget {
   });
 
   @override
-  State<CategoryProductsScreen> createState() =>
-      _CategoryProductsScreenState();
+  State<CategoryProductsScreen> createState() => _CategoryProductsScreenState();
 }
 
 class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
@@ -47,10 +46,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   }
 
   String _normalizeCategory(String value) {
-    return value
-        .trim()
-        .toLowerCase()
-        .replaceAll(RegExp(r'[\s_]+'), '-');
+    return value.trim().toLowerCase().replaceAll(RegExp(r'[\s_]+'), '-');
   }
 
   List<String> _categoryAliases(String slug) {
@@ -81,9 +77,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   bool _matchesCategory(String productCategory) {
     final normalizedProduct = _normalizeCategory(productCategory);
 
-    return _categoryAliases(widget.categorySlug).any(
-      (alias) => _normalizeCategory(alias) == normalizedProduct,
-    );
+    return _categoryAliases(widget.categorySlug)
+        .any((alias) => _normalizeCategory(alias) == normalizedProduct);
   }
 
   Future<void> _loadProducts() async {
@@ -114,9 +109,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     }
   }
 
-  List<ProductModel> _mergeProducts(
-    List<ProductModel> storeProducts,
-  ) {
+  List<ProductModel> _mergeProducts(List<ProductModel> storeProducts) {
     final matchingStoreProducts = storeProducts.where((product) {
       return _matchesCategory(product.category);
     }).toList();
@@ -146,27 +139,18 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error_outline,
-              size: 60,
-              color: Colors.grey,
-            ),
+            const Icon(Icons.error_outline, size: 60, color: Colors.grey),
             const SizedBox(height: 16),
             Text(
               l.couldNotLoadProducts,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Text(
               _errorMessage!,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(color: colors.onSurfaceVariant),
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
@@ -188,9 +172,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   ) {
     if (_isLoading) {
       return const Center(
-        child: CircularProgressIndicator(
-          color: primaryColor,
-        ),
+        child: CircularProgressIndicator(color: primaryColor),
       );
     }
 
@@ -205,9 +187,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
         child: Text(
           l.failedToLoadStoreProducts,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            color: colors.onSurfaceVariant,
-          ),
+          style: TextStyle(color: colors.onSurfaceVariant),
         ),
       );
     }
@@ -254,9 +234,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                   ),
                   Text(
                     l.categoryItemsCount(products.length),
-                    style: TextStyle(
-                      color: colors.onSurfaceVariant,
-                    ),
+                    style: TextStyle(color: colors.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -265,16 +243,10 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
           SliverPadding(
             padding: const EdgeInsets.all(20),
             sliver: SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return ProductCard(
-                    product: products[index],
-                  );
-                },
-                childCount: products.length,
-              ),
-              gridDelegate:
-                  const SliverGridDelegateWithMaxCrossAxisExtent(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                return ProductCard(product: products[index]);
+              }, childCount: products.length),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 250,
                 mainAxisSpacing: 15,
                 crossAxisSpacing: 15,
@@ -296,9 +268,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
       appBar: AppBar(
         title: Text(
           widget.categoryName,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),

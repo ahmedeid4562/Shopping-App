@@ -245,7 +245,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get createCoupon => 'إنشاء كوبون';
 
   @override
-  String get couponCode => 'كود الكوبون';
+  String get couponCode => 'كود الخصم';
 
   @override
   String get enterAtLeast3Characters => 'أدخل 3 أحرف على الأقل';
@@ -680,7 +680,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get removeCoupon => 'إزالة';
 
   @override
-  String get subtotal => 'المبلغ الفرعي';
+  String get subtotal => 'المجموع الفرعي';
 
   @override
   String get discount => 'الخصم';
@@ -1317,4 +1317,57 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get categoryWallets => 'محافظ';
+
+  @override
+  String get clearCartConfirmation => 'هل أنت متأكد أنك تريد إفراغ سلة التسوق؟';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get loading => 'جاري التحميل...';
+
+  @override
+  String get customerName => 'اسم العميل';
+
+  @override
+  String get address => 'العنوان';
+
+  @override
+  String get quantity => 'الكمية';
+
+  @override
+  String get orderSummary => 'ملخص الطلب';
+
+  @override
+  String get paymentMethod => 'طريقة الدفع';
+
+  @override
+  String get moreItems => 'منتجات أخرى';
+
+  @override
+  String get viewDetails => 'عرض التفاصيل';
+
+  @override
+  String get orderDate => 'تاريخ الطلب';
+
+  @override
+  String get orderTime => 'وقت الطلب';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get menOnboardingTitle => 'أناقتك تبدأ من هنا';
+
+  @override
+  String get menOnboardingDescription =>
+      'اكتشف أحدث تصميمات الملابس الرجالية واختار إطلالة تعبر عن شخصيتك في كل مناسبة.';
+
+  @override
+  String get womenOnboardingTitle => 'تألقي بإطلالتك الخاصة';
+
+  @override
+  String get womenOnboardingDescription =>
+      'اكتشفي تشكيلة متنوعة من الملابس النسائية التي تجمع بين الأناقة والجمال.';
 }

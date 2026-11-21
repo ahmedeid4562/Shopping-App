@@ -11,8 +11,8 @@ class HomeCubit extends Cubit<HomeState> {
   StreamSubscription<List<ProductModel>>? _productsSubscription;
 
   HomeCubit({AdminProductApi? productApi})
-      : _productApi = productApi ?? AdminProductApi(),
-        super(HomeInitial());
+    : _productApi = productApi ?? AdminProductApi(),
+      super(HomeInitial());
 
   Future<void> getProducts() async {
     if (isClosed) return;

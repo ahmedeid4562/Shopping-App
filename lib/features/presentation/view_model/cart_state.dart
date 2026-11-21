@@ -23,8 +23,14 @@ class CartLoaded extends CartState {
   const CartLoaded(this.products);
 
   double get totalPrice {
-    return products.fold(0, (total, product) => total + product.price);
+    return products.fold(0.0, (total, product) => total + product.totalPrice);
   }
+
+  int get totalQuantity {
+    return products.fold(0, (total, product) => total + product.quantity);
+  }
+
+  int get totalItems => products.length;
 
   @override
   List<Object?> get props => [products];

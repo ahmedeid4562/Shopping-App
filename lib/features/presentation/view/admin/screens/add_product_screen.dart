@@ -79,9 +79,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
     for (final entry in _categoryOptions.entries) {
       if (entry.key == normalized ||
-          entry.value.any(
-            (alias) => alias.toLowerCase() == normalized,
-          )) {
+          entry.value.any((alias) => alias.toLowerCase() == normalized)) {
         return entry.key;
       }
     }
@@ -162,12 +160,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         );
       }
     } else {
-      _variants.add(
-        _VariantDraft(
-          colorName: 'Default',
-          colorHex: '#FFFFFF',
-        ),
-      );
+      _variants.add(_VariantDraft(colorName: 'Default', colorHex: '#FFFFFF'));
     }
   }
 
@@ -189,12 +182,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     if (_isLoading || _isPickingImages) return;
 
     setState(() {
-      _variants.add(
-        _VariantDraft(
-          colorName: '',
-          colorHex: '#FFFFFF',
-        ),
-      );
+      _variants.add(_VariantDraft(colorName: '', colorHex: '#FFFFFF'));
     });
   }
 
@@ -213,9 +201,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     setState(() => _isPickingImages = true);
 
     try {
-      final pickedImages = await _imagePicker.pickMultiImage(
-        imageQuality: 85,
-      );
+      final pickedImages = await _imagePicker.pickMultiImage(imageQuality: 85);
 
       if (pickedImages.isEmpty) return;
 
@@ -223,10 +209,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         pickedImages.map((file) async {
           final bytes = await file.readAsBytes();
 
-          return _VariantImageDraft(
-            file: file,
-            bytes: bytes,
-          );
+          return _VariantImageDraft(file: file, bytes: bytes);
         }),
       );
 
@@ -240,10 +223,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     } catch (e) {
       if (!mounted) return;
 
-      _showMessage(
-        l.failedSelectImages,
-        isError: true,
-      );
+      _showMessage(l.failedSelectImages, isError: true);
     } finally {
       if (mounted) {
         setState(() => _isPickingImages = false);
@@ -334,9 +314,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       result.add(
         ProductVariant(
           colorName: colorName,
-          colorHex: colorHex.startsWith('#')
-              ? colorHex
-              : '#$colorHex',
+          colorHex: colorHex.startsWith('#') ? colorHex : '#$colorHex',
           images: imageUrls,
         ),
       );
@@ -349,33 +327,22 @@ class _AddProductScreenState extends State<AddProductScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     if (_variants.isEmpty) {
-      _showMessage(
-        l.addAtLeastOneColor,
-        isError: true,
-      );
+      _showMessage(l.addAtLeastOneColor, isError: true);
       return;
     }
 
     final colorNames = <String>{};
 
     for (final variant in _variants) {
-      final name = variant.colorNameController.text
-          .trim()
-          .toLowerCase();
+      final name = variant.colorNameController.text.trim().toLowerCase();
 
       if (name.isEmpty) {
-        _showMessage(
-          l.enterAllColorNames,
-          isError: true,
-        );
+        _showMessage(l.enterAllColorNames, isError: true);
         return;
       }
 
       if (!colorNames.add(name)) {
-        _showMessage(
-          l.uniqueColorNames,
-          isError: true,
-        );
+        _showMessage(l.uniqueColorNames, isError: true);
         return;
       }
     }
@@ -388,8 +355,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       final description = _descriptionController.text.trim();
       final category = _normalizeCategory(_categoryController.text);
 
-      final List<ProductVariant> variants =
-          await _prepareVariants();
+      final List<ProductVariant> variants = await _prepareVariants();
 
       if (variants.isEmpty || variants.first.images.isEmpty) {
         throw Exception(l.addProductImages);
@@ -430,10 +396,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     } catch (e) {
       if (!mounted) return;
 
-      _showMessage(
-        '${l.failedSaveProduct}: $e',
-        isError: true,
-      );
+      _showMessage('${l.failedSaveProduct}: $e', isError: true);
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -460,11 +423,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
           labelText: label,
           hintText: hint,
           prefixIcon: Icon(icon),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
         ),
-        validator: validator ??
+        validator:
+            validator ??
             (value) {
               if (value == null || value.trim().isEmpty) {
                 return l.pleaseEnterField(label);
@@ -491,9 +453,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         decoration: InputDecoration(
           labelText: l.category,
           prefixIcon: const Icon(Icons.category_outlined),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
         ),
         hint: Text(l.categoryExample),
         items: _availableCategories.map((category) {
@@ -548,10 +508,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       );
     }
 
-    return const Icon(
-      Icons.image_outlined,
-      color: Colors.grey,
-    );
+    return const Icon(Icons.image_outlined, color: Colors.grey);
   }
 
   Widget _buildVariantCard(int index) {
@@ -564,9 +521,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       color: colors.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(
-          color: colors.outline.withValues(alpha: 0.2),
-        ),
+        side: BorderSide(color: colors.outline.withValues(alpha: 0.2)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -601,10 +556,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       ? null
                       : () => _removeVariant(index),
                   tooltip: l.removeColor,
-                  icon: const Icon(
-                    Icons.delete_outline,
-                    color: Colors.red,
-                  ),
+                  icon: const Icon(Icons.delete_outline, color: Colors.red),
                 ),
               ],
             ),
@@ -634,9 +586,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     decoration: InputDecoration(
                       labelText: l.colorHex,
                       hintText: '#000000',
-                      prefixIcon: const Icon(
-                        Icons.color_lens_outlined,
-                      ),
+                      prefixIcon: const Icon(Icons.color_lens_outlined),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -648,9 +598,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: _colorFromHex(
-                      variant.colorHexController.text,
-                    ),
+                    color: _colorFromHex(variant.colorHexController.text),
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: colors.outline.withValues(alpha: 0.5),
@@ -706,8 +654,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: variant.images.length,
-                gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
@@ -760,13 +707,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 onPressed: _isLoading || _isPickingImages
                     ? null
                     : () => _pickImages(index),
-                icon: const Icon(
-                  Icons.add_photo_alternate_outlined,
-                ),
+                icon: const Icon(Icons.add_photo_alternate_outlined),
                 label: Text(
-                  _isPickingImages
-                      ? l.openingGallery
-                      : l.addImagesFromDevice,
+                  _isPickingImages ? l.openingGallery : l.addImagesFromDevice,
                 ),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: primaryColor,
@@ -789,9 +732,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       appBar: AppBar(
         title: Text(
           _isEditing ? l.editProduct : l.addProduct,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -819,14 +760,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 controller: _priceController,
                 label: l.price,
                 icon: Icons.attach_money,
-                keyboardType:
-                    const TextInputType.numberWithOptions(
+                keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
                 validator: (value) {
-                  final price = double.tryParse(
-                    value?.trim() ?? '',
-                  );
+                  final price = double.tryParse(value?.trim() ?? '');
 
                   if (price == null || price <= 0) {
                     return l.validPrice;
@@ -868,9 +806,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               Text(
                 l.addAvailableColorsDescription,
                 style: TextStyle(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurfaceVariant,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 13,
                 ),
               ),
@@ -890,10 +826,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   label: Text(l.addAnotherColor),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: primaryColor,
-                    side: const BorderSide(
-                      color: primaryColor,
-                      width: 1.3,
-                    ),
+                    side: const BorderSide(color: primaryColor, width: 1.3),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
@@ -925,9 +858,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           ),
                         )
                       : Text(
-                          _isEditing
-                              ? l.saveChanges
-                              : l.addProduct,
+                          _isEditing ? l.saveChanges : l.addProduct,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -949,11 +880,7 @@ class _VariantImageDraft {
   final Uint8List? bytes;
   final String? url;
 
-  _VariantImageDraft({
-    this.file,
-    this.bytes,
-    this.url,
-  });
+  _VariantImageDraft({this.file, this.bytes, this.url});
 }
 
 class _VariantDraft {
@@ -966,11 +893,9 @@ class _VariantDraft {
     required String colorName,
     required String colorHex,
     List<_VariantImageDraft>? images,
-  })  : colorNameController =
-            TextEditingController(text: colorName),
-        colorHexController =
-            TextEditingController(text: colorHex),
-        images = images ?? [];
+  }) : colorNameController = TextEditingController(text: colorName),
+       colorHexController = TextEditingController(text: colorHex),
+       images = images ?? [];
 
   void dispose() {
     colorNameController.dispose();

@@ -9,6 +9,7 @@ class ProductModel {
   final int ratingCount;
   final String? firestoreId;
   final List<ProductVariant> variants;
+  final int quantity;
 
   const ProductModel({
     required this.id,
@@ -21,7 +22,38 @@ class ProductModel {
     required this.ratingCount,
     this.firestoreId,
     this.variants = const [],
+    this.quantity = 1,
   });
+
+  ProductModel copyWith({
+    int? id,
+    String? title,
+    double? price,
+    String? description,
+    String? category,
+    String? image,
+    double? rating,
+    int? ratingCount,
+    String? firestoreId,
+    List<ProductVariant>? variants,
+    int? quantity,
+  }) {
+    return ProductModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      price: price ?? this.price,
+      description: description ?? this.description,
+      category: category ?? this.category,
+      image: image ?? this.image,
+      rating: rating ?? this.rating,
+      ratingCount: ratingCount ?? this.ratingCount,
+      firestoreId: firestoreId ?? this.firestoreId,
+      variants: variants ?? this.variants,
+      quantity: quantity ?? this.quantity,
+    );
+  }
+
+  double get totalPrice => price * quantity;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     final ratingData = json['rating'];
@@ -43,12 +75,12 @@ class ProductModel {
     final variants = _parseVariants(json['variants']);
     final images = json['images'];
 
-    final variantImage =
-        variants.isNotEmpty && variants.first.images.isNotEmpty
-            ? variants.first.images.first
-            : '';
+    final variantImage = variants.isNotEmpty && variants.first.images.isNotEmpty
+        ? variants.first.images.first
+        : '';
 
-    final image = json['thumbnail'] ??
+    final image =
+        json['thumbnail'] ??
         json['image'] ??
         (images is List && images.isNotEmpty ? images.first : null) ??
         variantImage;
@@ -64,6 +96,7 @@ class ProductModel {
       ratingCount: ratingCount,
       firestoreId: json['firestoreId']?.toString(),
       variants: variants,
+      quantity: ((json['quantity'] as num?)?.toInt() ?? 1).clamp(1, 999),
     );
   }
 
@@ -73,10 +106,9 @@ class ProductModel {
   ) {
     final variants = _parseVariants(json['variants']);
 
-    final variantImage =
-        variants.isNotEmpty && variants.first.images.isNotEmpty
-            ? variants.first.images.first
-            : '';
+    final variantImage = variants.isNotEmpty && variants.first.images.isNotEmpty
+        ? variants.first.images.first
+        : '';
 
     final storedImage = json['image']?.toString() ?? '';
 
@@ -105,6 +137,7 @@ class ProductModel {
       ratingCount: ratingCount,
       firestoreId: documentId,
       variants: variants,
+      quantity: ((json['quantity'] as num?)?.toInt() ?? 1).clamp(1, 999),
     );
   }
 
@@ -113,11 +146,7 @@ class ProductModel {
 
     return value
         .whereType<Map>()
-        .map(
-          (item) => ProductVariant.fromJson(
-            Map<String, dynamic>.from(item),
-          ),
-        )
+        .map((item) => ProductVariant.fromJson(Map<String, dynamic>.from(item)))
         .toList();
   }
 
@@ -151,13 +180,11 @@ class ProductModel {
       'description': description,
       'category': category,
       'image': image,
-      'rating': {
-        'rate': rating,
-        'count': ratingCount,
-      },
+      'rating': {'rate': rating, 'count': ratingCount},
       'ratingCount': ratingCount,
       'firestoreId': firestoreId,
       'variants': variants.map((variant) => variant.toJson()).toList(),
+      'quantity': quantity,
     };
   }
 }
@@ -178,9 +205,9 @@ class ProductVariant {
 
     final images = rawImages is List
         ? rawImages
-            .map((image) => image.toString())
-            .where((image) => image.trim().isNotEmpty)
-            .toList()
+              .map((image) => image.toString())
+              .where((image) => image.trim().isNotEmpty)
+              .toList()
         : <String>[];
 
     return ProductVariant(
@@ -191,10 +218,6 @@ class ProductVariant {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'colorName': colorName,
-      'colorHex': colorHex,
-      'images': images,
-    };
+    return {'colorName': colorName, 'colorHex': colorHex, 'images': images};
   }
 }

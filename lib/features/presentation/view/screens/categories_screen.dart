@@ -65,10 +65,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   String _normalizeCategory(String value) {
-    return value.trim().toLowerCase().replaceAll(
-          RegExp(r'[\s_]+'),
-          '-',
-        );
+    return value.trim().toLowerCase().replaceAll(RegExp(r'[\s_]+'), '-');
   }
 
   String _localizedCategoryName(String slug) {
@@ -146,10 +143,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
   }
 
-  int _productCount(
-    List<ProductModel> products,
-    String slug,
-  ) {
+  int _productCount(List<ProductModel> products, String slug) {
     final aliases = _categoryAliases(slug);
 
     return products.where((product) {
@@ -179,11 +173,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               color: primaryColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(15),
             ),
-            child: Icon(
-              icon,
-              color: primaryColor,
-              size: 25,
-            ),
+            child: Icon(icon, color: primaryColor, size: 25),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -192,16 +182,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               children: [
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(context).textTheme.titleLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: colors.onSurfaceVariant,
-                      ),
+                  style: Theme.of(context).textTheme.bodySmall
+                      ?.copyWith(color: colors.onSurfaceVariant),
                 ),
               ],
             ),
@@ -312,23 +300,15 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         mainAxisExtent: 145,
       ),
       itemBuilder: (context, index) {
-        return _buildCategoryCard(
-          categories[index],
-          products,
-        );
+        return _buildCategoryCard(categories[index], products);
       },
     );
   }
 
-  Widget _buildBody(
-    List<ProductModel> products,
-    bool hasStreamError,
-  ) {
+  Widget _buildBody(List<ProductModel> products, bool hasStreamError) {
     if (_isLoading) {
       return const Center(
-        child: CircularProgressIndicator(
-          color: primaryColor,
-        ),
+        child: CircularProgressIndicator(color: primaryColor),
       );
     }
 
@@ -339,11 +319,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                size: 60,
-                color: Colors.grey,
-              ),
+              const Icon(Icons.error_outline, size: 60, color: Colors.grey),
               const SizedBox(height: 16),
               Text(
                 l.couldNotLoadCategories,
@@ -354,10 +330,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              Text(
-                _errorMessage!,
-                textAlign: TextAlign.center,
-              ),
+              Text(_errorMessage!, textAlign: TextAlign.center),
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 onPressed: _loadCategories,
@@ -371,9 +344,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
 
     final clothing = _categories
-        .where(
-          (category) => ['men', 'women', 'kids'].contains(category.slug),
-        )
+        .where((category) => ['men', 'women', 'kids'].contains(category.slug))
         .toList();
 
     final accessories = _categories
@@ -390,9 +361,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         .toList();
 
     if (_categories.isEmpty) {
-      return Center(
-        child: Text(l.noCategoriesAvailable),
-      );
+      return Center(child: Text(l.noCategoriesAvailable));
     }
 
     return RefreshIndicator(
@@ -405,10 +374,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [
-                  Color(0xFF385CF2),
-                  Color(0xFF7189FF),
-                ],
+                colors: [Color(0xFF385CF2), Color(0xFF7189FF)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -467,9 +433,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               child: Text(
                 l.failedToLoadStoreProducts,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.error,
-                ),
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
         ],
@@ -483,19 +447,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       appBar: AppBar(
         title: Text(
           l.categoriesTitle,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: StreamBuilder<List<ProductModel>>(
         stream: _storeProductsStream,
         builder: (context, snapshot) {
-          return _buildBody(
-            snapshot.data ?? [],
-            snapshot.hasError,
-          );
+          return _buildBody(snapshot.data ?? [], snapshot.hasError);
         },
       ),
     );

@@ -8,17 +8,18 @@ class CategoryApi {
   final Dio _dio;
 
   CategoryApi({Dio? dio})
-      : _dio = dio ??
-            Dio(
-              BaseOptions(
-                baseUrl: ApiConstants.baseUrl,
-                connectTimeout: const Duration(seconds: 30),
-                receiveTimeout: const Duration(seconds: 30),
-                sendTimeout: const Duration(seconds: 30),
-                responseType: ResponseType.json,
-                headers: {'Accept': 'application/json'},
-              ),
-            );
+    : _dio =
+          dio ??
+          Dio(
+            BaseOptions(
+              baseUrl: ApiConstants.baseUrl,
+              connectTimeout: const Duration(seconds: 30),
+              receiveTimeout: const Duration(seconds: 30),
+              sendTimeout: const Duration(seconds: 30),
+              responseType: ResponseType.json,
+              headers: {'Accept': 'application/json'},
+            ),
+          );
 
   Future<List<CategoryModel>> getCategories() async {
     return const [
@@ -34,9 +35,7 @@ class CategoryApi {
     ];
   }
 
-  Future<List<ProductModel>> getProductsByCategory(
-    String category,
-  ) async {
+  Future<List<ProductModel>> getProductsByCategory(String category) async {
     final normalized = category.trim().toLowerCase();
 
     if (normalized != 'men') {
@@ -44,18 +43,15 @@ class CategoryApi {
     }
 
     try {
-      final response = await _dio.get(
-        ApiConstants.menClothingEndpoint,
-      );
+      final response = await _dio.get(ApiConstants.menClothingEndpoint);
 
       if (response.statusCode == 200 && response.data is List) {
         final data = response.data as List<dynamic>;
 
         return data
             .map(
-              (product) => ProductModel.fromJson(
-                product as Map<String, dynamic>,
-              ),
+              (product) =>
+                  ProductModel.fromJson(product as Map<String, dynamic>),
             )
             .toList();
       }

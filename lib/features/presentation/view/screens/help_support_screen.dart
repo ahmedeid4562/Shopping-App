@@ -12,18 +12,9 @@ class HelpSupportScreen extends StatelessWidget {
     final l = AppLocalizations.of(context)!;
 
     final faqs = [
-      {
-        'question': l.faqTrackOrderQuestion,
-        'answer': l.faqTrackOrderAnswer,
-      },
-      {
-        'question': l.faqCancelOrderQuestion,
-        'answer': l.faqCancelOrderAnswer,
-      },
-      {
-        'question': l.faqAddFavoriteQuestion,
-        'answer': l.faqAddFavoriteAnswer,
-      },
+      {'question': l.faqTrackOrderQuestion, 'answer': l.faqTrackOrderAnswer},
+      {'question': l.faqCancelOrderQuestion, 'answer': l.faqCancelOrderAnswer},
+      {'question': l.faqAddFavoriteQuestion, 'answer': l.faqAddFavoriteAnswer},
       {
         'question': l.faqChangePersonalInfoQuestion,
         'answer': l.faqChangePersonalInfoAnswer,
@@ -58,11 +49,7 @@ class HelpSupportScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
-                const Icon(
-                  Icons.support_agent,
-                  color: Colors.white,
-                  size: 55,
-                ),
+                const Icon(Icons.support_agent, color: Colors.white, size: 55),
                 const SizedBox(height: 14),
                 Text(
                   l.howCanWeHelp,
@@ -77,10 +64,7 @@ class HelpSupportScreen extends StatelessWidget {
                 Text(
                   l.helpDescription,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 13,
-                  ),
+                  style: const TextStyle(color: Colors.white70, fontSize: 13),
                 ),
               ],
             ),
@@ -110,15 +94,8 @@ class HelpSupportScreen extends StatelessWidget {
                 ),
               ),
               child: ExpansionTile(
-                tilePadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                childrenPadding: const EdgeInsets.fromLTRB(
-                  16,
-                  0,
-                  16,
-                  16,
-                ),
+                tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+                childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                 iconColor: primaryColor,
                 collapsedIconColor: colors.onSurfaceVariant,
                 title: Text(
@@ -152,9 +129,7 @@ class HelpSupportScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: colors.surface,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: colors.outline.withValues(alpha: 0.12),
-              ),
+              border: Border.all(color: colors.outline.withValues(alpha: 0.12)),
             ),
             child: Column(
               children: [
@@ -189,14 +164,11 @@ class HelpSupportScreen extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (dialogContext) {
-                          final dialogL =
-                              AppLocalizations.of(dialogContext)!;
+                          final dialogL = AppLocalizations.of(dialogContext)!;
 
                           return AlertDialog(
                             title: Text(dialogL.contactSupport),
-                            content: Text(
-                              dialogL.supportDetailsComingSoon,
-                            ),
+                            content: Text(dialogL.supportDetailsComingSoon),
                             actions: [
                               TextButton(
                                 onPressed: () {
@@ -213,12 +185,8 @@ class HelpSupportScreen extends StatelessWidget {
                     label: Text(l.contactSupport),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: primaryColor,
-                      side: const BorderSide(
-                        color: primaryColor,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 13,
-                      ),
+                      side: const BorderSide(color: primaryColor),
+                      padding: const EdgeInsets.symmetric(vertical: 13),
                     ),
                   ),
                 ),

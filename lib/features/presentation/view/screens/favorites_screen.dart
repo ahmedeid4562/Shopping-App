@@ -24,9 +24,7 @@ class FavoritesScreen extends StatelessWidget {
         stream: FavoriteApi().watchFavorites(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -34,11 +32,7 @@ class FavoritesScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.error_outline,
-                    size: 55,
-                    color: Colors.red,
-                  ),
+                  const Icon(Icons.error_outline, size: 55, color: Colors.red),
                   const SizedBox(height: 12),
                   Text(l.failedToLoadFavorites),
                   const SizedBox(height: 15),
@@ -81,9 +75,7 @@ class FavoritesScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     l.addProductsToFavorites,
-                    style: TextStyle(
-                      color: colors.onSurfaceVariant,
-                    ),
+                    style: TextStyle(color: colors.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -93,17 +85,14 @@ class FavoritesScreen extends StatelessWidget {
           return GridView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: favorites.length,
-            gridDelegate:
-                const SliverGridDelegateWithMaxCrossAxisExtent(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 250,
               mainAxisSpacing: 15,
               crossAxisSpacing: 15,
               mainAxisExtent: 280,
             ),
             itemBuilder: (context, index) {
-              return ProductCard(
-                product: favorites[index],
-              );
+              return ProductCard(product: favorites[index]);
             },
           );
         },

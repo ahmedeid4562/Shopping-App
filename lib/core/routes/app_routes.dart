@@ -17,19 +17,13 @@ class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case login:
-        return MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
 
       case signup:
-        return MaterialPageRoute(
-          builder: (_) => const SignupScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const SignupScreen());
 
       case home:
-        return MaterialPageRoute(
-          builder: (_) => const MainScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const MainScreen());
 
       case admin:
         return MaterialPageRoute(
@@ -38,9 +32,7 @@ class AppRoutes {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  body: Center(child: CircularProgressIndicator()),
                 );
               }
 
@@ -58,9 +50,7 @@ class AppRoutes {
         );
 
       default:
-        return MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
     }
   }
 }

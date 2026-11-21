@@ -76,9 +76,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: colors.outline.withValues(alpha: 0.12),
-        ),
+        border: Border.all(color: colors.outline.withValues(alpha: 0.12)),
       ),
       child: SwitchListTile(
         value: value,
@@ -95,17 +93,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
         title: Text(
           title,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(
-            fontSize: 12,
-            color: colors.onSurfaceVariant,
-          ),
+          style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
         ),
       ),
     );
@@ -124,9 +116,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         centerTitle: true,
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(color: primaryColor),
-            )
+          ? const Center(child: CircularProgressIndicator(color: primaryColor))
           : ListView(
               padding: const EdgeInsets.all(20),
               children: [
@@ -182,10 +172,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   },
                 ),
 
-                _buildSectionTitle(
-                  l.notificationChannels,
-                  colors.onSurface,
-                ),
+                _buildSectionTitle(l.notificationChannels, colors.onSurface),
 
                 _buildNotificationTile(
                   title: l.pushNotifications,
@@ -229,10 +216,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       Expanded(
                         child: Text(
                           l.notificationSettingsInfo,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            height: 1.5,
-                          ),
+                          style: const TextStyle(fontSize: 12, height: 1.5),
                         ),
                       ),
                     ],

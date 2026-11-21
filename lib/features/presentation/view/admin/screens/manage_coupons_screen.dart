@@ -62,9 +62,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
 
               if (expiresAt == null) {
                 ScaffoldMessenger.of(dialogContext).showSnackBar(
-                  SnackBar(
-                    content: Text(dialogL.chooseExpirationDateFirst),
-                  ),
+                  SnackBar(content: Text(dialogL.chooseExpirationDateFirst)),
                 );
                 return;
               }
@@ -262,11 +260,8 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l.couponDeleted),
-        ),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l.couponDeleted)));
     } catch (e) {
       if (!mounted) return;
 
@@ -291,9 +286,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            coupon.isActive
-                ? l.couponDeactivated
-                : l.couponActivated,
+            coupon.isActive ? l.couponDeactivated : l.couponActivated,
           ),
         ),
       );
@@ -344,9 +337,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           final coupons = snapshot.data ?? [];
@@ -391,9 +382,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                   ),
                   title: Text(
                     coupon.code,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(
                     '$discountText\n'
@@ -416,9 +405,7 @@ class _ManageCouponsScreenState extends State<ManageCouponsScreen> {
                       PopupMenuItem(
                         value: 'toggle',
                         child: Text(
-                          coupon.isActive
-                              ? l.deactivate
-                              : l.activate,
+                          coupon.isActive ? l.deactivate : l.activate,
                         ),
                       ),
                       PopupMenuItem(

@@ -287,14 +287,14 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _methods.isEmpty
-              ? _buildEmptyState(colors)
-              : ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
-                  itemCount: _methods.length,
-                  itemBuilder: (context, index) {
-                    return _buildPaymentCard(index, colors);
-                  },
-                ),
+          ? _buildEmptyState(colors)
+          : ListView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
+              itemCount: _methods.length,
+              itemBuilder: (context, index) {
+                return _buildPaymentCard(index, colors);
+              },
+            ),
     );
   }
 
@@ -313,10 +313,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
             const SizedBox(height: 16),
             Text(
               l.noPaymentMethods,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
@@ -404,10 +401,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                         value: 'default',
                         child: Text(l.setAsDefault),
                       ),
-                    PopupMenuItem(
-                      value: 'edit',
-                      child: Text(l.edit),
-                    ),
+                    PopupMenuItem(value: 'edit', child: Text(l.edit)),
                     PopupMenuItem(
                       value: 'delete',
                       child: Text(
@@ -434,10 +428,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                   Chip(
                     label: Text(
                       l.defaultAddress,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                      ),
+                      style: const TextStyle(color: Colors.white, fontSize: 11),
                     ),
                     backgroundColor: primaryColor,
                     side: BorderSide.none,

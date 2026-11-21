@@ -27,10 +27,7 @@ class ProfileScreen extends StatelessWidget {
     final email = user?.email ?? l10n.noEmailAvailable;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.myProfile),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text(l10n.myProfile), centerTitle: true),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -45,9 +42,7 @@ class ProfileScreen extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const EditProfileScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const EditProfileScreen()),
               );
             },
           ),
@@ -66,9 +61,7 @@ class ProfileScreen extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const OrdersScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const OrdersScreen()),
               );
             },
           ),
@@ -80,9 +73,7 @@ class ProfileScreen extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const MyAddressesScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const MyAddressesScreen()),
               );
             },
           ),
@@ -94,9 +85,7 @@ class ProfileScreen extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const PaymentMethodsScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const PaymentMethodsScreen()),
               );
             },
           ),
@@ -121,8 +110,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   value: isDark,
                   activeThumbColor: primaryColor,
-                  onChanged: (value) =>
-                      themeController.toggleTheme(value),
+                  onChanged: (value) => themeController.toggleTheme(value),
                 ),
               );
             },
@@ -157,9 +145,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            currentLocale == 'ar'
-                                ? l10n.arabic
-                                : l10n.english,
+                            currentLocale == 'ar' ? l10n.arabic : l10n.english,
                             style: TextStyle(
                               color: Theme.of(context)
                                   .textTheme
@@ -178,10 +164,7 @@ class ProfileScreen extends StatelessWidget {
                           value: 'en',
                           child: Text(l10n.english),
                         ),
-                        DropdownMenuItem(
-                          value: 'ar',
-                          child: Text(l10n.arabic),
-                        ),
+                        DropdownMenuItem(value: 'ar', child: Text(l10n.arabic)),
                       ],
                       onChanged: (value) {
                         if (value != null) {
@@ -202,9 +185,7 @@ class ProfileScreen extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const NotificationsScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const NotificationsScreen()),
               );
             },
           ),
@@ -218,9 +199,7 @@ class ProfileScreen extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const HelpSupportScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const HelpSupportScreen()),
               );
             },
           ),
@@ -232,9 +211,7 @@ class ProfileScreen extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const AboutAppScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const AboutAppScreen()),
               );
             },
           ),
@@ -286,8 +263,9 @@ class ProfileScreen extends StatelessWidget {
               CircleAvatar(
                 radius: 35,
                 backgroundColor: Colors.white,
-                backgroundImage:
-                    photoUrl != null ? NetworkImage(photoUrl) : null,
+                backgroundImage: photoUrl != null
+                    ? NetworkImage(photoUrl)
+                    : null,
                 child: photoUrl == null
                     ? Text(
                         name.isNotEmpty ? name[0].toUpperCase() : 'U',
@@ -323,10 +301,7 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       l10n.shoppingMember,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ],
                 ),
@@ -343,10 +318,7 @@ class ProfileScreen extends StatelessWidget {
       padding: const EdgeInsets.only(left: 4, bottom: 12, top: 8),
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -363,10 +335,7 @@ class ProfileScreen extends StatelessWidget {
       decoration: _cardDecoration(context),
       child: ListTile(
         leading: _buildIcon(icon),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
         subtitle: Text(subtitle),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: onTap,
@@ -381,11 +350,7 @@ class ProfileScreen extends StatelessWidget {
         color: primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Icon(
-        icon,
-        color: primaryColor,
-        size: 22,
-      ),
+      child: Icon(icon, color: primaryColor, size: 22),
     );
   }
 
@@ -404,19 +369,18 @@ class ProfileScreen extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null || user.email == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.pleaseLoginAgain)),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l10n.pleaseLoginAgain)));
       return;
     }
 
-    final hasPasswordProvider =
-        user.providerData.any((provider) => provider.providerId == 'password');
+    final hasPasswordProvider = user.providerData.any(
+      (provider) => provider.providerId == 'password',
+    );
 
     if (!hasPasswordProvider) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.accountNoEmailPassword)),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l10n.accountNoEmailPassword)));
       return;
     }
 
@@ -514,12 +478,11 @@ class ProfileScreen extends StatelessWidget {
                   onPressed: isLoading
                       ? null
                       : () async {
-                          final currentPassword =
-                              currentPasswordController.text.trim();
-                          final newPassword =
-                              newPasswordController.text.trim();
-                          final confirmPassword =
-                              confirmPasswordController.text.trim();
+                          final currentPassword = currentPasswordController.text
+                              .trim();
+                          final newPassword = newPasswordController.text.trim();
+                          final confirmPassword = confirmPasswordController.text
+                              .trim();
 
                           String? errorMessage;
 
@@ -547,15 +510,12 @@ class ProfileScreen extends StatelessWidget {
                           });
 
                           try {
-                            final credential =
-                                EmailAuthProvider.credential(
+                            final credential = EmailAuthProvider.credential(
                               email: user.email!,
                               password: currentPassword,
                             );
 
-                            await user.reauthenticateWithCredential(
-                              credential,
-                            );
+                            await user.reauthenticateWithCredential(credential);
 
                             await user.updatePassword(newPassword);
 
@@ -567,9 +527,7 @@ class ProfileScreen extends StatelessWidget {
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
-                                  l10n.passwordChangedSuccessfully,
-                                ),
+                                content: Text(l10n.passwordChangedSuccessfully),
                               ),
                             );
                           } on FirebaseAuthException catch (e) {
@@ -595,9 +553,9 @@ class ProfileScreen extends StatelessWidget {
                                 isLoading = false;
                               });
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(message)),
-                              );
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(SnackBar(content: Text(message)));
                             }
                           } catch (e) {
                             if (dialogContext.mounted) {
@@ -617,9 +575,7 @@ class ProfileScreen extends StatelessWidget {
                       ? const SizedBox(
                           width: 18,
                           height: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : Text(l10n.changePassword),
                 ),
@@ -676,9 +632,8 @@ class ProfileScreen extends StatelessWidget {
     } catch (e) {
       if (!context.mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.logoutFailed)),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l10n.logoutFailed)));
     }
   }
 }
@@ -687,8 +642,7 @@ class AdminDashboardMenuItem extends StatefulWidget {
   const AdminDashboardMenuItem({super.key});
 
   @override
-  State<AdminDashboardMenuItem> createState() =>
-      _AdminDashboardMenuItemState();
+  State<AdminDashboardMenuItem> createState() => _AdminDashboardMenuItemState();
 }
 
 class _AdminDashboardMenuItemState extends State<AdminDashboardMenuItem> {

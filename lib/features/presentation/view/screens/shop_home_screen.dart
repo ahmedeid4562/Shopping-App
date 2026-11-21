@@ -51,17 +51,12 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
 
       if (!mounted) return;
 
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/login',
-        (route) => false,
-      );
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l.logoutFailed)),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l.logoutFailed)));
     }
   }
 
@@ -82,9 +77,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const CartScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const CartScreen()),
               );
             },
             icon: const Icon(Icons.shopping_cart_outlined),
@@ -171,12 +164,13 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
             }
 
             final filteredProducts = products.where((product) {
-              final matchesCategory = _selectedCategory == 'All' ||
+              final matchesCategory =
+                  _selectedCategory == 'All' ||
                   product.category == _selectedCategory;
 
               final matchesSearch = product.title.toLowerCase().contains(
-                    _searchQuery.toLowerCase(),
-                  );
+                _searchQuery.toLowerCase(),
+              );
 
               return matchesCategory && matchesSearch;
             }).toList();
@@ -197,8 +191,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                         children: [
                           Text(
                             l.helloShopper(
-                              AuthApi().currentUser?.displayName ??
-                                  l.shopper,
+                              AuthApi().currentUser?.displayName ?? l.shopper,
                             ),
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: colors.onSurfaceVariant,
@@ -236,10 +229,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                             padding: const EdgeInsets.all(22),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFF385CF2),
-                                  Color(0xFF7188FF),
-                                ],
+                                colors: [Color(0xFF385CF2), Color(0xFF7188FF)],
                               ),
                               borderRadius: BorderRadius.circular(20),
                             ),
@@ -319,7 +309,7 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                                     category == 'All'
                                         ? l.all
                                         : category[0].toUpperCase() +
-                                            category.substring(1),
+                                              category.substring(1),
                                   ),
                                   selected: isSelected,
                                   selectedColor: primaryColor,
@@ -364,34 +354,25 @@ class _ShopHomeViewState extends State<_ShopHomeView> {
                   if (filteredProducts.isEmpty)
                     SliverFillRemaining(
                       hasScrollBody: false,
-                      child: Center(
-                        child: Text(l.noProductsFound),
-                      ),
+                      child: Center(child: Text(l.noProductsFound)),
                     )
                   else
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       sliver: SliverGrid(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return ProductCard(
-                              product: filteredProducts[index],
-                            );
-                          },
-                          childCount: filteredProducts.length,
-                        ),
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          return ProductCard(product: filteredProducts[index]);
+                        }, childCount: filteredProducts.length),
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 250,
-                          mainAxisSpacing: 15,
-                          crossAxisSpacing: 15,
-                          mainAxisExtent: 280,
-                        ),
+                              maxCrossAxisExtent: 250,
+                              mainAxisSpacing: 15,
+                              crossAxisSpacing: 15,
+                              mainAxisExtent: 280,
+                            ),
                       ),
                     ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: 25),
-                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 25)),
                 ],
               ),
             );

@@ -87,9 +87,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             return AlertDialog(
               title: Text(
                 dialogL.changePassword,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               content: SingleChildScrollView(
                 child: Column(
@@ -142,9 +140,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       obscureText: obscureConfirm,
                       decoration: InputDecoration(
                         labelText: dialogL.confirmNewPassword,
-                        prefixIcon: const Icon(
-                          Icons.verified_user_outlined,
-                        ),
+                        prefixIcon: const Icon(Icons.verified_user_outlined),
                         suffixIcon: IconButton(
                           icon: Icon(
                             obscureConfirm
@@ -175,8 +171,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       : () async {
                           final currentPassword =
                               currentPasswordController.text;
-                          final newPassword =
-                              newPasswordController.text;
+                          final newPassword = newPasswordController.text;
                           final confirmPassword =
                               confirmPasswordController.text;
 
@@ -184,9 +179,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                               newPassword.isEmpty ||
                               confirmPassword.isEmpty) {
                             ScaffoldMessenger.of(dialogContext).showSnackBar(
-                              SnackBar(
-                                content: Text(dialogL.fillAllFields),
-                              ),
+                              SnackBar(content: Text(dialogL.fillAllFields)),
                             );
                             return;
                           }
@@ -223,15 +216,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           });
 
                           try {
-                            final credential =
-                                EmailAuthProvider.credential(
+                            final credential = EmailAuthProvider.credential(
                               email: user.email!,
                               password: currentPassword,
                             );
 
-                            await user.reauthenticateWithCredential(
-                              credential,
-                            );
+                            await user.reauthenticateWithCredential(credential);
 
                             await user.updatePassword(newPassword);
 
@@ -243,9 +233,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
-                                  l.passwordChangedSuccessfully,
-                                ),
+                                content: Text(l.passwordChangedSuccessfully),
                                 backgroundColor: Colors.green,
                               ),
                             );
@@ -261,8 +249,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                             switch (e.code) {
                               case 'wrong-password':
                               case 'invalid-credential':
-                                message =
-                                    dialogL.incorrectCurrentPassword;
+                                message = dialogL.incorrectCurrentPassword;
                                 break;
                               case 'weak-password':
                                 message = dialogL.chooseStrongerPassword;
@@ -289,9 +276,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
                             ScaffoldMessenger.of(dialogContext).showSnackBar(
                               SnackBar(
-                                content: Text(
-                                  dialogL.somethingWentWrong,
-                                ),
+                                content: Text(dialogL.somethingWentWrong),
                                 backgroundColor: Colors.red,
                               ),
                             );
@@ -324,10 +309,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     confirmPasswordController.dispose();
   }
 
-  Future<void> _updateStatus(
-    Map<String, dynamic> order,
-    String status,
-  ) async {
+  Future<void> _updateStatus(Map<String, dynamic> order, String status) async {
     try {
       final userId = order['userId']?.toString();
       final orderId = order['id']?.toString();
@@ -369,18 +351,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   void _openManageProducts() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => const ManageProductsScreen(),
-      ),
+      MaterialPageRoute(builder: (_) => const ManageProductsScreen()),
     );
   }
 
   void _openManageCoupons() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => const ManageCouponsScreen(),
-      ),
+      MaterialPageRoute(builder: (_) => const ManageCouponsScreen()),
     );
   }
 
@@ -390,9 +368,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       appBar: AppBar(
         title: Text(
           l.adminDashboard,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
@@ -408,9 +384,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         future: _adminAccessFuture,
         builder: (context, accessSnapshot) {
           if (accessSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (accessSnapshot.hasError) {
@@ -456,9 +430,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             color: primaryColor.withValues(alpha: 0.08),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
-              side: BorderSide(
-                color: primaryColor.withValues(alpha: 0.2),
-              ),
+              side: BorderSide(color: primaryColor.withValues(alpha: 0.2)),
             ),
             child: ListTile(
               contentPadding: const EdgeInsets.symmetric(
@@ -486,10 +458,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               ),
               subtitle: Text(
                 localizations.manageProductsSubtitle,
-                style: TextStyle(
-                  color: colors.onSurfaceVariant,
-                  fontSize: 12,
-                ),
+                style: TextStyle(color: colors.onSurfaceVariant, fontSize: 12),
               ),
               trailing: const Icon(
                 Icons.arrow_forward_ios,
@@ -507,9 +476,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             color: Colors.orange.withValues(alpha: 0.08),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
-              side: BorderSide(
-                color: Colors.orange.withValues(alpha: 0.2),
-              ),
+              side: BorderSide(color: Colors.orange.withValues(alpha: 0.2)),
             ),
             child: ListTile(
               contentPadding: const EdgeInsets.symmetric(
@@ -537,10 +504,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               ),
               subtitle: Text(
                 localizations.manageCouponsSubtitle,
-                style: TextStyle(
-                  color: colors.onSurfaceVariant,
-                  fontSize: 12,
-                ),
+                style: TextStyle(color: colors.onSurfaceVariant, fontSize: 12),
               ),
               trailing: const Icon(
                 Icons.arrow_forward_ios,
@@ -569,9 +533,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Center(child: CircularProgressIndicator());
               }
 
               final orders = snapshot.data ?? [];
@@ -716,9 +678,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: colors.outline.withValues(alpha: 0.15),
-        ),
+        border: Border.all(color: colors.outline.withValues(alpha: 0.15)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -727,17 +687,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           Icon(icon, color: color, size: 26),
           Text(
             '$value',
-            style: const TextStyle(
-              fontSize: 23,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
           ),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 12,
-              color: colors.onSurfaceVariant,
-            ),
+            style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
           ),
         ],
       ),

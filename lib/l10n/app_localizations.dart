@@ -2297,7 +2297,7 @@ abstract class AppLocalizations {
   /// No description provided for @items.
   ///
   /// In en, this message translates to:
-  /// **'items'**
+  /// **'Items'**
   String get items;
 
   /// No description provided for @failedToLoadSearchResults.
@@ -2569,6 +2569,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Wallets'**
   String get categoryWallets;
+
+  /// No description provided for @clearCartConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to clear your cart?'**
+  String get clearCartConfirmation;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @customerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Name'**
+  String get customerName;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// No description provided for @quantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get quantity;
+
+  /// No description provided for @orderSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Summary'**
+  String get orderSummary;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get paymentMethod;
+
+  /// No description provided for @moreItems.
+  ///
+  /// In en, this message translates to:
+  /// **'more items'**
+  String get moreItems;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get viewDetails;
+
+  /// No description provided for @orderDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Date'**
+  String get orderDate;
+
+  /// No description provided for @orderTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Time'**
+  String get orderTime;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @menOnboardingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Style Starts Here'**
+  String get menOnboardingTitle;
+
+  /// No description provided for @menOnboardingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover the latest men\'s clothing designs and find a look that reflects your personality.'**
+  String get menOnboardingDescription;
+
+  /// No description provided for @womenOnboardingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shine with Your Own Style'**
+  String get womenOnboardingTitle;
+
+  /// No description provided for @womenOnboardingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore a beautiful collection of women\'s clothing that combines elegance and beauty.'**
+  String get womenOnboardingDescription;
 }
 
 class _AppLocalizationsDelegate

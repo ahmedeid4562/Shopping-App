@@ -96,9 +96,7 @@ class _ProductCardState extends State<ProductCard> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            _isFavorite
-                ? l.addedToFavorites
-                : l.removedFromFavorites,
+            _isFavorite ? l.addedToFavorites : l.removedFromFavorites,
           ),
           duration: const Duration(seconds: 1),
         ),
@@ -106,9 +104,8 @@ class _ProductCardState extends State<ProductCard> {
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       if (mounted) {
         setState(() {
@@ -141,9 +138,7 @@ class _ProductCardState extends State<ProductCard> {
         decoration: BoxDecoration(
           color: colors.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: colors.outline.withValues(alpha: 0.12),
-          ),
+          border: Border.all(color: colors.outline.withValues(alpha: 0.12)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

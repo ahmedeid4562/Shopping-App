@@ -76,10 +76,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         _discountAmount = coupon.calculateDiscount(subtotal);
       });
 
-      _showMessage(
-        l.couponAppliedSuccessfully,
-        isError: false,
-      );
+      _showMessage(l.couponAppliedSuccessfully, isError: false);
     } catch (e) {
       if (!mounted) return;
 
@@ -155,11 +152,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           final dialogL = AppLocalizations.of(dialogContext)!;
 
           return AlertDialog(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.green,
-              size: 55,
-            ),
+            icon: const Icon(Icons.check_circle, color: Colors.green, size: 55),
             title: Text(dialogL.orderPlacedSuccessfully),
             content: Text(
               dialogL.orderSavedSuccessfully,
@@ -202,16 +195,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         decoration: BoxDecoration(
           color: Colors.green.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: Colors.green.withValues(alpha: 0.3),
-          ),
+          border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
         ),
         child: Row(
           children: [
-            const Icon(
-              Icons.check_circle,
-              color: Colors.green,
-            ),
+            const Icon(Icons.check_circle, color: Colors.green),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -219,9 +207,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 children: [
                   Text(
                     _appliedCoupon!.code,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
                     l.couponAppliedSuccessfully,
@@ -296,18 +282,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       appBar: AppBar(
         title: Text(
           l.checkoutTitle,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: BlocBuilder<CartCubit, CartState>(
         builder: (context, state) {
           if (state is! CartLoaded || state.products.isEmpty) {
-            return Center(
-              child: Text(l.yourCartIsEmpty),
-            );
+            return Center(child: Text(l.yourCartIsEmpty));
           }
 
           final subtotal = state.totalPrice;
@@ -412,10 +394,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                     child: Column(
                       children: [
-                        _buildPriceRow(
-                          l.subtotal,
-                          subtotal,
-                        ),
+                        _buildPriceRow(l.subtotal, subtotal),
 
                         const SizedBox(height: 10),
 
@@ -468,9 +447,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       ),
                       child: _isLoading
-                          ? const CircularProgressIndicator(
-                              color: Colors.white,
-                            )
+                          ? const CircularProgressIndicator(color: Colors.white)
                           : Text(
                               l.placeOrder,
                               style: const TextStyle(
@@ -489,21 +466,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  Widget _buildPriceRow(
-    String title,
-    double amount, {
-    Color? valueColor,
-  }) {
+  Widget _buildPriceRow(String title, double amount, {Color? valueColor}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title),
         Text(
           '${amount < 0 ? '-' : ''}\$${amount.abs().toStringAsFixed(2)}',
-          style: TextStyle(
-            color: valueColor,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: valueColor, fontWeight: FontWeight.w600),
         ),
       ],
     );
@@ -524,9 +494,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {

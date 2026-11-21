@@ -190,10 +190,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(
-                    color: primaryColor,
-                    width: 1.5,
-                  ),
+                  borderSide: const BorderSide(color: primaryColor, width: 1.5),
                 ),
               ),
             ),
@@ -295,8 +292,7 @@ class _SearchScreenState extends State<SearchScreen> {
       );
     }
 
-    if (_isLoading ||
-        snapshot.connectionState == ConnectionState.waiting) {
+    if (_isLoading || snapshot.connectionState == ConnectionState.waiting) {
       return const Center(
         child: CircularProgressIndicator(color: primaryColor),
       );
@@ -321,11 +317,7 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                size: 60,
-                color: Colors.grey,
-              ),
+              const Icon(Icons.error_outline, size: 60, color: Colors.grey),
               const SizedBox(height: 16),
               Text(
                 l.somethingWentWrong,
@@ -366,10 +358,7 @@ class _SearchScreenState extends State<SearchScreen> {
           const SizedBox(height: 16),
           Text(
             l.noProductsFound,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(

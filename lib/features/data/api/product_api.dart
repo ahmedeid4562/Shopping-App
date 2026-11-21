@@ -22,9 +22,7 @@ class ProductApi {
 
   Future<List<ProductModel>> getProducts() async {
     try {
-      final response = await _dio.get(
-        ApiConstants.menClothingEndpoint,
-      );
+      final response = await _dio.get(ApiConstants.menClothingEndpoint);
 
       if (response.statusCode == 200 && response.data is List) {
         final List<dynamic> data = response.data as List<dynamic>;
@@ -50,9 +48,7 @@ class ProductApi {
       );
 
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
-        return ProductModel.fromJson(
-          response.data as Map<String, dynamic>,
-        );
+        return ProductModel.fromJson(response.data as Map<String, dynamic>);
       }
 
       throw Exception('Failed to load product: ${response.statusCode}');
@@ -70,9 +66,7 @@ class ProductApi {
       }
 
       return products.where((product) {
-        return product.title
-            .toLowerCase()
-            .contains(query.trim().toLowerCase());
+        return product.title.toLowerCase().contains(query.trim().toLowerCase());
       }).toList();
     } catch (e) {
       throw Exception('Failed to search products: $e');

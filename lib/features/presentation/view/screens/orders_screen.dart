@@ -92,11 +92,7 @@ class OrdersScreen extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          icon: const Icon(
-            Icons.delete_forever,
-            color: Colors.red,
-            size: 45,
-          ),
+          icon: const Icon(Icons.delete_forever, color: Colors.red, size: 45),
           title: Text(l.deleteOrder),
           content: Text(l.deleteOrderConfirmation),
           actions: [
@@ -254,10 +250,7 @@ class OrdersScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderCard(
-    BuildContext context,
-    Map<String, dynamic> order,
-  ) {
+  Widget _buildOrderCard(BuildContext context, Map<String, dynamic> order) {
     final colors = Theme.of(context).colorScheme;
     final l = getL(context);
 
@@ -334,18 +327,12 @@ class OrdersScreen extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             '${l.orderId}: $orderId',
-            style: TextStyle(
-              color: colors.onSurfaceVariant,
-              fontSize: 12,
-            ),
+            style: TextStyle(color: colors.onSurfaceVariant, fontSize: 12),
           ),
           const SizedBox(height: 5),
           Text(
             '${l.date}: $orderDate',
-            style: TextStyle(
-              color: colors.onSurfaceVariant,
-              fontSize: 13,
-            ),
+            style: TextStyle(color: colors.onSurfaceVariant, fontSize: 13),
           ),
           const Divider(height: 24),
           ...products.map((product) {
@@ -365,9 +352,7 @@ class OrdersScreen extends StatelessWidget {
                           width: 55,
                           height: 55,
                           color: colors.surfaceContainerHighest,
-                          child: const Icon(
-                            Icons.image_not_supported_outlined,
-                          ),
+                          child: const Icon(Icons.image_not_supported_outlined),
                         );
                       },
                     ),

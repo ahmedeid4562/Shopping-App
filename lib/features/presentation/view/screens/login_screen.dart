@@ -36,10 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        behavior: SnackBarBehavior.floating,
-      ),
+      SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
     );
   }
 
@@ -126,9 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
             borderRadius: BorderRadius.circular(18),
           ),
           title: Text(dialogL.loginEmailNotVerified),
-          content: Text(
-            dialogL.loginEmailNotVerifiedMessage(email),
-          ),
+          content: Text(dialogL.loginEmailNotVerifiedMessage(email)),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
@@ -151,17 +146,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _resendVerificationEmail(
-    String email,
-    String password,
-  ) async {
+  Future<void> _resendVerificationEmail(String email, String password) async {
     setState(() => _isLoading = true);
 
     try {
-      await _authApi.resendVerificationEmail(
-        email: email,
-        password: password,
-      );
+      await _authApi.resendVerificationEmail(email: email, password: password);
 
       _showMessage(l.loginVerificationEmailSent);
     } on FirebaseAuthException catch (e) {
@@ -241,10 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 25,
-              vertical: 30,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -271,10 +257,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text(
                   localizations.loginSubtitle,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 15, color: Colors.grey),
                 ),
 
                 const SizedBox(height: 40),
@@ -325,9 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: _forgotPassword,
                     child: Text(
                       localizations.loginForgotPassword,
-                      style: const TextStyle(
-                        color: primaryColor,
-                      ),
+                      style: const TextStyle(color: primaryColor),
                     ),
                   ),
                 ),
@@ -337,9 +318,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: _isLoading || _isGoogleLoading
-                        ? null
-                        : _login,
+                    onPressed: _isLoading || _isGoogleLoading ? null : _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryColor,
                       foregroundColor: Colors.white,
@@ -348,9 +327,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     child: _isLoading
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
+                        ? const CircularProgressIndicator(color: Colors.white)
                         : Text(
                             localizations.loginButton,
                             style: const TextStyle(
@@ -367,14 +344,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Expanded(child: Divider()),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Text(
                         localizations.loginOr,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                        ),
+                        style: const TextStyle(color: Colors.grey),
                       ),
                     ),
                     const Expanded(child: Divider()),
@@ -393,9 +366,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ? const SizedBox(
                             width: 20,
                             height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
+                            child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(
                             Icons.g_mobiledata,
@@ -413,9 +384,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      side: const BorderSide(
-                        color: Colors.grey,
-                      ),
+                      side: const BorderSide(color: Colors.grey),
                     ),
                   ),
                 ),
@@ -428,9 +397,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Flexible(
                       child: Text(
                         localizations.loginNoAccount,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                        ),
+                        style: const TextStyle(color: Colors.grey),
                       ),
                     ),
                     GestureDetector(

@@ -16,18 +16,11 @@ import 'features/presentation/view_model/cart_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await LocaleController.instance.loadLocale();
 
-  runApp(
-    BlocProvider(
-      create: (_) => CartCubit(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(BlocProvider(create: (_) => CartCubit(), child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -57,14 +50,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: Listenable.merge([
-        _themeController,
-        _localeController,
-      ]),
+      animation: Listenable.merge([_themeController, _localeController]),
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Shopping App',
+          onGenerateTitle: (context) {
+            return AppLocalizations.of(context)!.appTitle;
+          },
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: _themeController.themeMode,

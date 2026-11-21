@@ -102,9 +102,7 @@ class AuthApi {
   }
 
   Future<void> resetPassword(String email) async {
-    await _auth.sendPasswordResetEmail(
-      email: email.trim(),
-    );
+    await _auth.sendPasswordResetEmail(email: email.trim());
   }
 
   Future<void> resendVerificationEmail({

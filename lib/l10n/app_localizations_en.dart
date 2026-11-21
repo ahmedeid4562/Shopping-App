@@ -1181,7 +1181,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchResults => 'Search Results';
 
   @override
-  String get items => 'items';
+  String get items => 'Items';
 
   @override
   String get failedToLoadSearchResults => 'Failed to load search results';
@@ -1326,4 +1326,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryWallets => 'Wallets';
+
+  @override
+  String get clearCartConfirmation =>
+      'Are you sure you want to clear your cart?';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get customerName => 'Customer Name';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get orderSummary => 'Order Summary';
+
+  @override
+  String get paymentMethod => 'Payment Method';
+
+  @override
+  String get moreItems => 'more items';
+
+  @override
+  String get viewDetails => 'View Details';
+
+  @override
+  String get orderDate => 'Order Date';
+
+  @override
+  String get orderTime => 'Order Time';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get menOnboardingTitle => 'Your Style Starts Here';
+
+  @override
+  String get menOnboardingDescription =>
+      'Discover the latest men\'s clothing designs and find a look that reflects your personality.';
+
+  @override
+  String get womenOnboardingTitle => 'Shine with Your Own Style';
+
+  @override
+  String get womenOnboardingDescription =>
+      'Explore a beautiful collection of women\'s clothing that combines elegance and beauty.';
 }

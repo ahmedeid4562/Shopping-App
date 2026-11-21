@@ -174,14 +174,14 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _addresses.isEmpty
-              ? _buildEmptyState(colors)
-              : ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
-                  itemCount: _addresses.length,
-                  itemBuilder: (context, index) {
-                    return _buildAddressCard(index, colors);
-                  },
-                ),
+          ? _buildEmptyState(colors)
+          : ListView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
+              itemCount: _addresses.length,
+              itemBuilder: (context, index) {
+                return _buildAddressCard(index, colors);
+              },
+            ),
     );
   }
 
@@ -200,18 +200,13 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
             const SizedBox(height: 16),
             Text(
               l.noAddressesYet,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               l.addAddressDescription,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(color: colors.onSurfaceVariant),
             ),
           ],
         ),
@@ -266,10 +261,7 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
                   Chip(
                     label: Text(
                       l.defaultAddress,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                      ),
+                      style: const TextStyle(color: Colors.white, fontSize: 11),
                     ),
                     backgroundColor: primaryColor,
                     side: BorderSide.none,
@@ -290,10 +282,7 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
                         value: 'default',
                         child: Text(l.setAsDefaultAddress),
                       ),
-                    PopupMenuItem(
-                      value: 'edit',
-                      child: Text(l.editAddress),
-                    ),
+                    PopupMenuItem(value: 'edit', child: Text(l.editAddress)),
                     PopupMenuItem(
                       value: 'delete',
                       child: Text(
@@ -308,23 +297,17 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
             const SizedBox(height: 12),
             Text(
               address['street'],
-              style: TextStyle(
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(color: colors.onSurfaceVariant),
             ),
             const SizedBox(height: 5),
             Text(
               address['city'],
-              style: TextStyle(
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(color: colors.onSurfaceVariant),
             ),
             const SizedBox(height: 5),
             Text(
               address['phone'],
-              style: TextStyle(
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(color: colors.onSurfaceVariant),
             ),
           ],
         ),
@@ -403,9 +386,7 @@ class _AddressDialogState extends State<AddressDialog> {
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
@@ -422,9 +403,7 @@ class _AddressDialogState extends State<AddressDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        widget.isEditing ? l.editAddress : l.addNewAddress,
-      ),
+      title: Text(widget.isEditing ? l.editAddress : l.addNewAddress),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -434,8 +413,7 @@ class _AddressDialogState extends State<AddressDialog> {
               _buildTextField(
                 label: l.addressName,
                 hint: l.addressNameHint,
-                initialValue:
-                    widget.address?['name']?.toString() ?? '',
+                initialValue: widget.address?['name']?.toString() ?? '',
                 onSaved: (value) {
                   _name = value?.trim() ?? '';
                 },
@@ -443,16 +421,14 @@ class _AddressDialogState extends State<AddressDialog> {
               _buildTextField(
                 label: l.phoneNumber,
                 keyboardType: TextInputType.phone,
-                initialValue:
-                    widget.address?['phone']?.toString() ?? '',
+                initialValue: widget.address?['phone']?.toString() ?? '',
                 onSaved: (value) {
                   _phone = value?.trim() ?? '';
                 },
               ),
               _buildTextField(
                 label: l.city,
-                initialValue:
-                    widget.address?['city']?.toString() ?? '',
+                initialValue: widget.address?['city']?.toString() ?? '',
                 onSaved: (value) {
                   _city = value?.trim() ?? '';
                 },
@@ -460,8 +436,7 @@ class _AddressDialogState extends State<AddressDialog> {
               _buildTextField(
                 label: l.streetAddress,
                 maxLines: 2,
-                initialValue:
-                    widget.address?['street']?.toString() ?? '',
+                initialValue: widget.address?['street']?.toString() ?? '',
                 onSaved: (value) {
                   _street = value?.trim() ?? '';
                 },
@@ -492,9 +467,7 @@ class _AddressDialogState extends State<AddressDialog> {
             foregroundColor: Colors.white,
           ),
           onPressed: _submit,
-          child: Text(
-            widget.isEditing ? l.saveChanges : l.addAddress,
-          ),
+          child: Text(widget.isEditing ? l.saveChanges : l.addAddress),
         ),
       ],
     );

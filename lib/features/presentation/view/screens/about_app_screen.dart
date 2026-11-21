@@ -54,10 +54,7 @@ class AboutAppScreen extends StatelessWidget {
 
             Text(
               l.appVersion,
-              style: TextStyle(
-                fontSize: 14,
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(fontSize: 14, color: colors.onSurfaceVariant),
             ),
 
             const SizedBox(height: 30),
@@ -108,18 +105,13 @@ class AboutAppScreen extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            Divider(
-              color: colors.outline.withValues(alpha: 0.2),
-            ),
+            Divider(color: colors.outline.withValues(alpha: 0.2)),
 
             const SizedBox(height: 15),
 
             Text(
               l.madeWithFlutter,
-              style: TextStyle(
-                fontSize: 13,
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(fontSize: 13, color: colors.onSurfaceVariant),
             ),
 
             const SizedBox(height: 8),
@@ -127,10 +119,7 @@ class AboutAppScreen extends StatelessWidget {
             Text(
               l.copyrightNotice,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
             ),
           ],
         ),
@@ -152,9 +141,7 @@ class AboutAppScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: colors.outline.withValues(alpha: 0.12),
-        ),
+        border: Border.all(color: colors.outline.withValues(alpha: 0.12)),
       ),
       child: Row(
         children: [
@@ -165,10 +152,7 @@ class AboutAppScreen extends StatelessWidget {
               color: primaryColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              icon,
-              color: primaryColor,
-            ),
+            child: Icon(icon, color: primaryColor),
           ),
           const SizedBox(width: 14),
           Expanded(

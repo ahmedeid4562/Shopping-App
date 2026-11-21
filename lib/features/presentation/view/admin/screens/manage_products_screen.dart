@@ -3,7 +3,9 @@ import 'package:shopping_app/l10n/app_localizations.dart';
 
 import '../../../../data/api/admin_product_api.dart';
 import '../../../../data/model/product_model.dart';
+
 import 'package:shopping_app/features/presentation/view/admin/screens/add_product_screen.dart';
+
 import '../widgets/admin_product_card.dart';
 
 class ManageProductsScreen extends StatefulWidget {
@@ -31,9 +33,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
   Future<void> _openProductForm({ProductModel? product}) async {
     final result = await Navigator.push<bool>(
       context,
-      MaterialPageRoute(
-        builder: (_) => AddProductScreen(product: product),
-      ),
+      MaterialPageRoute(builder: (_) => AddProductScreen(product: product)),
     );
 
     if (!mounted || result != true) return;
@@ -53,11 +53,8 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
     final productId = product.firestoreId;
 
     if (productId == null || productId.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l.cannotDeleteProduct),
-        ),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l.cannotDeleteProduct)));
       return;
     }
 
@@ -68,9 +65,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
 
         return AlertDialog(
           title: Text(dialogL.deleteProductTitle),
-          content: Text(
-            dialogL.deleteProductConfirmation(product.title),
-          ),
+          content: Text(dialogL.deleteProductConfirmation(product.title)),
           actions: [
             TextButton(
               onPressed: () {
@@ -99,11 +94,8 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l.productDeletedSuccessfully),
-        ),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l.productDeletedSuccessfully)));
     } catch (e) {
       if (!mounted) return;
 
@@ -124,9 +116,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
       appBar: AppBar(
         title: Text(
           l.manageProducts,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -155,9 +145,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           final products = snapshot.data ?? [];
@@ -189,9 +177,7 @@ class _ManageProductsScreenState extends State<ManageProductsScreen> {
                     Text(
                       l.startAddingProducts,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: colors.onSurfaceVariant,
-                      ),
+                      style: TextStyle(color: colors.onSurfaceVariant),
                     ),
 
                     const SizedBox(height: 20),

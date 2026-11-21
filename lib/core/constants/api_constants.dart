@@ -3,8 +3,7 @@ class ApiConstants {
 
   static const String productsEndpoint = '/products';
 
-  static const String menClothingEndpoint =
-      "/products/category/men's clothing";
+  static const String menClothingEndpoint = "/products/category/men's clothing";
 
   static const String categoriesEndpoint = '/products/categories';
 

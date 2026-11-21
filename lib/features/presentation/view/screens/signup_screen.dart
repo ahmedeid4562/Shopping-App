@@ -59,11 +59,7 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() => _isLoading = true);
 
     try {
-      await _authApi.signUp(
-        name: name,
-        email: email,
-        password: password,
-      );
+      await _authApi.signUp(name: name, email: email, password: password);
 
       if (!mounted) return;
 
@@ -100,10 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
             color: primaryColor,
             size: 55,
           ),
-          title: Text(
-            l.verifyYourEmail,
-            textAlign: TextAlign.center,
-          ),
+          title: Text(l.verifyYourEmail, textAlign: TextAlign.center),
           content: Text(
             l.verificationEmailInstructions(email),
             textAlign: TextAlign.center,
@@ -129,9 +122,8 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   InputDecoration _inputDecoration({
@@ -155,10 +147,7 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(
-          color: primaryColor,
-          width: 1.5,
-        ),
+        borderSide: const BorderSide(color: primaryColor, width: 1.5),
       ),
     );
   }
@@ -310,9 +299,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       child: _isLoading
-                          ? const CircularProgressIndicator(
-                              color: Colors.white,
-                            )
+                          ? const CircularProgressIndicator(color: Colors.white)
                           : Text(
                               l.signup,
                               style: const TextStyle(

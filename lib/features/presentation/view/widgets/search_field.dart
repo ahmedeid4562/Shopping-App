@@ -34,22 +34,13 @@ class SearchField extends StatelessWidget {
       textInputAction: TextInputAction.search,
       decoration: InputDecoration(
         hintText: hintText ?? l.searchProductsHint,
-        hintStyle: TextStyle(
-          color: colors.onSurfaceVariant,
-          fontSize: 14,
-        ),
-        prefixIcon: const Icon(
-          Icons.search,
-          color: primaryColor,
-        ),
+        hintStyle: TextStyle(color: colors.onSurfaceVariant, fontSize: 14),
+        prefixIcon: const Icon(Icons.search, color: primaryColor),
         suffixIcon: onFilterTap != null
             ? IconButton(
                 onPressed: onFilterTap,
                 tooltip: l.filter,
-                icon: const Icon(
-                  Icons.tune,
-                  color: primaryColor,
-                ),
+                icon: const Icon(Icons.tune, color: primaryColor),
               )
             : null,
         filled: true,
@@ -64,16 +55,11 @@ class SearchField extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(
-            color: colors.outline.withValues(alpha: 0.15),
-          ),
+          borderSide: BorderSide(color: colors.outline.withValues(alpha: 0.15)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(
-            color: primaryColor,
-            width: 1.5,
-          ),
+          borderSide: const BorderSide(color: primaryColor, width: 1.5),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),

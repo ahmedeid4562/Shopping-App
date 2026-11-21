@@ -79,9 +79,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     } catch (e) {
       if (!mounted) return;
 
-      _showMessage(
-        e.toString().replaceFirst('Exception: ', ''),
-      );
+      _showMessage(e.toString().replaceFirst('Exception: ', ''));
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -90,9 +88,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -103,9 +100,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: AppBar(
         title: Text(
           l.editProfile,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -132,9 +127,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
               Text(
                 l.fullName,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
 
               const SizedBox(height: 10),
@@ -162,9 +155,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
               Text(
                 l.emailAddress,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
 
               const SizedBox(height: 10),
@@ -184,9 +175,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     return l.pleaseEnterYourEmail;
                   }
 
-                  if (!RegExp(
-                    r'^[^@]+@[^@]+\.[^@]+',
-                  ).hasMatch(value.trim())) {
+                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value.trim())) {
                     return l.validEmailAddress;
                   }
 
@@ -198,10 +187,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
               Text(
                 l.emailVerificationRequired,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: colors.onSurfaceVariant,
-                ),
+                style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
               ),
 
               const SizedBox(height: 35),
